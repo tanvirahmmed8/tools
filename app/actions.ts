@@ -32,7 +32,6 @@ export async function extractTextFromImage(imageBase64: string): Promise<string>
         ],
       },
     ],
-    maxTokens: 4096,
   })
 
   return text
