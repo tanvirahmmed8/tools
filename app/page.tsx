@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowRight, FileText, ImageIcon, Images, Layers, QrCode, Ruler, ScanBarcode, Shield, Sparkles, Zap } from "lucide-react"
+import { ArrowRight, FileOutput, FileText, ImageIcon, Images, Layers, QrCode, Ruler, ScanBarcode, Shield, Sparkles, SwatchBook, Zap } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -33,6 +33,13 @@ const featureCards = [
     icon: Images,
   },
   {
+    title: "PDF to Word",
+    description: "Upload a PDF and download an editable DOCX that keeps paragraphs, spacing, and headings intact.",
+    href: "/pdf-to-word",
+    badge: "DOCX export",
+    icon: FileOutput,
+  },
+  {
     title: "QR Toolkit",
     description: "Decode QR snapshots or generate brand-new QR codes with full on-device privacy.",
     href: "/qr-tools",
@@ -52,6 +59,13 @@ const featureCards = [
     href: "/image-resizer",
     badge: "Canvas tools",
     icon: Ruler,
+  },
+  {
+    title: "Image Converter",
+    description: "Turn PNGs into JPGs, WEBP, GIF, or AVIF files without leaving the browser.",
+    href: "/image-converter",
+    badge: "Format lab",
+    icon: SwatchBook,
   },
 ]
 
@@ -107,8 +121,8 @@ export default function Home() {
               The fastest way to turn unstructured files into usable text and imagery
             </h1>
             <p className="text-lg text-muted-foreground md:text-xl">
-              TextExtract AI bundles six production-ready utilities so your team can switch between OCR, PDF parsing,
-              barcode workflows, image resizing, and exporting without learning new tools.
+              TextExtract AI bundles eight production-ready utilities so your team can switch between OCR, PDF parsing,
+              barcode workflows, media conversions, and exporting without relearning interfaces.
             </p>
             <div className="flex flex-wrap gap-3">
               <Button asChild size="lg">
@@ -137,7 +151,7 @@ export default function Home() {
             Each workspace is tuned for a specific job, from OCR to rendering entire decks.
           </p>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {featureCards.map((feature) => {
               const Icon = feature.icon
               return (

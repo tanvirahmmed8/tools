@@ -12,8 +12,10 @@ const navItems = [
   { label: "Image to Text", href: "/image-to-text" },
   { label: "PDF to Text", href: "/pdf-to-text" },
   { label: "PDF to Images", href: "/pdf-to-image" },
+  { label: "PDF to Word", href: "/pdf-to-word" },
   { label: "QR Toolkit", href: "/qr-tools" },
   { label: "Barcode Toolkit", href: "/barcode-tools" },
+  { label: "Image Converter", href: "/image-converter" },
   { label: "Image Resizer", href: "/image-resizer" },
 ]
 

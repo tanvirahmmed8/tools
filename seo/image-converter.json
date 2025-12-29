@@ -1,0 +1,54 @@
+{
+  "title": "Image Converter | Convert PNG, JPG, WEBP, GIF, and More",
+  "description": "Upload any image and download it as PNG, JPG, WEBP, GIF, BMP, or AVIF with optional quality controls.",
+  "keywords": [
+    "image converter",
+    "png to jpg",
+    "webp converter",
+    "jpg to png",
+    "online image tool",
+    "image format change"
+  ],
+  "canonical": "https://tools.tanvirsoft.com/image-converter",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Image Converter | Any Format In, Any Format Out",
+    "description": "Drop any image, pick a format, and download a fresh file without leaving your browser.",
+    "url": "https://tools.tanvirsoft.com/image-converter",
+    "type": "article",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "https://tools.tanvirsoft.com/og-image-converter.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Image converter workspace"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Instant Image Converter",
+    "description": "Convert PNG, JPG, WEBP, GIF, or AVIF assets in your browser.",
+    "image": "https://tools.tanvirsoft.com/og-image-converter.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Image Converter",
+    "description": "Browser-based image converter for PNG, JPG, WEBP, GIF, BMP, and AVIF formats.",
+    "mainEntityOfPage": "https://tools.tanvirsoft.com/image-converter",
+    "author": {
+      "@type": "Organization",
+      "name": "AI Document Studio"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "AI Document Studio",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tools.tanvirsoft.com/logo.png"
+      }
+    }
+  }
+}

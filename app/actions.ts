@@ -3,6 +3,7 @@
 import { generateText } from "ai"
 import { createOpenAI } from "@ai-sdk/openai"
 import pdfParse from "pdf-parse/lib/pdf-parse.js"
+import { Document, Packer, Paragraph, TextRun } from "docx"
 
 const { OPENAI_API_KEY } = process.env
 
@@ -45,4 +46,37 @@ export async function extractTextFromPdf(pdfBase64: string): Promise<string> {
   const trimmed = text.trim()
 
   return trimmed.length ? trimmed : "No text found in PDF."
+}
+
+export async function convertPdfToWord(pdfBase64: string) {
+  const text = await extractTextFromPdf(pdfBase64)
+  const safeText = text && text.trim().length ? text.trim() : "No text found in PDF."
+
+  const paragraphs = safeText.split(/\n{2,}/).map(
+    (block) =>
+      new Paragraph({
+        children: block.split("\n").map((line, index) =>
+          new TextRun({
+            text: index === 0 ? line : `\n${line}`,
+          }),
+        ),
+      }),
+  )
+
+  const doc = new Document({
+    sections: [
+      {
+        properties: {},
+        children: paragraphs.length ? paragraphs : [new Paragraph({ children: [new TextRun("No text found in PDF.")] })],
+      },
+    ],
+  })
+
+  const buffer = await Packer.toBuffer(doc)
+
+  return {
+    fileName: `textextract-${new Date().toISOString().replace(/[:.]/g, "-")}.docx`,
+    docxBase64: buffer.toString("base64"),
+    text: safeText,
+  }
 }
