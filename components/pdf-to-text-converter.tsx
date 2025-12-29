@@ -7,6 +7,8 @@ import { FileText, Copy, Check, Loader2, Shield, Layers, Sparkles, Upload, X } f
 
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { SiteNavigation } from "@/components/site-navigation"
+import { PageContainer } from "@/components/page-container"
 import { extractTextFromPdf } from "@/app/actions"
 
 export function PdfToTextConverter() {
@@ -128,28 +130,11 @@ export function PdfToTextConverter() {
 
   return (
     <div className="min-h-screen">
-      <header className="border-b border-border">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="size-8 rounded-lg bg-primary flex items-center justify-center">
-              <FileText className="size-4 text-primary-foreground" />
-            </div>
-            <span className="font-semibold text-lg">PDF Text Extractor</span>
-          </div>
-          <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
-            <a href="/" className="hover:text-foreground transition-colors">
-              Image to Text
-            </a>
-            <span className="text-foreground font-medium">PDF to Text</span>
-            <a href="/pdf-to-image" className="hover:text-foreground transition-colors">
-              PDF to Images
-            </a>
-          </nav>
-        </div>
-      </header>
+      <SiteNavigation title="PDF Text Extractor" />
 
-      <section className="container mx-auto px-4 py-16 md:py-24">
-        <div className="max-w-4xl mx-auto text-center mb-12">
+      <section className="py-16 md:py-24">
+        <PageContainer>
+          <div className="max-w-4xl mx-auto text-center mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary text-sm mb-6">
             <Sparkles className="size-3.5" />
             <span>Multi-page aware AI</span>
@@ -158,10 +143,10 @@ export function PdfToTextConverter() {
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty">
             Upload handbooks, invoices, lecture notes, or contracts and receive clean, ready-to-use text in seconds.
           </p>
-        </div>
+          </div>
 
-        <Card className="max-w-4xl mx-auto p-6 md:p-8 bg-card border-border">
-          <div className="grid md:grid-cols-2 gap-6">
+          <Card className="max-w-4xl mx-auto p-6 md:p-8 bg-card border-border">
+            <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h2 className="font-medium flex items-center gap-2">
@@ -254,12 +239,13 @@ export function PdfToTextConverter() {
                 )}
               </div>
             </div>
-          </div>
-        </Card>
+            </div>
+          </Card>
+        </PageContainer>
       </section>
 
       <section className="border-t border-border bg-card/50">
-        <div className="container mx-auto px-4 py-16">
+        <PageContainer className="py-16">
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <FeatureCard
               icon={<Layers className="size-5" />}
@@ -277,13 +263,13 @@ export function PdfToTextConverter() {
               description="Powered by GPT-4o to read dense reports, scans, and forms."
             />
           </div>
-        </div>
+        </PageContainer>
       </section>
 
-      <footer className="border-t border-border py-8">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+      <footer className="border-t border-border">
+        <PageContainer className="py-8 text-center text-sm text-muted-foreground">
           <p>Switch back to the <a href="/" className="text-foreground underline-offset-4 underline">image converter</a> anytime.</p>
-        </div>
+        </PageContainer>
       </footer>
     </div>
   )

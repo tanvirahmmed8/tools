@@ -8,6 +8,8 @@ import JSZip from "jszip"
 
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { SiteNavigation } from "@/components/site-navigation"
+import { PageContainer } from "@/components/page-container"
 
 const PDF_SCALE = 1.5
 const PDF_WORKER_SRC = new URL("pdfjs-dist/legacy/build/pdf.worker.min.mjs", import.meta.url).toString()
@@ -163,28 +165,11 @@ export function PdfToImageConverter() {
 
   return (
     <div className="min-h-screen">
-      <header className="border-b border-border">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="size-8 rounded-lg bg-primary flex items-center justify-center">
-              <ImageIcon className="size-4 text-primary-foreground" />
-            </div>
-            <span className="font-semibold text-lg">PDF to Images</span>
-          </div>
-          <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
-            <a href="/" className="hover:text-foreground transition-colors">
-              Image to Text
-            </a>
-            <a href="/pdf-to-text" className="hover:text-foreground transition-colors">
-              PDF to Text
-            </a>
-            <span className="text-foreground font-medium">PDF to Images</span>
-          </nav>
-        </div>
-      </header>
+      <SiteNavigation title="PDF to Images" />
 
-      <section className="container mx-auto px-4 py-16 md:py-24">
-        <div className="max-w-4xl mx-auto text-center mb-12">
+      <section className="py-16 md:py-24">
+        <PageContainer>
+          <div className="max-w-4xl mx-auto text-center mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary text-sm mb-6">
             <Sparkles className="size-3.5" />
             <span>Crystal clear exports</span>
@@ -195,10 +180,10 @@ export function PdfToImageConverter() {
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty">
             Upload a PDF and instantly export each page as a crisp PNG. Perfect for sharing slides, receipts, or handouts.
           </p>
-        </div>
+          </div>
 
-        <Card className="max-w-5xl mx-auto p-6 md:p-8 bg-card border-border">
-          <div className="space-y-8">
+          <Card className="max-w-5xl mx-auto p-6 md:p-8 bg-card border-border">
+            <div className="space-y-8">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h2 className="font-medium flex items-center gap-2">
@@ -287,8 +272,9 @@ export function PdfToImageConverter() {
                 </div>
               )}
             </div>
-          </div>
-        </Card>
+            </div>
+          </Card>
+        </PageContainer>
       </section>
     </div>
   )

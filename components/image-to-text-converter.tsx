@@ -7,6 +7,8 @@ import { Copy, Check, Sparkles, FileText, Zap, Shield, Loader2, X, ImageIcon } f
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { DropZone } from "@/components/drop-zone"
+import { SiteNavigation } from "@/components/site-navigation"
+import { PageContainer } from "@/components/page-container"
 import { extractTextFromImage } from "@/app/actions"
 
 export function ImageToTextConverter() {
@@ -77,31 +79,12 @@ export function ImageToTextConverter() {
 
   return (
     <div className="min-h-screen">
-      {/* Header */}
-      <header className="border-b border-border">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="size-8 rounded-lg bg-primary flex items-center justify-center">
-              <FileText className="size-4 text-primary-foreground" />
-            </div>
-            <span className="font-semibold text-lg">TextExtract</span>
-          </div>
-          <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
-            <span className="hover:text-foreground cursor-pointer transition-colors">Features</span>
-            <a href="/pdf-to-text" className="hover:text-foreground cursor-pointer transition-colors">
-              PDF to Text
-            </a>
-            <a href="/pdf-to-image" className="hover:text-foreground cursor-pointer transition-colors">
-              PDF to Images
-            </a>
-            <span className="hover:text-foreground cursor-pointer transition-colors">Pricing</span>
-          </nav>
-        </div>
-      </header>
+      <SiteNavigation title="TextExtract" />
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-16 md:py-24">
-        <div className="max-w-4xl mx-auto text-center mb-12">
+      <section className="py-16 md:py-24">
+        <PageContainer>
+          <div className="max-w-4xl mx-auto text-center mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary text-sm mb-6">
             <Sparkles className="size-3.5" />
             <span>Powered by AI Vision</span>
@@ -112,11 +95,11 @@ export function ImageToTextConverter() {
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty">
             Upload an image and instantly extract all text with our AI-powered OCR. Fast, accurate, and completely free.
           </p>
-        </div>
+          </div>
 
-        {/* Main Converter Card */}
-        <Card className="max-w-4xl mx-auto p-6 md:p-8 bg-card border-border">
-          <div className="grid md:grid-cols-2 gap-6">
+          {/* Main Converter Card */}
+          <Card className="max-w-4xl mx-auto p-6 md:p-8 bg-card border-border">
+            <div className="grid md:grid-cols-2 gap-6">
             {/* Upload Section */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -200,13 +183,14 @@ export function ImageToTextConverter() {
                 )}
               </div>
             </div>
-          </div>
-        </Card>
+            </div>
+          </Card>
+        </PageContainer>
       </section>
 
       {/* Features Section */}
       <section className="border-t border-border bg-card/50">
-        <div className="container mx-auto px-4 py-16">
+        <PageContainer className="py-16">
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <FeatureCard
               icon={<Zap className="size-5" />}
@@ -224,14 +208,14 @@ export function ImageToTextConverter() {
               description="Your images are processed securely and never stored on our servers."
             />
           </div>
-        </div>
+        </PageContainer>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border py-8">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+      <footer className="border-t border-border">
+        <PageContainer className="py-8 text-center text-sm text-muted-foreground">
           <p>Built with AI • Extract text from images instantly</p>
-        </div>
+        </PageContainer>
       </footer>
     </div>
   )

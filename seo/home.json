@@ -1,49 +1,47 @@
 {
-  "title": "Image to Text Converter | Instant AI OCR",
-  "description": "Convert screenshots, slides, and handwritten notes into editable text with our GPT-4o powered image-to-text converter. Drag, drop, or paste any image and copy clean text in seconds.",
+  "title": "TextExtract AI | Document Intelligence Workspace",
+  "description": "Turn images and PDFs into reusable assets with one toolkit: Image to Text, PDF to Text, and PDF to Images. Launch any workflow in seconds and keep everything private.",
   "keywords": [
+    "document automation",
     "image to text",
-    "ocr online",
-    "ai text extractor",
-    "gpt4 vision",
-    "screenshot to text",
-    "handwriting transcription"
+    "pdf to text",
+    "pdf to image",
+    "ai ocr suite",
+    "text extraction"
   ],
   "canonical": "https://tools.tanvirsoft.com/",
   "robots": "index,follow",
   "openGraph": {
-    "title": "Instant Image to Text Converter",
-    "description": "Upload or paste images and copy structured text instantly with GPT-4o vision.",
+    "title": "TextExtract AI Marketing Site",
+    "description": "Explore the AI toolkit for turning images and PDFs into structured assets.",
     "url": "https://tools.tanvirsoft.com/",
     "type": "website",
-    "siteName": "AI Document Studio",
+    "siteName": "TextExtract AI",
     "images": [
       {
-        "url": "https://tools.tanvirsoft.com/og-image.png",
+        "url": "https://tools.tanvirsoft.com/og-home.png",
         "width": 1200,
         "height": 630,
-        "alt": "Preview of the AI image to text workspace"
+        "alt": "Overview of TextExtract AI product cards"
       }
     ]
   },
   "twitter": {
     "card": "summary_large_image",
-    "title": "Image to Text Converter",
-    "description": "Extract clean text from screenshots, PDFs, or whiteboard photos in seconds.",
-    "image": "https://tools.tanvirsoft.com/og-image.png"
+    "title": "Document Intelligence Toolkit",
+    "description": "Choose Image to Text, PDF to Text, or PDF to Images from one dashboard.",
+    "image": "https://tools.tanvirsoft.com/og-home.png"
   },
   "structuredData": {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "AI Document Studio",
+    "@type": "WebSite",
+    "name": "TextExtract AI",
     "url": "https://tools.tanvirsoft.com/",
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Any",
-    "description": "Instant AI OCR that converts any image into editable text using GPT-4o.",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
+    "description": "Marketing site for the TextExtract AI toolkit featuring image and PDF utilities.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://tools.tanvirsoft.com/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
     }
   }
 }

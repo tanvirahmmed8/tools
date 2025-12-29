@@ -1,0 +1,49 @@
+{
+  "title": "Image Resizer | Precise Width, Height & Radius",
+  "description": "Resize images with exact pixel dimensions and rounded corners entirely in your browser. Perfect for thumbnails, banners, and brand assets.",
+  "keywords": [
+    "image resizer",
+    "resize png",
+    "resize jpg",
+    "rounded corners",
+    "image crop",
+    "browser image editor"
+  ],
+  "canonical": "https://tools.tanvirsoft.com/image-resizer",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "TextExtract Image Resizer",
+    "description": "Upload an image, pick your dimensions, and export a polished PNG with custom radius.",
+    "url": "https://tools.tanvirsoft.com/image-resizer",
+    "type": "website",
+    "siteName": "TextExtract AI",
+    "images": [
+      {
+        "url": "https://tools.tanvirsoft.com/og-resizer.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Image resizer interface preview"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Image Resizer",
+    "description": "Resize and round corners on any image without leaving your browser.",
+    "image": "https://tools.tanvirsoft.com/og-resizer.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "TextExtract Image Resizer",
+    "url": "https://tools.tanvirsoft.com/image-resizer",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any",
+    "description": "Browser-based image resizing with width, height, and corner radius controls.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+}

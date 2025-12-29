@@ -1,0 +1,48 @@
+{
+  "title": "QR Toolkit | Decode & Generate QR Codes",
+  "description": "Read QR codes to text or create high-fidelity QR codes for any link or message in seconds. All processing stays in your browser.",
+  "keywords": [
+    "qr code to text",
+    "text to qr",
+    "qr generator",
+    "qr decoder",
+    "qr toolkit"
+  ],
+  "canonical": "https://tools.tanvirsoft.com/qr-tools",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "QR Toolkit by TextExtract",
+    "description": "Convert QR codes to text and spin up branded codes without leaving your browser.",
+    "url": "https://tools.tanvirsoft.com/qr-tools",
+    "type": "website",
+    "siteName": "TextExtract AI",
+    "images": [
+      {
+        "url": "https://tools.tanvirsoft.com/og-qr.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "QR toolkit interface preview"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "QR Toolkit",
+    "description": "Decode QR payloads or generate new QR codes instantly.",
+    "image": "https://tools.tanvirsoft.com/og-qr.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "TextExtract QR Toolkit",
+    "url": "https://tools.tanvirsoft.com/qr-tools",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any",
+    "description": "Browser-based QR utilities for decoding and generating codes.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+}
