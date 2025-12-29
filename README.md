@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TextExtract AI
 
-## Getting Started
+Tools.tanvirsoft.com is a Next.js 16 application that provides:
 
-First, run the development server:
+- Image → text extraction powered by GPT-4o
+- PDF → text parsing via `pdf-parse`
+- PDF → image rendering with download-all ZIP support
+
+## Local Development
 
 ```bash
+# install dependencies
+npm install
+
+# run dev server on http://localhost:3000
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# typecheck / lint (optional)
+
+
+# production build
+npm run build
+npm run start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Set required environment variables in `.env.local` (see `.env.example`). At minimum you need `OPENAI_API_KEY`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment (Nginx + PM2)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Build the project: `npm run build`
+2. Start with PM2 on an unused port, e.g. `pm2 start "npm run start -- -p 3100" --name tools-tanvirsoft`
+3. Point an Nginx reverse proxy at `http://127.0.0.1:3100`
 
-## Learn More
+See [NGINX_DEPLOYMENT.md](NGINX_DEPLOYMENT.md) for a full guide (certbot, logs, updates, etc.).
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure Highlights
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `app/` – Next.js routes and server actions
+- `components/` – UI building blocks (drop zones, converters, structured data script)
+- `seo/` – JSON metadata definitions loaded per page
+- `lib/seo.ts` – helper to convert SEO JSON into Next.js metadata
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Testing Functional Flows
 
-## Deploy on Vercel
+- Image OCR: upload or paste an image, confirm AI output
+- PDF → text: upload text-based PDF, verify extracted copy
+- PDF → image: upload PDF, confirm page previews, per-page PNG downloads, and ZIP downloads
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Reporting Issues
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Please include:
+- Steps to reproduce
+- Relevant PDF/image samples
+- Logs from `npm run dev` or PM2
+
+This documentation intentionally avoids any vendor analytics recommendations to keep the stack self-hosted and privacy focused.

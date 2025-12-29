@@ -1,0 +1,54 @@
+{
+  "title": "PDF to Text Converter | Extract Clean Text from PDFs",
+  "description": "Upload any searchable PDF and export accurate, copy-ready text without downloads. Ideal for reports, eBooks, and meeting packets up to 20 MB.",
+  "keywords": [
+    "pdf to text",
+    "pdf parser",
+    "export pdf content",
+    "online pdf converter",
+    "ai pdf reader",
+    "document summarizer"
+  ],
+  "canonical": "https://tools.tanvirsoft.com/pdf-to-text",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Convert PDFs into Editable Text",
+    "description": "Turn lengthy PDFs into clean text you can edit, summarize, or share instantly.",
+    "url": "https://tools.tanvirsoft.com/pdf-to-text",
+    "type": "article",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "https://tools.tanvirsoft.com/og-pdf-to-text.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "PDF to text converter interface"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "PDF to Text Converter",
+    "description": "Upload PDFs and grab ready-to-use text powered by AI parsing.",
+    "image": "https://tools.tanvirsoft.com/og-pdf-to-text.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "PDF to Text Converter",
+    "description": "Step-by-step PDF to text workflow with instant copy-ready output.",
+    "mainEntityOfPage": "https://tools.tanvirsoft.com/pdf-to-text",
+    "author": {
+      "@type": "Organization",
+      "name": "AI Document Studio"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "AI Document Studio",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tools.tanvirsoft.com/logo.png"
+      }
+    }
+  }
+}
