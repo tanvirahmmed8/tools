@@ -27,6 +27,9 @@ const navItems = [
   { label: "Image Converter", href: "/image-converter" },
   { label: "Image Resizer", href: "/image-resizer" },
   { label: "Image Watermark", href: "/image-watermark" },
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms and Conditions", href: "/terms-and-conditions" },
+  { label: "Contact", href: "/contact" },
 ]
 
 interface SiteNavigationProps {

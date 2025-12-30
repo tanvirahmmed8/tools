@@ -11,26 +11,24 @@ import { buildMetadata } from "@/lib/seo"
 import homeSeo from "@/seo/home.json"
 
 const featureCards = [
+  // PDF Tools
   {
     title: "PDF Merge / Split",
     description: "Combine multiple PDFs into one or split a PDF by pages or ranges — all on-device.",
     href: "/pdf-merge-split",
     badge: "Reorder pages",
     icon: Layers,
+    category: "PDF",
+    color: "from-purple-500 to-indigo-500",
   },
   {
     title: "PDF Compress",
     description: "Shrink PDF file size by compressing images and optimizing content for faster sharing and uploads.",
     href: "/pdf-compress",
     badge: "Reduce size",
-    icon: Layers,
-  },
-  {
-    title: "Image to Text",
-    description: "Paste or drop screenshots, handwritten notes, and slides to grab clean, editable text instantly.",
-    href: "/image-to-text",
-    badge: "Vision AI",
-    icon: ImageIcon,
+    icon: Sparkles,
+    category: "PDF",
+    color: "from-pink-500 to-red-500",
   },
   {
     title: "PDF to Text",
@@ -38,6 +36,8 @@ const featureCards = [
     href: "/pdf-to-text",
     badge: "Multi-page",
     icon: FileText,
+    category: "PDF",
+    color: "from-blue-500 to-cyan-500",
   },
   {
     title: "PDF to Images",
@@ -45,6 +45,8 @@ const featureCards = [
     href: "/pdf-to-image",
     badge: "High fidelity",
     icon: Images,
+    category: "PDF",
+    color: "from-green-500 to-emerald-500",
   },
   {
     title: "PDF to Word",
@@ -52,41 +54,18 @@ const featureCards = [
     href: "/pdf-to-word",
     badge: "DOCX export",
     icon: FileOutput,
+    category: "PDF",
+    color: "from-yellow-500 to-orange-500",
   },
+  // Image Tools
   {
-    title: "QR Toolkit",
-    description: "Decode QR snapshots or generate brand-new QR codes with full on-device privacy.",
-    href: "/qr-tools",
-    badge: "QR codes",
-    icon: QrCode,
-  },
-  {
-    title: "Barcode Toolkit",
-    description: "Scan CODE128, EAN, or UPC barcodes and publish fresh labels for SKUs and shipments.",
-    href: "/barcode-tools",
-    badge: "Barcodes",
-    icon: ScanBarcode,
-  },
-  {
-    title: "Image Resizer",
-    description: "Resize assets to exact pixels and add rounded corners for thumbnails, banners, or product shots.",
-    href: "/image-resizer",
-    badge: "Canvas tools",
-    icon: Ruler,
-  },
-  {
-    title: "Image Converter",
-    description: "Turn PNGs into JPGs, WEBP, GIF, or AVIF files without leaving the browser.",
-    href: "/image-converter",
-    badge: "Format lab",
-    icon: SwatchBook,
-  },
-  {
-    title: "Image Watermark",
-    description: "Add text watermarks to images with position, size, color, and opacity controls.",
-    href: "/image-watermark",
-    badge: "Protect assets",
-    icon: ImageIcon,
+    title: "Image to Text",
+    description: "Paste or drop screenshots, handwritten notes, and slides to grab clean, editable text instantly.",
+    href: "/image-to-text",
+    badge: "Vision AI",
+    icon: Zap,
+    category: "Image",
+    color: "from-fuchsia-500 to-pink-500",
   },
   {
     title: "Image to PDF",
@@ -94,6 +73,54 @@ const featureCards = [
     href: "/image-to-pdf",
     badge: "Image → PDF",
     icon: Layers,
+    category: "Image",
+    color: "from-indigo-500 to-blue-500",
+  },
+  {
+    title: "Image Resizer",
+    description: "Resize assets to exact pixels and add rounded corners for thumbnails, banners, or product shots.",
+    href: "/image-resizer",
+    badge: "Canvas tools",
+    icon: Ruler,
+    category: "Image",
+    color: "from-lime-500 to-green-500",
+  },
+  {
+    title: "Image Converter",
+    description: "Turn PNGs into JPGs, WEBP, GIF, or AVIF files without leaving the browser.",
+    href: "/image-converter",
+    badge: "Format lab",
+    icon: SwatchBook,
+    category: "Image",
+    color: "from-orange-500 to-yellow-500",
+  },
+  {
+    title: "Image Watermark",
+    description: "Add text watermarks to images with position, size, color, and opacity controls.",
+    href: "/image-watermark",
+    badge: "Protect assets",
+    icon: Shield,
+    category: "Image",
+    color: "from-cyan-500 to-teal-500",
+  },
+  // Code Tools
+  {
+    title: "QR Toolkit",
+    description: "Decode QR snapshots or generate brand-new QR codes with full on-device privacy.",
+    href: "/qr-tools",
+    badge: "QR codes",
+    icon: QrCode,
+    category: "Code",
+    color: "from-violet-500 to-purple-500",
+  },
+  {
+    title: "Barcode Toolkit",
+    description: "Scan CODE128, EAN, or UPC barcodes and publish fresh labels for SKUs and shipments.",
+    href: "/barcode-tools",
+    badge: "Barcodes",
+    icon: ScanBarcode,
+    category: "Code",
+    color: "from-gray-500 to-slate-500",
   },
 ]
 
@@ -181,29 +208,35 @@ export default function Home() {
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {featureCards.map((feature) => {
-              const Icon = feature.icon
+              const Icon = feature.icon;
               return (
-                <Card key={feature.title} className="flex flex-col gap-4 border-border/60 bg-card/70 p-6">
+                <Card
+                  key={feature.title}
+                  className={
+                    `flex flex-col gap-4 border-2 border-transparent bg-card/70 p-6 shadow-lg transition-transform hover:scale-[1.03] hover:border-primary/70 hover:z-10 hover:shadow-2xl group` +
+                    ` bg-gradient-to-br ${feature.color}`
+                  }
+                >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="rounded-xl bg-primary/10 p-3 text-primary">
+                      <div className="rounded-xl bg-white/80 p-3 text-primary shadow group-hover:bg-primary group-hover:text-white transition-colors">
                         <Icon className="size-6" />
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-wide text-muted-foreground">{feature.badge}</p>
-                        <h3 className="text-lg font-semibold">{feature.title}</h3>
+                        <p className="text-xs uppercase tracking-wide text-muted-foreground group-hover:text-primary font-bold">{feature.badge}</p>
+                        <h3 className="text-lg font-semibold group-hover:text-primary">{feature.title}</h3>
                       </div>
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
-                  <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
+                  <p className="text-sm text-muted-foreground group-hover:text-primary-foreground">{feature.description}</p>
+                  <Button asChild variant="default" className="px-0 mt-2 bg-primary/90 hover:bg-primary text-white font-semibold shadow group-hover:scale-105 transition-transform">
                     <Link href={feature.href}>
                       Open workspace
-                      <ArrowRight className="size-4" />
+                      <ArrowRight className="size-4 ml-1" />
                     </Link>
                   </Button>
                 </Card>
-              )
+              );
             })}
           </div>
         </PageContainer>
