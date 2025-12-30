@@ -12,6 +12,13 @@ import homeSeo from "@/seo/home.json"
 
 const featureCards = [
   {
+    title: "PDF Merge / Split",
+    description: "Combine multiple PDFs into one or split a PDF by pages or ranges — all on-device.",
+    href: "/pdf-merge-split",
+    badge: "Reorder pages",
+    icon: Layers,
+  },
+  {
     title: "PDF Compress",
     description: "Shrink PDF file size by compressing images and optimizing content for faster sharing and uploads.",
     href: "/pdf-compress",
@@ -73,6 +80,20 @@ const featureCards = [
     href: "/image-converter",
     badge: "Format lab",
     icon: SwatchBook,
+  },
+  {
+    title: "Image Watermark",
+    description: "Add text watermarks to images with position, size, color, and opacity controls.",
+    href: "/image-watermark",
+    badge: "Protect assets",
+    icon: ImageIcon,
+  },
+  {
+    title: "Image to PDF",
+    description: "Combine PNG/JPG images into a single PDF. Reorder pages before exporting.",
+    href: "/image-to-pdf",
+    badge: "Image → PDF",
+    icon: Layers,
   },
 ]
 

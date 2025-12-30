@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from "react"
 import JsBarcode from "jsbarcode"
+import JSZip from "jszip"
 import { BrowserMultiFormatReader, BarcodeFormat, DecodeHintType, NotFoundException } from "@zxing/library"
 import { Barcode, Check, Copy, Download, Loader2, RefreshCcw, ScanBarcode, ScanText } from "lucide-react"
 
@@ -34,6 +35,13 @@ export function BarcodeTools() {
   const [barcodeImage, setBarcodeImage] = useState<string | null>(null)
   const [generateError, setGenerateError] = useState<string | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
+
+  // Bulk generation from CSV
+  const [csvName, setCsvName] = useState("")
+  const [csvRows, setCsvRows] = useState<Array<{ value: string; name?: string }>>([])
+  const [bulkError, setBulkError] = useState<string | null>(null)
+  const [isBulkGenerating, setIsBulkGenerating] = useState(false)
+  const [bulkCount, setBulkCount] = useState(0)
 
   const readerRef = useRef<BrowserMultiFormatReader | null>(null)
 
@@ -168,6 +176,117 @@ export function BarcodeTools() {
     link.download = "textextract-barcode.png"
     link.click()
   }, [barcodeImage])
+
+  // --- CSV Bulk helpers ---
+  const parseCSV = (text: string): Array<{ value: string; name?: string }> => {
+    // Basic CSV parser supporting quotes
+    const rows: string[][] = []
+    let cur: string[] = []
+    let cell = ""
+    let inQuotes = false
+    for (let i = 0; i < text.length; i += 1) {
+      const ch = text[i]
+      if (inQuotes) {
+        if (ch === '"') {
+          if (text[i + 1] === '"') { cell += '"'; i += 1 } else { inQuotes = false }
+        } else {
+          cell += ch
+        }
+      } else {
+        if (ch === '"') {
+          inQuotes = true
+        } else if (ch === ',') {
+          cur.push(cell)
+          cell = ""
+        } else if (ch === '\n' || ch === '\r') {
+          if (ch === '\r' && text[i + 1] === '\n') i += 1
+          cur.push(cell)
+          if (cur.length > 1 || (cur.length === 1 && cur[0].trim() !== "")) rows.push(cur)
+          cur = []
+          cell = ""
+        } else {
+          cell += ch
+        }
+      }
+    }
+    cur.push(cell)
+    if (cur.length > 1 || (cur.length === 1 && cur[0].trim() !== "")) rows.push(cur)
+
+    // Map to objects: first column is value, optional second is name
+    const mapped = rows.map((cols, idx) => {
+      const v = (cols[0] ?? "").trim()
+      const n = (cols[1] ?? "").trim()
+      return { value: v, name: n || undefined }
+    }).filter(r => r.value.length > 0)
+    return mapped
+  }
+
+  const handleCsvFile = useCallback(async (file: File) => {
+    if (!file.name.toLowerCase().endsWith('.csv')) {
+      setBulkError("Please upload a CSV file.")
+      return
+    }
+    setBulkError(null)
+    setCsvName(file.name)
+    const text = await file.text()
+    const rows = parseCSV(text)
+    if (!rows.length) {
+      setBulkError("No rows found in CSV. First column must contain the barcode value.")
+      setCsvRows([])
+      setBulkCount(0)
+      return
+    }
+    setCsvRows(rows)
+    setBulkCount(rows.length)
+  }, [])
+
+  const handleCsvDrop = useCallback((e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault()
+    const file = e.dataTransfer.files[0]
+    if (file) handleCsvFile(file)
+  }, [handleCsvFile])
+
+  const handleCsvSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) handleCsvFile(file)
+  }, [handleCsvFile])
+
+  const generateZipFromCsv = useCallback(async () => {
+    if (!csvRows.length) return
+    setIsBulkGenerating(true)
+    setBulkError(null)
+    try {
+      const zip = new JSZip()
+      for (let i = 0; i < csvRows.length; i += 1) {
+        const row = csvRows[i]
+        const canvas = document.createElement("canvas")
+        JsBarcode(canvas, row.value, {
+          format: "CODE128",
+          displayValue: true,
+          fontSize: 16,
+          background: "#ffffff",
+          lineColor: "#0f172a",
+          margin: 8,
+        })
+        const dataUrl = canvas.toDataURL("image/png")
+        const base64 = dataUrl.split(",")[1] ?? ""
+        const filename = `${row.name || `barcode-${i + 1}`}.png`
+        zip.file(filename, base64, { base64: true })
+      }
+      const blob = await zip.generateAsync({ type: "blob" })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement("a")
+      a.href = url
+      a.download = (csvName ? csvName.replace(/\.csv$/i, "") : "barcodes") + "-barcodes.zip"
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error(err)
+      setBulkError("Failed to generate ZIP. Try a smaller batch or simpler values.")
+    } finally {
+      setIsBulkGenerating(false)
+    }
+  }, [csvRows, csvName])
 
   return (
     <div className="min-h-screen">
@@ -326,6 +445,66 @@ export function BarcodeTools() {
               </div>
             </div>
           </div>
+          </Card>
+          {/* Bulk barcode generation */}
+          <Card className="mt-8 border-border/60 bg-card/70 p-6 md:p-8">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-muted-foreground">Bulk generate</p>
+                  <h2 className="text-xl font-semibold flex items-center gap-2">
+                    <Barcode className="size-5" />
+                    Barcodes from CSV
+                  </h2>
+                </div>
+                {csvRows.length > 0 && (
+                  <Button variant="ghost" size="sm" onClick={() => { setCsvRows([]); setCsvName(""); setBulkCount(0); setBulkError(null) }} className="text-muted-foreground hover:text-foreground">
+                    <RefreshCcw className="size-4" />
+                    Reset
+                  </Button>
+                )}
+              </div>
+
+              <label
+                className="relative flex min-h-[140px] flex-col items-center justify-center rounded-lg border-2 border-dashed px-4 text-center text-sm transition-all duration-200 border-border hover:border-primary/60 hover:bg-muted/40"
+                onDragOver={(e) => { e.preventDefault() }}
+                onDrop={handleCsvDrop}
+              >
+                <input type="file" accept=".csv,text/csv" onChange={handleCsvSelect} className="sr-only" />
+                <ScanBarcode className="mb-3 size-6 text-muted-foreground" />
+                <p className="font-medium">{csvName || "Drag & drop a CSV or click to browse"}</p>
+                <p className="mt-1 text-xs text-muted-foreground">CSV columns: value,name (name optional)</p>
+              </label>
+
+              <div className="rounded-lg border border-border bg-muted/40 p-4 text-sm">
+                {bulkError ? (
+                  <p className="text-destructive">{bulkError}</p>
+                ) : csvRows.length ? (
+                  <p className="text-muted-foreground">Parsed {bulkCount} row(s). Click Generate ZIP to export PNG barcodes.</p>
+                ) : (
+                  <p className="text-muted-foreground">Upload a CSV where the first column contains the barcode text. Second column (optional) will be used as filename.</p>
+                )}
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                <Button onClick={generateZipFromCsv} disabled={!csvRows.length || isBulkGenerating}>
+                  {isBulkGenerating ? <Loader2 className="mr-2 size-4 animate-spin" /> : <Download className="mr-2 size-4" />}
+                  {isBulkGenerating ? "Generating ZIP" : "Generate ZIP"}
+                </Button>
+                <Button variant="outline" onClick={() => {
+                  const sample = "value,name\nABC123,sku-1\n987654321098,sku-2";
+                  const blob = new Blob([sample], { type: "text/csv" })
+                  const url = URL.createObjectURL(blob)
+                  const a = document.createElement("a")
+                  a.href = url
+                  a.download = "barcodes-sample.csv"
+                  a.click()
+                  URL.revokeObjectURL(url)
+                }}>
+                  Download sample CSV
+                </Button>
+              </div>
+            </div>
           </Card>
         </PageContainer>
       </section>

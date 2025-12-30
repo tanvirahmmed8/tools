@@ -217,3 +217,119 @@ export async function convertPdfToWord(pdfBase64: string) {
     pageCount: renderedPages.length,
   }
 }
+
+export async function imagesToPdf(imagesBase64: string[]) {
+  if (!Array.isArray(imagesBase64) || imagesBase64.length === 0) {
+    throw new Error("Provide one or more images to convert to PDF.")
+  }
+
+  const pdfDoc = await PDFDocument.create()
+
+  for (const dataUrl of imagesBase64) {
+    const header = dataUrl.slice(0, 50).toLowerCase()
+    const base64 = dataUrl.includes(",") ? dataUrl.split(",")[1] ?? "" : dataUrl
+    const bytes = Buffer.from(base64, "base64")
+
+    let embedded
+    if (header.includes("image/png")) {
+      embedded = await pdfDoc.embedPng(bytes)
+    } else if (header.includes("image/jpeg") || header.includes("image/jpg")) {
+      embedded = await pdfDoc.embedJpg(bytes)
+    } else {
+      throw new Error("Only PNG and JPEG images are supported.")
+    }
+
+    const { width, height } = embedded.scale(1)
+    const page = pdfDoc.addPage([width, height])
+    page.drawImage(embedded, { x: 0, y: 0, width, height })
+  }
+
+  const out = await pdfDoc.save({ useObjectStreams: true })
+  return {
+    fileName: `images-${new Date().toISOString().replace(/[:.]/g, "-")}.pdf`,
+    pdfBase64: Buffer.from(out).toString("base64"),
+  }
+}
+
+export async function mergePdfs(pdfBase64List: string[]) {
+  if (!Array.isArray(pdfBase64List) || pdfBase64List.length === 0) {
+    throw new Error("Provide at least two PDFs to merge.")
+  }
+
+  const mergedPdf = await PDFDocument.create()
+
+  for (const pdfBase64 of pdfBase64List) {
+    const base64Data = pdfBase64.includes(",") ? pdfBase64.split(",")[1] ?? "" : pdfBase64
+    const pdfBuffer = Buffer.from(base64Data, "base64")
+    const srcDoc = await PDFDocument.load(pdfBuffer)
+    const copiedPages = await mergedPdf.copyPages(srcDoc, srcDoc.getPageIndices())
+    copiedPages.forEach((p) => mergedPdf.addPage(p))
+  }
+
+  const bytes = await mergedPdf.save({ useObjectStreams: true })
+
+  return {
+    fileName: `merged-${new Date().toISOString().replace(/[:.]/g, "-")}.pdf`,
+    pdfBase64: Buffer.from(bytes).toString("base64"),
+  }
+}
+
+function parseRanges(input: string, totalPages: number): number[][] {
+  // Returns array of [start,end] 1-based inclusive ranges
+  const cleaned = input.replace(/\s+/g, "")
+  if (!cleaned) {
+    // default: split per page
+    return Array.from({ length: totalPages }, (_, i) => [i + 1, i + 1])
+  }
+  const parts = cleaned.split(",").filter(Boolean)
+  const ranges: number[][] = []
+  for (const part of parts) {
+    if (/^\d+$/.test(part)) {
+      const n = Math.min(Math.max(parseInt(part, 10), 1), totalPages)
+      ranges.push([n, n])
+    } else {
+      const m = part.match(/^(\d+)-(\d+)$/)
+      if (m) {
+        let a = parseInt(m[1], 10)
+        let b = parseInt(m[2], 10)
+        if (a > b) [a, b] = [b, a]
+        a = Math.min(Math.max(a, 1), totalPages)
+        b = Math.min(Math.max(b, 1), totalPages)
+        ranges.push([a, b])
+      }
+    }
+  }
+  if (!ranges.length) {
+    return Array.from({ length: totalPages }, (_, i) => [i + 1, i + 1])
+  }
+  return ranges
+}
+
+export async function splitPdf(
+  pdfBase64: string,
+  options?: { ranges?: string },
+) {
+  const base64Data = pdfBase64.includes(",") ? pdfBase64.split(",")[1] ?? "" : pdfBase64
+  const pdfBuffer = Buffer.from(base64Data, "base64")
+  const srcDoc = await PDFDocument.load(pdfBuffer)
+  const totalPages = srcDoc.getPageCount()
+
+  const ranges = parseRanges(options?.ranges ?? "", totalPages)
+
+  const outputs: { fileName: string; pdfBase64: string }[] = []
+  let idx = 1
+  for (const [start, end] of ranges) {
+    const out = await PDFDocument.create()
+    const pageIndices = Array.from({ length: end - start + 1 }, (_, i) => start - 1 + i)
+    const copiedPages = await out.copyPages(srcDoc, pageIndices)
+    copiedPages.forEach((p) => out.addPage(p))
+    const bytes = await out.save({ useObjectStreams: true })
+    outputs.push({
+      fileName: `split-${idx}-${start}-${end}.pdf`,
+      pdfBase64: Buffer.from(bytes).toString("base64"),
+    })
+    idx += 1
+  }
+
+  return { totalPages, parts: outputs }
+}

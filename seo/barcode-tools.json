@@ -1,6 +1,6 @@
 {
   "title": "Barcode Toolkit | Decode & Generate Barcodes",
-  "description": "Read barcode payloads or generate new CODE128 labels for SKUs, shipments, and IDs directly in your browser.",
+  "description": "Read barcode payloads or generate new CODE128 labels for SKUs, shipments, and IDs directly in your browser — including bulk barcode generation from CSV.",
   "keywords": [
     "barcode to text",
     "text to barcode",
@@ -12,7 +12,7 @@
   "robots": "index,follow",
   "openGraph": {
     "title": "TextExtract Barcode Toolkit",
-    "description": "Drop a barcode image to read it or create new labels instantly.",
+    "description": "Drop a barcode image to read it, make single labels, or bulk-generate barcodes from a CSV.",
     "url": "https://tools.tanvirsoft.com/barcode-tools",
     "type": "website",
     "siteName": "TextExtract AI",
@@ -28,7 +28,7 @@
   "twitter": {
     "card": "summary_large_image",
     "title": "Barcode Toolkit",
-    "description": "Convert barcode images to text or output new CODE128 barcodes.",
+    "description": "Convert barcode images to text, output new CODE128 barcodes, or bulk-generate from CSV.",
     "image": "https://tools.tanvirsoft.com/og-barcode.png"
   },
   "structuredData": {

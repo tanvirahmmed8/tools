@@ -14,6 +14,8 @@ const navItems = [
     label: "PDF",
     dropdown: true,
     items: [
+      { label: "PDF Merge/Split", href: "/pdf-merge-split" },
+      { label: "Image to PDF", href: "/image-to-pdf" },
       { label: "PDF Compress", href: "/pdf-compress" },
       { label: "PDF to Text", href: "/pdf-to-text" },
       { label: "PDF to Images", href: "/pdf-to-image" },
@@ -24,6 +26,7 @@ const navItems = [
   { label: "Barcode Toolkit", href: "/barcode-tools" },
   { label: "Image Converter", href: "/image-converter" },
   { label: "Image Resizer", href: "/image-resizer" },
+  { label: "Image Watermark", href: "/image-watermark" },
 ]
 
 interface SiteNavigationProps {

@@ -1,0 +1,45 @@
+{
+  "title": "Image to PDF | Combine PNG/JPG into PDF",
+  "description": "Convert multiple PNG or JPG images into a single PDF. Arrange the order and download instantly.",
+  "keywords": [
+    "image to pdf",
+    "png to pdf",
+    "jpg to pdf",
+    "combine images pdf",
+    "create pdf from images"
+  ],
+  "canonical": "https://tools.tanvirsoft.com/image-to-pdf",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Image to PDF Converter",
+    "description": "Add PNG/JPG images, reorder, and export as a single PDF.",
+    "url": "https://tools.tanvirsoft.com/image-to-pdf",
+    "type": "article",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "https://tools.tanvirsoft.com/og-image-to-pdf.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Thumbnails of images arranged into a PDF"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Image to PDF Converter",
+    "description": "Turn images into a PDF and download in seconds.",
+    "image": "https://tools.tanvirsoft.com/og-image-to-pdf.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Create a PDF from images",
+    "description": "Combine multiple images into a single PDF.",
+    "step": [
+      { "@type": "HowToStep", "name": "Upload images", "text": "Drag & drop PNG/JPG files." },
+      { "@type": "HowToStep", "name": "Arrange order", "text": "Move images up or down." },
+      { "@type": "HowToStep", "name": "Export PDF", "text": "Click Create PDF and download." }
+    ]
+  }
+}

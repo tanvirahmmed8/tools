@@ -1,6 +1,6 @@
 {
   "title": "QR Toolkit | Decode & Generate QR Codes",
-  "description": "Read QR codes to text or create high-fidelity QR codes for any link or message in seconds. All processing stays in your browser.",
+  "description": "Read QR codes to text, generate new codes, or bulk-create QR codes from a CSV — all processed in your browser.",
   "keywords": [
     "qr code to text",
     "text to qr",
@@ -12,7 +12,7 @@
   "robots": "index,follow",
   "openGraph": {
     "title": "QR Toolkit by TextExtract",
-    "description": "Convert QR codes to text and spin up branded codes without leaving your browser.",
+    "description": "Convert QR codes to text, create single codes, or bulk-generate from a CSV — all on-device.",
     "url": "https://tools.tanvirsoft.com/qr-tools",
     "type": "website",
     "siteName": "TextExtract AI",
@@ -28,7 +28,7 @@
   "twitter": {
     "card": "summary_large_image",
     "title": "QR Toolkit",
-    "description": "Decode QR payloads or generate new QR codes instantly.",
+    "description": "Decode QR payloads, generate new QR codes, or bulk-create from a CSV.",
     "image": "https://tools.tanvirsoft.com/og-qr.png"
   },
   "structuredData": {

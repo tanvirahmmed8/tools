@@ -1,0 +1,44 @@
+{
+  "title": "Image Watermark | Add Text Watermarks to Images",
+  "description": "Protect your images by adding a text watermark. Control position, size, color, opacity, and margins. Runs fully in your browser.",
+  "keywords": [
+    "image watermark",
+    "add watermark",
+    "text watermark",
+    "protect images"
+  ],
+  "canonical": "https://tools.tanvirsoft.com/image-watermark",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Image Watermark Tool",
+    "description": "Add customizable text watermarks to images with on-device processing.",
+    "url": "https://tools.tanvirsoft.com/image-watermark",
+    "type": "article",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "https://tools.tanvirsoft.com/og-image-watermark.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Watermark UI preview"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Image Watermark Tool",
+    "description": "Add text watermarks to images in seconds.",
+    "image": "https://tools.tanvirsoft.com/og-image-watermark.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Add a text watermark to images",
+    "description": "Upload images, set watermark options, and export watermarked images or a ZIP.",
+    "step": [
+      { "@type": "HowToStep", "name": "Upload images", "text": "Drag & drop image files." },
+      { "@type": "HowToStep", "name": "Configure watermark", "text": "Set text, position, color, size, and opacity." },
+      { "@type": "HowToStep", "name": "Export", "text": "Download each image or a ZIP of all." }
+    ]
+  }
+}
