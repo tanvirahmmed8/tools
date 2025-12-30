@@ -6,9 +6,15 @@ export async function compressPdf(pdfBase64: string) {
   const pdfBuffer = Buffer.from(base64Data, "base64")
   const pdfDoc = await PDFDocument.load(pdfBuffer)
 
+  // NOTE: pdf-lib does not provide a public API to extract and recompress images in-place.
+  // The previous approach accessed internal PDFKit structures, which is not supported and breaks type safety.
+  // Instead, we can only optimize the PDF using pdf-lib's built-in compression, which does not recompress images.
+  // If you need true image recompression, you must use a lower-level PDF parser or a service/library that supports it.
+  // Here, we just save with useObjectStreams for best possible compression with pdf-lib.
+  // Optionally, you can add a warning to the user if the PDF is still large after compression.
+
   // Remove unused objects, compress streams, and optimize
   pdfDoc.setTitle(pdfDoc.getTitle() || "Compressed PDF")
-  // pdf-lib automatically compresses streams on save
   const compressedBytes = await pdfDoc.save({ useObjectStreams: true })
 
   return {

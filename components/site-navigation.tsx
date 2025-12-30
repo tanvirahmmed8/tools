@@ -10,9 +10,16 @@ import { PageContainer } from "@/components/page-container"
 const navItems = [
   { label: "Overview", href: "/" },
   { label: "Image to Text", href: "/image-to-text" },
-  { label: "PDF to Text", href: "/pdf-to-text" },
-  { label: "PDF to Images", href: "/pdf-to-image" },
-  { label: "PDF to Word", href: "/pdf-to-word" },
+  {
+    label: "PDF",
+    dropdown: true,
+    items: [
+      { label: "PDF Compress", href: "/pdf-compress" },
+      { label: "PDF to Text", href: "/pdf-to-text" },
+      { label: "PDF to Images", href: "/pdf-to-image" },
+      { label: "PDF to Word", href: "/pdf-to-word" },
+    ],
+  },
   { label: "QR Toolkit", href: "/qr-tools" },
   { label: "Barcode Toolkit", href: "/barcode-tools" },
   { label: "Image Converter", href: "/image-converter" },
@@ -38,21 +45,59 @@ export function SiteNavigation({ title = "TextExtract", className }: SiteNavigat
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm">
           {navItems.map((item) => {
-            const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href)
-
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-current={isActive ? "page" : undefined}
-                className={cn(
-                  "transition-colors",
-                  isActive ? "text-foreground font-medium" : "text-muted-foreground hover:text-foreground",
-                )}
-              >
-                {item.label}
-              </Link>
-            )
+            if (item.dropdown) {
+              // PDF Dropdown
+              const isActive = item.items.some((sub) => pathname.startsWith(sub.href))
+              return (
+                <div key={item.label} className="relative group">
+                  <button
+                    className={cn(
+                      "transition-colors flex items-center gap-1",
+                      isActive ? "text-foreground font-medium" : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {item.label}
+                    <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                  </button>
+                  <div className="absolute left-0 mt-2 min-w-[180px] bg-popover border border-border rounded shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity z-20">
+                    <div className="flex flex-col py-2">
+                      {item.items.map((sub) => (
+                        <Link
+                          key={sub.href}
+                          href={sub.href}
+                          className={cn(
+                            "px-4 py-2 text-left text-sm transition-colors",
+                            pathname.startsWith(sub.href)
+                              ? "text-foreground font-medium bg-accent"
+                              : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                          )}
+                        >
+                          {sub.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )
+            } else {
+              if (typeof item.href === 'string') {
+                const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href)
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    aria-current={isActive ? "page" : undefined}
+                    className={cn(
+                      "transition-colors",
+                      isActive ? "text-foreground font-medium" : "text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                )
+              }
+              return null;
+            }
           })}
         </nav>
       </PageContainer>

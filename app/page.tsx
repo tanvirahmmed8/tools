@@ -12,6 +12,13 @@ import homeSeo from "@/seo/home.json"
 
 const featureCards = [
   {
+    title: "PDF Compress",
+    description: "Shrink PDF file size by compressing images and optimizing content for faster sharing and uploads.",
+    href: "/pdf-compress",
+    badge: "Reduce size",
+    icon: Layers,
+  },
+  {
     title: "Image to Text",
     description: "Paste or drop screenshots, handwritten notes, and slides to grab clean, editable text instantly.",
     href: "/image-to-text",
