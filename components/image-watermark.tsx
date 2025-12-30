@@ -16,6 +16,7 @@ interface ImageItem {
 }
 
 type Position = "top-left" | "top-right" | "center" | "bottom-left" | "bottom-right"
+type Mode = "text" | "image"
 
 export function ImageWatermark() {
   const [items, setItems] = useState<ImageItem[]>([])
@@ -30,6 +31,11 @@ export function ImageWatermark() {
   const [opacity, setOpacity] = useState(80) // 0-100
   const [margin, setMargin] = useState(24)
   const [shadow, setShadow] = useState(true)
+  const [mode, setMode] = useState<Mode>("text")
+  const [wmUrl, setWmUrl] = useState<string | null>(null)
+  const [wmName, setWmName] = useState<string>("")
+  const [wmScale, setWmScale] = useState(20)
+  useEffect(() => () => { if (wmUrl) URL.revokeObjectURL(wmUrl) }, [wmUrl])
 
   useEffect(() => () => { items.forEach((i) => URL.revokeObjectURL(i.url)) }, [items])
 
@@ -85,58 +91,93 @@ export function ImageWatermark() {
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
 
     const alpha = Math.max(0, Math.min(1, opacity / 100))
-    ctx.globalAlpha = alpha
-    ctx.fillStyle = color
-    ctx.textBaseline = "bottom"
-
-    const px = Math.max(8, Math.min(256, fontSize))
-    ctx.font = `${px}px sans-serif`
-
-    const textMetrics = ctx.measureText(text)
-    const textWidth = textMetrics.width
-    const textHeight = px // rough
-
     let x = margin
     let y = canvas.height - margin
 
-    switch (position) {
-      case "top-left":
-        x = margin
-        y = margin + textHeight
-        break
-      case "top-right":
-        x = canvas.width - margin - textWidth
-        y = margin + textHeight
-        break
-      case "center":
-        x = (canvas.width - textWidth) / 2
-        y = (canvas.height + textHeight) / 2
-        break
-      case "bottom-left":
-        x = margin
-        y = canvas.height - margin
-        break
-      case "bottom-right":
-      default:
-        x = canvas.width - margin - textWidth
-        y = canvas.height - margin
-    }
+    if (mode === "image" && wmUrl) {
+      const wmImg = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const im = new Image()
+        im.onload = () => resolve(im)
+        im.onerror = reject
+        im.src = wmUrl
+      })
+      const targetWidth = Math.max(1, Math.round((wmScale / 100) * canvas.width))
+      const scale = targetWidth / (wmImg.naturalWidth || wmImg.width || 1)
+      const w = targetWidth
+      const h = Math.round((wmImg.naturalHeight || wmImg.height || 1) * scale)
 
-    if (shadow) {
-      ctx.save()
+      switch (position) {
+        case "top-left":
+          x = margin
+          y = margin
+          break
+        case "top-right":
+          x = canvas.width - margin - w
+          y = margin
+          break
+        case "center":
+          x = (canvas.width - w) / 2
+          y = (canvas.height - h) / 2
+          break
+        case "bottom-left":
+          x = margin
+          y = canvas.height - margin - h
+          break
+        case "bottom-right":
+        default:
+          x = canvas.width - margin - w
+          y = canvas.height - margin - h
+      }
       ctx.globalAlpha = alpha
-      ctx.fillStyle = "rgba(0,0,0,0.5)"
-      ctx.shadowColor = "rgba(0,0,0,0.6)"
-      ctx.shadowBlur = 6
-      ctx.shadowOffsetX = 0
-      ctx.shadowOffsetY = 2
-      ctx.fillText(text, x, y)
-      ctx.restore()
-    }
+      ctx.drawImage(wmImg, x, y, w, h)
+    } else {
+      ctx.fillStyle = color
+      ctx.textBaseline = "bottom"
+      const px = Math.max(8, Math.min(256, fontSize))
+      ctx.font = `${px}px sans-serif`
+      const textMetrics = ctx.measureText(text)
+      const textWidth = textMetrics.width
+      const textHeight = px
 
-    ctx.fillStyle = color
-    ctx.globalAlpha = alpha
-    ctx.fillText(text, x, y)
+      switch (position) {
+        case "top-left":
+          x = margin
+          y = margin + textHeight
+          break
+        case "top-right":
+          x = canvas.width - margin - textWidth
+          y = margin + textHeight
+          break
+        case "center":
+          x = (canvas.width - textWidth) / 2
+          y = (canvas.height + textHeight) / 2
+          break
+        case "bottom-left":
+          x = margin
+          y = canvas.height - margin
+          break
+        case "bottom-right":
+        default:
+          x = canvas.width - margin - textWidth
+          y = canvas.height - margin
+      }
+
+      if (shadow) {
+        ctx.save()
+        ctx.globalAlpha = alpha
+        ctx.fillStyle = "rgba(0,0,0,0.5)"
+        ctx.shadowColor = "rgba(0,0,0,0.6)"
+        ctx.shadowBlur = 6
+        ctx.shadowOffsetX = 0
+        ctx.shadowOffsetY = 2
+        ctx.fillText(text, x, y)
+        ctx.restore()
+      }
+
+      ctx.fillStyle = color
+      ctx.globalAlpha = alpha
+      ctx.fillText(text, x, y)
+    }
 
     const outUrl = canvas.toDataURL("image/png")
     const outName = name.replace(/\.[^.]+$/, "") + "-watermarked.png"
@@ -161,7 +202,7 @@ export function ImageWatermark() {
     } finally {
       setIsProcessing(false)
     }
-  }, [items, text, color, fontSize, position, opacity, margin, shadow])
+  }, [items, text, color, fontSize, position, opacity, margin, shadow, mode, wmUrl, wmScale])
 
   const downloadOne = (it: ImageItem) => {
     if (!it.outUrl) return
@@ -202,8 +243,8 @@ export function ImageWatermark() {
             <span>Watermark images</span>
           </div>
           <div className="mt-6 max-w-3xl space-y-4">
-            <h1 className="text-4xl font-bold tracking-tight text-balance md:text-5xl">Protect images with text watermarks</h1>
-            <p className="text-lg text-muted-foreground">Add a text watermark to one or many images. Control position, size, color, opacity, and margin.</p>
+            <h1 className="text-4xl font-bold tracking-tight text-balance md:text-5xl">Protect images with text or PNG watermarks</h1>
+            <p className="text-lg text-muted-foreground">Add a text watermark or overlay a transparent PNG logo. Control position, size, color, and opacity.</p>
           </div>
         </PageContainer>
       </section>
@@ -266,20 +307,65 @@ export function ImageWatermark() {
                 <div className="rounded-xl border border-border/70 bg-background/80 p-4">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2 md:col-span-2">
-                      <label className="text-sm font-medium">Watermark text</label>
-                      <input value={text} onChange={(e) => setText(e.target.value)} className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="© Your Brand" />
+                      <label className="text-sm font-medium">Watermark type</label>
+                      <div className="flex gap-2">
+                        <Button type="button" variant={mode === "text" ? "default" : "outline"} onClick={() => setMode("text")}>Text</Button>
+                        <Button type="button" variant={mode === "image" ? "default" : "outline"} onClick={() => setMode("image")}>PNG Image</Button>
+                      </div>
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Font size (px)</label>
-                      <input type="number" min={8} max={256} value={fontSize} onChange={(e) => setFontSize(parseInt(e.target.value || "36", 10))} className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
-                    </div>
+
+                    {mode === "text" ? (
+                      <>
+                        <div className="space-y-2 md:col-span-2">
+                          <label className="text-sm font-medium">Watermark text</label>
+                          <input value={text} onChange={(e) => setText(e.target.value)} className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="© Your Brand" />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">Font size (px)</label>
+                          <input type="number" min={8} max={256} value={fontSize} onChange={(e) => setFontSize(parseInt(e.target.value || "36", 10))} className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">Color</label>
+                          <input type="text" value={color} onChange={(e) => setColor(e.target.value)} className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" placeholder="rgba(255,255,255,0.8) or #ffffff" />
+                        </div>
+                        <div className="space-y-2 md:col-span-2">
+                          <label className="inline-flex items-center gap-2 text-sm">
+                            <input type="checkbox" checked={shadow} onChange={(e) => setShadow(e.target.checked)} />
+                            Add shadow for contrast
+                          </label>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="space-y-2 md:col-span-2">
+                          <label className="text-sm font-medium">PNG watermark image</label>
+                          <div className="flex items-center gap-3">
+                            <input type="file" accept="image/png,image/webp,image/svg+xml" onChange={(e) => {
+                              const f = e.target.files?.[0]
+                              if (!f) return
+                              if (wmUrl) URL.revokeObjectURL(wmUrl)
+                              setWmUrl(URL.createObjectURL(f))
+                              setWmName(f.name)
+                            }} />
+                          </div>
+                          {wmUrl && (
+                            <div className="mt-2 flex items-center gap-3 text-xs text-muted-foreground">
+                              <img src={wmUrl} alt="watermark" className="h-8 w-auto rounded border border-border bg-white" />
+                              <span className="truncate">{wmName}</span>
+                              <Button size="sm" variant="ghost" onClick={() => { if (wmUrl) URL.revokeObjectURL(wmUrl); setWmUrl(null); setWmName("") }}>Remove</Button>
+                            </div>
+                          )}
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">Scale: {wmScale}% of image width</label>
+                          <input type="range" min={5} max={100} value={wmScale} onChange={(e) => setWmScale(parseInt(e.target.value, 10))} className="w-full" />
+                        </div>
+                      </>
+                    )}
+
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Opacity: {opacity}%</label>
                       <input type="range" min={0} max={100} value={opacity} onChange={(e) => setOpacity(parseInt(e.target.value, 10))} className="w-full" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Color</label>
-                      <input type="text" value={color} onChange={(e) => setColor(e.target.value)} className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" placeholder="rgba(255,255,255,0.8) or #ffffff" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Position</label>
@@ -294,12 +380,6 @@ export function ImageWatermark() {
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Margin (px)</label>
                       <input type="number" min={0} max={512} value={margin} onChange={(e) => setMargin(parseInt(e.target.value || "24", 10))} className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
-                    </div>
-                    <div className="space-y-2 md:col-span-2">
-                      <label className="inline-flex items-center gap-2 text-sm">
-                        <input type="checkbox" checked={shadow} onChange={(e) => setShadow(e.target.checked)} />
-                        Add shadow for contrast
-                      </label>
                     </div>
                   </div>
 
