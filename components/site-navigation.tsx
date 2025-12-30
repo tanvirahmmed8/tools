@@ -49,24 +49,30 @@ export function SiteNavigation({ title = "TextExtract", className }: SiteNavigat
               // PDF Dropdown
               const isActive = item.items.some((sub) => pathname.startsWith(sub.href))
               return (
-                <div key={item.label} className="relative group">
+                <div key={item.label} className="relative group" tabIndex={0} onBlur={e => { if (!e.currentTarget.contains(e.relatedTarget)) e.currentTarget.classList.remove('dropdown-open') }} onFocus={e => e.currentTarget.classList.add('dropdown-open')} onMouseEnter={e => e.currentTarget.classList.add('dropdown-open')} onMouseLeave={e => e.currentTarget.classList.remove('dropdown-open')}>
                   <button
                     className={cn(
-                      "transition-colors flex items-center gap-1",
+                      "transition-colors flex items-center gap-1 focus:outline-none",
                       isActive ? "text-foreground font-medium" : "text-muted-foreground hover:text-foreground"
                     )}
+                    aria-haspopup="true"
+                    aria-expanded={undefined}
+                    tabIndex={0}
+                    onFocus={e => e.currentTarget.parentElement?.classList.add('dropdown-open')}
+                    onBlur={e => e.currentTarget.parentElement?.classList.remove('dropdown-open')}
                   >
                     {item.label}
                     <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
                   </button>
-                  <div className="absolute left-0 mt-2 min-w-[180px] bg-popover border border-border rounded shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity z-20">
+                  <div className="absolute left-0 mt-2 min-w-[180px] bg-popover border border-border rounded shadow-lg opacity-0 pointer-events-none transition-opacity z-20 group-[.dropdown-open]:opacity-100 group-[.dropdown-open]:pointer-events-auto group-hover:opacity-100 group-hover:pointer-events-auto">
                     <div className="flex flex-col py-2">
                       {item.items.map((sub) => (
                         <Link
                           key={sub.href}
                           href={sub.href}
+                          tabIndex={0}
                           className={cn(
-                            "px-4 py-2 text-left text-sm transition-colors",
+                            "px-4 py-2 text-left text-sm transition-colors focus:bg-accent focus:text-foreground",
                             pathname.startsWith(sub.href)
                               ? "text-foreground font-medium bg-accent"
                               : "text-muted-foreground hover:text-foreground hover:bg-accent"

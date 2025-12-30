@@ -6,12 +6,24 @@ import QRCode from "qrcode"
 import { Check, Copy, Download, Loader2, QrCode, RefreshCcw, ScanLine } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { CameraScanner } from "@/components/camera-scanner"
 import { Card } from "@/components/ui/card"
 import { DropZone } from "@/components/drop-zone"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
 
 export function QrTools() {
+    // Helper to convert dataURL to File (must be inside the component for client-only use)
+    function dataUrlToFile(dataUrl: string, filename: string, mimeType: string) {
+      const arr = dataUrl.split(',')
+      const bstr = atob(arr[1])
+      let n = bstr.length
+      const u8arr = new Uint8Array(n)
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n)
+      }
+      return new File([u8arr], filename, { type: mimeType })
+    }
   const [qrImagePreview, setQrImagePreview] = useState<string | null>(null)
   const [decodedText, setDecodedText] = useState("")
   const [decodeError, setDecodeError] = useState<string | null>(null)
@@ -192,7 +204,24 @@ export function QrTools() {
                   )}
                 </div>
               ) : (
-                <DropZone onFileUpload={handleDecodeUpload} />
+                <>
+                  <CameraScanner
+                    label="Scan QR with Camera"
+                    onCapture={(dataUrl) => {
+                      const arr = dataUrl.split(',');
+                      const bstr = atob(arr[1]);
+                      let n = bstr.length;
+                      const u8arr = new Uint8Array(n);
+                      while (n--) {
+                        u8arr[n] = bstr.charCodeAt(n);
+                      }
+                      const file = new File([u8arr], 'qr-capture.png', { type: 'image/png' });
+                      handleDecodeUpload(file);
+                    }}
+                  />
+                  <div className="my-2 text-center text-xs text-muted-foreground">or upload an image</div>
+                  <DropZone onFileUpload={handleDecodeUpload} />
+                </>
               )}
 
               <div className="space-y-2">
