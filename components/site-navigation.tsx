@@ -73,13 +73,15 @@ export function SiteNavigation({ title = "TextExtract", className }: SiteNavigat
   }
 
   return (
-    <header className={cn("border-b border-border", className)}>
-      <PageContainer className="flex items-center justify-between py-4">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="size-8 rounded-lg bg-primary flex items-center justify-center">
+    <header className={cn("relative border-b border-white/10 bg-[#050912]", className)}>
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#0f172a]/70 via-transparent to-transparent" />
+      <div className="pointer-events-none absolute -top-10 right-0 h-32 w-32 rounded-full bg-primary/20 blur-3xl" />
+      <PageContainer className="relative flex items-center justify-between py-4 text-white">
+        <Link href="/" className="flex items-center gap-3">
+          <div className="size-9 rounded-2xl bg-gradient-to-br from-primary/80 to-primary flex items-center justify-center shadow-lg shadow-primary/30">
             <FileText className="size-4 text-primary-foreground" />
           </div>
-          <span className="font-semibold text-lg">{title}</span>
+          <span className="font-semibold text-lg tracking-wide">{title}</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm">
           {navItems.map((item) => {
@@ -103,7 +105,7 @@ export function SiteNavigation({ title = "TextExtract", className }: SiteNavigat
                   <button
                     className={cn(
                       "transition-colors flex items-center gap-1 focus:outline-none",
-                      isActive ? "text-foreground font-medium" : "text-muted-foreground hover:text-foreground"
+                      isActive ? "text-white font-semibold" : "text-white/60 hover:text-white"
                     )}
                     aria-haspopup="true"
                     aria-expanded={isDropdownOpen}
@@ -116,7 +118,7 @@ export function SiteNavigation({ title = "TextExtract", className }: SiteNavigat
                   </button>
                   <div
                     className={cn(
-                      "absolute left-0 mt-2 min-w-[200px] rounded border border-border bg-popover shadow-lg transition-opacity duration-150 z-20",
+                      "absolute left-0 mt-2 min-w-[200px] rounded-2xl border border-white/10 bg-[#0c1224]/95 shadow-[0_20px_60px_-30px_rgba(15,23,42,0.9)] transition-opacity duration-150 z-20",
                       isDropdownOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
                     )}
                     onMouseEnter={() => handleDropdownEnter(item.label)}
@@ -131,10 +133,10 @@ export function SiteNavigation({ title = "TextExtract", className }: SiteNavigat
                           onFocus={() => handleDropdownEnter(item.label)}
                           onBlur={handleDropdownLeave}
                           className={cn(
-                            "px-4 py-2 text-left text-sm transition-colors focus:bg-accent focus:text-foreground",
+                            "px-4 py-2 text-left text-sm transition-colors rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30",
                             pathname.startsWith(sub.href)
-                              ? "text-foreground font-medium bg-accent"
-                              : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                              ? "bg-white/10 text-white font-semibold"
+                              : "text-white/70 hover:text-white hover:bg-white/5"
                           )}
                         >
                           {sub.label}
@@ -154,7 +156,7 @@ export function SiteNavigation({ title = "TextExtract", className }: SiteNavigat
                     aria-current={isActive ? "page" : undefined}
                     className={cn(
                       "transition-colors",
-                      isActive ? "text-foreground font-medium" : "text-muted-foreground hover:text-foreground",
+                      isActive ? "text-white font-semibold" : "text-white/60 hover:text-white",
                     )}
                   >
                     {item.label}
