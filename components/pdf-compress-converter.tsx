@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react"
 import { FileText, Download, Loader2, Sparkles, Upload, X, FileOutput } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { GlowCard } from "@/components/ui/glow-card"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
 import { compressPdf } from "@/app/actions"
@@ -157,7 +157,7 @@ export function PdfCompressConverter() {
       </section>
       <section className="py-16">
         <PageContainer>
-          <Card className="border-border/70 bg-card/90 p-6 md:p-8 shadow-xl">
+          <GlowCard tone="amber" className="p-6 md:p-8">
             <div className="grid gap-8 md:grid-cols-2">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
@@ -234,7 +234,7 @@ export function PdfCompressConverter() {
                 </div>
               </div>
             </div>
-          </Card>
+          </GlowCard>
         </PageContainer>
       </section>
     </div>

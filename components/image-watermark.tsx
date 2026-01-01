@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { GlowCard } from "@/components/ui/glow-card"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
 import { Download, Image as ImageIcon, Loader2, RefreshCcw, Sparkles } from "lucide-react"
@@ -251,7 +251,7 @@ export function ImageWatermark() {
 
       <section className="py-16">
         <PageContainer>
-          <Card className="border-border/70 bg-card/90 p-6 md:p-8 shadow-xl">
+          <GlowCard tone="teal" className="p-6 md:p-8">
             <div className="grid gap-8 md:grid-cols-2">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
@@ -395,7 +395,7 @@ export function ImageWatermark() {
                 </div>
               </div>
             </div>
-          </Card>
+          </GlowCard>
         </PageContainer>
       </section>
     </div>

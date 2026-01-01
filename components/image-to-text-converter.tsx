@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useCallback } from "react"
 import { Copy, Check, Sparkles, FileText, Zap, Shield, Loader2, X, ImageIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { GlowCard } from "@/components/ui/glow-card"
 import { DropZone } from "@/components/drop-zone"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
@@ -98,7 +98,7 @@ export function ImageToTextConverter() {
           </div>
 
           {/* Main Converter Card */}
-          <Card className="max-w-4xl mx-auto p-6 md:p-8 bg-card border-border">
+          <GlowCard tone="magenta" className="max-w-4xl mx-auto p-6 md:p-8">
             <div className="grid md:grid-cols-2 gap-6">
             {/* Upload Section */}
             <div className="space-y-4">
@@ -184,7 +184,7 @@ export function ImageToTextConverter() {
               </div>
             </div>
             </div>
-          </Card>
+          </GlowCard>
         </PageContainer>
       </section>
 

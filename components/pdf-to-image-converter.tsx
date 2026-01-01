@@ -7,7 +7,7 @@ import { FileText, ImageIcon, Loader2, Sparkles, Download, X } from "lucide-reac
 import JSZip from "jszip"
 
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { GlowCard } from "@/components/ui/glow-card"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
 
@@ -182,7 +182,7 @@ export function PdfToImageConverter() {
           </p>
           </div>
 
-          <Card className="max-w-5xl mx-auto p-6 md:p-8 bg-card border-border">
+          <GlowCard tone="emerald" className="max-w-5xl mx-auto p-6 md:p-8">
             <div className="space-y-8">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -273,7 +273,7 @@ export function PdfToImageConverter() {
               )}
             </div>
             </div>
-          </Card>
+          </GlowCard>
         </PageContainer>
       </section>
     </div>

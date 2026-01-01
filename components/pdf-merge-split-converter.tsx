@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 import { Download, FileText, Layers, Loader2, Sparkles, Upload, X, ArrowUp, ArrowDown } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { GlowCard } from "@/components/ui/glow-card"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
 import { mergePdfs, splitPdf } from "@/app/actions"
@@ -206,7 +206,7 @@ export function PdfMergeSplitConverter() {
           </div>
 
           {tab === "merge" ? (
-            <Card className="border-border/70 bg-card/90 p-6 md:p-8 shadow-xl">
+            <GlowCard tone="iris" className="p-6 md:p-8">
               <div className="grid gap-8 md:grid-cols-2">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
@@ -298,9 +298,9 @@ export function PdfMergeSplitConverter() {
                   </div>
                 </div>
               </div>
-            </Card>
+            </GlowCard>
           ) : (
-            <Card className="border-border/70 bg-card/90 p-6 md:p-8 shadow-xl">
+            <GlowCard tone="rose" className="p-6 md:p-8">
               <div className="grid gap-8 md:grid-cols-2">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
@@ -380,7 +380,7 @@ export function PdfMergeSplitConverter() {
                   </div>
                 </div>
               </div>
-            </Card>
+            </GlowCard>
           )}
         </PageContainer>
       </section>

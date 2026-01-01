@@ -4,89 +4,13 @@ import type { LucideIcon } from "lucide-react"
 import { ArrowRight, FileOutput, FileText, Images, Layers, QrCode, Ruler, ScanBarcode, Shield, Sparkles, SwatchBook, Zap } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { GlowCard } from "@/components/ui/glow-card"
 import { SiteNavigation } from "@/components/site-navigation"
 import { StructuredDataScript } from "@/components/structured-data"
 import { PageContainer } from "@/components/page-container"
 import { buildMetadata } from "@/lib/seo"
+import { toneStyles, type ToneKey } from "@/lib/tones"
 import homeSeo from "@/seo/home.json"
-
-const toneStyles = {
-  iris: {
-    glow: "from-[#8b5cf6]/40 via-transparent to-transparent",
-    iconBg: "bg-[#8b5cf6]/15 text-[#f5f3ff]",
-    badge: "text-[#c4b5fd]",
-    aura: "bg-[#8b5cf6]/35",
-  },
-  rose: {
-    glow: "from-[#fb7185]/35 via-transparent to-transparent",
-    iconBg: "bg-[#fb7185]/15 text-[#ffe4e6]",
-    badge: "text-[#fecdd3]",
-    aura: "bg-[#fb7185]/30",
-  },
-  azure: {
-    glow: "from-[#38bdf8]/35 via-transparent to-transparent",
-    iconBg: "bg-[#38bdf8]/15 text-[#e0f2fe]",
-    badge: "text-[#bae6fd]",
-    aura: "bg-[#38bdf8]/30",
-  },
-  emerald: {
-    glow: "from-[#34d399]/35 via-transparent to-transparent",
-    iconBg: "bg-[#34d399]/15 text-[#d1fae5]",
-    badge: "text-[#a7f3d0]",
-    aura: "bg-[#34d399]/30",
-  },
-  amber: {
-    glow: "from-[#fbbf24]/35 via-transparent to-transparent",
-    iconBg: "bg-[#fbbf24]/15 text-[#fef3c7]",
-    badge: "text-[#fde68a]",
-    aura: "bg-[#fbbf24]/30",
-  },
-  magenta: {
-    glow: "from-[#ec4899]/35 via-transparent to-transparent",
-    iconBg: "bg-[#ec4899]/15 text-[#fdf2f8]",
-    badge: "text-[#fbcfe8]",
-    aura: "bg-[#ec4899]/30",
-  },
-  cobalt: {
-    glow: "from-[#4b70ff]/35 via-transparent to-transparent",
-    iconBg: "bg-[#4b70ff]/15 text-[#eff4ff]",
-    badge: "text-[#c7d2fe]",
-    aura: "bg-[#4b70ff]/30",
-  },
-  lime: {
-    glow: "from-[#a3e635]/30 via-transparent to-transparent",
-    iconBg: "bg-[#a3e635]/15 text-[#ecfccb]",
-    badge: "text-[#d9f99d]",
-    aura: "bg-[#a3e635]/25",
-  },
-  sunset: {
-    glow: "from-[#fb923c]/35 via-transparent to-transparent",
-    iconBg: "bg-[#fb923c]/15 text-[#fff1e6]",
-    badge: "text-[#fed7aa]",
-    aura: "bg-[#fb923c]/30",
-  },
-  teal: {
-    glow: "from-[#2dd4bf]/35 via-transparent to-transparent",
-    iconBg: "bg-[#2dd4bf]/15 text-[#d5f5ef]",
-    badge: "text-[#99f6e4]",
-    aura: "bg-[#2dd4bf]/30",
-  },
-  violet: {
-    glow: "from-[#c084fc]/35 via-transparent to-transparent",
-    iconBg: "bg-[#c084fc]/15 text-[#f5e1ff]",
-    badge: "text-[#e9d5ff]",
-    aura: "bg-[#c084fc]/30",
-  },
-  slate: {
-    glow: "from-[#94a3b8]/35 via-transparent to-transparent",
-    iconBg: "bg-[#94a3b8]/15 text-[#f1f5f9]",
-    badge: "text-[#cbd5f5]",
-    aura: "bg-[#94a3b8]/25",
-  },
-} as const
-
-type ToneKey = keyof typeof toneStyles
 
 interface FeatureCardConfig {
   title: string
@@ -209,36 +133,42 @@ const featureCards: FeatureCardConfig[] = [
   },
 ]
 
-const highlights = [
+const highlights: Array<{ title: string; description: string; icon: LucideIcon; tone: ToneKey }> = [
   {
     title: "Private by design",
     description: "Files are processed ephemerally. Nothing is stored once your extraction finishes.",
     icon: Shield,
+    tone: "emerald",
   },
   {
     title: "Launch-ready outputs",
     description: "Get structured text, page-level exports, and shareable assets without extra cleanup.",
     icon: Layers,
+    tone: "cobalt",
   },
   {
     title: "AI speed",
     description: "Optimized GPT-4o pipelines finish most jobs in under ten seconds.",
     icon: Zap,
+    tone: "magenta",
   },
 ]
 
-const workflow = [
+const workflow: Array<{ title: string; body: string; tone: ToneKey }> = [
   {
     title: "Choose a workspace",
     body: "Pick Image to Text, PDF to Text, or PDF to Images depending on the asset you have on hand.",
+    tone: "iris",
   },
   {
     title: "Drop your file",
     body: "Drag and drop, paste, or browse. Every uploader supports drag states, file validation, and previews.",
+    tone: "sunset",
   },
   {
     title: "Ship the result",
     body: "Copy text, download PNGs, or zip entire batches. Outputs stay local until you decide to share.",
+    tone: "teal",
   },
 ]
 
@@ -297,41 +227,32 @@ export default function Home() {
               const tone = toneStyles[feature.tone]
 
               return (
-                <Card
-                  key={feature.title}
-                  className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-white/5 bg-[#090f1c] p-6 text-white shadow-[0_20px_60px_-30px_rgba(15,23,42,0.9)] transition duration-300 hover:-translate-y-1 hover:border-white/20"
-                >
-                  <div
-                    className={`pointer-events-none absolute inset-0 bg-gradient-to-br opacity-0 transition duration-300 group-hover:opacity-100 ${tone.glow}`}
-                  />
-                  <div
-                    className={`pointer-events-none absolute -top-12 right-0 h-32 w-32 rounded-full opacity-60 blur-3xl ${tone.aura}`}
-                  />
-                  <div className="relative z-10 flex items-start justify-between">
-                    <div className={`rounded-2xl p-3 transition duration-300 ${tone.iconBg}`}>
+                <GlowCard key={feature.title} tone={feature.tone} className="h-full">
+                  <div className="flex items-start justify-between">
+                    <div className={`rounded-2xl p-3 ${tone.iconBg}`}>
                       <Icon className="size-6" />
                     </div>
                     <span className={`text-[11px] font-semibold uppercase tracking-[0.3em] ${tone.badge}`}>
                       {feature.badge}
                     </span>
                   </div>
-                  <div className="relative z-10 mt-6 space-y-2">
-                    <p className="text-xs uppercase tracking-[0.4em] text-white/50">{feature.category}</p>
+                  <div className="space-y-2">
+                    <p className="text-xs uppercase tracking-[0.4em] text-white/60">{feature.category}</p>
                     <h3 className="text-xl font-semibold text-white">{feature.title}</h3>
-                    <p className="text-sm text-white/70">{feature.description}</p>
+                    <p className="text-sm text-white/80">{feature.description}</p>
                   </div>
                   <Button
                     asChild
                     size="sm"
                     variant="ghost"
-                    className="relative z-10 mt-6 w-fit gap-2 rounded-full border border-white/15 bg-white/10 px-5 text-sm font-semibold text-white transition hover:bg-white hover:text-slate-900"
+                    className="w-fit gap-2 rounded-full border border-white/15 bg-white/10 px-5 text-sm font-semibold text-white transition hover:bg-white hover:text-slate-900"
                   >
                     <Link href={feature.href}>
                       Open workspace
                       <ArrowRight className="size-4" />
                     </Link>
                   </Button>
-                </Card>
+                </GlowCard>
               )
             })}
           </div>
@@ -351,16 +272,19 @@ export default function Home() {
           <div className="grid gap-4">
             {highlights.map((item) => {
               const Icon = item.icon
+              const tone = toneStyles[item.tone]
               return (
-                <Card key={item.title} className="flex items-start gap-4 border-border/60 bg-background/70 p-5">
-                  <div className="rounded-lg bg-secondary p-2 text-secondary-foreground">
-                    <Icon className="size-5" />
+                <GlowCard key={item.title} tone={item.tone} className="p-5">
+                  <div className="flex items-start gap-4">
+                    <div className={`rounded-2xl p-3 ${tone.iconBg}`}>
+                      <Icon className="size-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-white">{item.title}</h3>
+                      <p className="text-sm text-white/80">{item.description}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground">{item.description}</p>
-                  </div>
-                </Card>
+                </GlowCard>
               )
             })}
           </div>
@@ -378,13 +302,13 @@ export default function Home() {
           </div>
           <div className="grid gap-6 md:grid-cols-3">
             {workflow.map((step, index) => (
-              <Card key={step.title} className="relative h-full border-border/60 bg-card/60 p-6">
-                <span className="absolute -top-3 left-6 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
+              <GlowCard key={step.title} tone={step.tone} className="p-6">
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/30 text-sm font-semibold">
                   {index + 1}
                 </span>
-                <h3 className="mt-4 text-xl font-semibold">{step.title}</h3>
-                <p className="mt-3 text-sm text-muted-foreground">{step.body}</p>
-              </Card>
+                <h3 className="text-xl font-semibold text-white">{step.title}</h3>
+                <p className="text-sm text-white/80">{step.body}</p>
+              </GlowCard>
             ))}
           </div>
         </PageContainer>

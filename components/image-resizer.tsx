@@ -2,13 +2,13 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { GlowCard } from "@/components/ui/glow-card"
 import { DropZone } from "@/components/drop-zone"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
 import { Download, ImageIcon, Loader2, RefreshCcw, Ruler, Sparkles } from "lucide-react"
 
-const MIN_DIMENSION = 32
+const MIN_DIMENSION = 0
 const MAX_DIMENSION = 4096
 const MIN_RADIUS = 0
 const MAX_RADIUS = 50
@@ -385,7 +385,7 @@ export function ImageResizer() {
       <SiteNavigation title="Image Resizer" />
 
       <PageContainer className="flex justify-center py-10">
-        <Card className="w-full max-w-6xl border-border bg-card/95 p-6 shadow-xl">
+        <GlowCard tone="lime" className="w-full max-w-6xl p-6">
           <div className="flex flex-col gap-6">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
@@ -567,7 +567,7 @@ export function ImageResizer() {
               </div>
             </div>
           </div>
-        </Card>
+        </GlowCard>
       </PageContainer>
     </div>
   )

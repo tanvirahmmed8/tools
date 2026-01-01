@@ -47,27 +47,27 @@ interface SiteNavigationProps {
 export function SiteNavigation({ title = "TextExtract", className }: SiteNavigationProps) {
   const pathname = usePathname()
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
-  const dropdownCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const dropdownCloseTimer = useRef<number | null>(null)
 
   useEffect(() => {
     return () => {
-      if (dropdownCloseTimer.current) {
-        clearTimeout(dropdownCloseTimer.current)
+      if (dropdownCloseTimer.current !== null) {
+        window.clearTimeout(dropdownCloseTimer.current)
       }
     }
   }, [])
 
   const handleDropdownEnter = (label: string) => {
-    if (dropdownCloseTimer.current) {
-      clearTimeout(dropdownCloseTimer.current)
+    if (dropdownCloseTimer.current !== null) {
+      window.clearTimeout(dropdownCloseTimer.current)
       dropdownCloseTimer.current = null
     }
     setOpenDropdown(label)
   }
 
   const handleDropdownLeave = () => {
-    if (dropdownCloseTimer.current) {
-      clearTimeout(dropdownCloseTimer.current)
+    if (dropdownCloseTimer.current !== null) {
+      window.clearTimeout(dropdownCloseTimer.current)
     }
     dropdownCloseTimer.current = window.setTimeout(() => setOpenDropdown(null), 120)
   }

@@ -6,7 +6,7 @@ import { useState, useCallback, useEffect } from "react"
 import { FileText, Copy, Check, Loader2, Shield, Layers, Sparkles, Upload, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { GlowCard } from "@/components/ui/glow-card"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
 import { extractTextFromPdf } from "@/app/actions"
@@ -145,7 +145,7 @@ export function PdfToTextConverter() {
           </p>
           </div>
 
-          <Card className="max-w-4xl mx-auto p-6 md:p-8 bg-card border-border">
+          <GlowCard tone="azure" className="max-w-4xl mx-auto p-6 md:p-8">
             <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -240,7 +240,7 @@ export function PdfToTextConverter() {
               </div>
             </div>
             </div>
-          </Card>
+          </GlowCard>
         </PageContainer>
       </section>
 

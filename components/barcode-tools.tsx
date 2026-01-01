@@ -8,7 +8,7 @@ import { Barcode, Check, Copy, Download, Loader2, RefreshCcw, ScanBarcode, ScanT
 
 import { Button } from "@/components/ui/button"
 import { CameraScanner } from "@/components/camera-scanner"
-import { Card } from "@/components/ui/card"
+import { GlowCard } from "@/components/ui/glow-card"
 import { DropZone } from "@/components/drop-zone"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
@@ -312,7 +312,7 @@ export function BarcodeTools() {
 
       <section className="pb-16">
         <PageContainer>
-          <Card className="border-border/60 bg-card/70 p-6 md:p-8">
+          <GlowCard tone="sunset" className="p-6 md:p-8">
           <div className="grid gap-8 md:grid-cols-2">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -445,9 +445,9 @@ export function BarcodeTools() {
               </div>
             </div>
           </div>
-          </Card>
+          </GlowCard>
           {/* Bulk barcode generation */}
-          <Card className="mt-8 border-border/60 bg-card/70 p-6 md:p-8">
+          <GlowCard tone="slate" className="mt-8 p-6 md:p-8">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -505,7 +505,7 @@ export function BarcodeTools() {
                 </Button>
               </div>
             </div>
-          </Card>
+          </GlowCard>
         </PageContainer>
       </section>
     </div>

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react"
 import { Check, Copy, Download, FileOutput, FileText, Loader2, Sparkles, Upload, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { GlowCard } from "@/components/ui/glow-card"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
 import { convertPdfToWord } from "@/app/actions"
@@ -185,7 +185,7 @@ export function PdfToWordConverter() {
 
       <section className="py-16">
         <PageContainer>
-          <Card className="border-border/70 bg-card/90 p-6 md:p-8 shadow-xl">
+          <GlowCard tone="iris" className="p-6 md:p-8">
             <div className="grid gap-8 md:grid-cols-2">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
@@ -310,7 +310,7 @@ export function PdfToWordConverter() {
                 </div>
               </div>
             </div>
-          </Card>
+          </GlowCard>
         </PageContainer>
       </section>
     </div>

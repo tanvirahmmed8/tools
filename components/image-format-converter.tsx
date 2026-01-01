@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { GlowCard } from "@/components/ui/glow-card"
 import { DropZone } from "@/components/drop-zone"
 import { PageContainer } from "@/components/page-container"
 import { SiteNavigation } from "@/components/site-navigation"
@@ -185,7 +185,7 @@ export function ImageFormatConverter() {
 
       <section className="py-16">
         <PageContainer>
-          <Card className="border-border/70 bg-card/95 p-6 md:p-8 shadow-xl">
+          <GlowCard tone="sunset" className="p-6 md:p-8">
             <div className="flex flex-col gap-10 lg:flex-row">
               <div className="flex-1 space-y-4">
                 <div className="flex items-center justify-between">
@@ -302,7 +302,7 @@ export function ImageFormatConverter() {
                 </div>
               </div>
             </div>
-          </Card>
+          </GlowCard>
         </PageContainer>
       </section>
     </div>
