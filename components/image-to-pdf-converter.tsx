@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { GlowCard } from "@/components/ui/glow-card"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
+import { SiteFooter } from "@/components/site-footer"
 import { imagesToPdf } from "@/app/actions"
 
 const ACCEPTED = ["image/png", "image/jpeg"]
@@ -215,6 +216,7 @@ export function ImageToPdfConverter() {
           </GlowCard>
         </PageContainer>
       </section>
+      <SiteFooter />
     </div>
   )
 }

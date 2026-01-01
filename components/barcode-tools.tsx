@@ -12,6 +12,7 @@ import { GlowCard } from "@/components/ui/glow-card"
 import { DropZone } from "@/components/drop-zone"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
+import { SiteFooter } from "@/components/site-footer"
 
 export function BarcodeTools() {
     // Helper to convert dataURL to File (must be inside the component for client-only use)
@@ -508,6 +509,7 @@ export function BarcodeTools() {
           </GlowCard>
         </PageContainer>
       </section>
+      <SiteFooter />
     </div>
   )
 }

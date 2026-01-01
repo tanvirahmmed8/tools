@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { GlowCard } from "@/components/ui/glow-card"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
+import { SiteFooter } from "@/components/site-footer"
 import { convertPdfToWord } from "@/app/actions"
 
 const WORD_MIME = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
@@ -313,6 +314,7 @@ export function PdfToWordConverter() {
           </GlowCard>
         </PageContainer>
       </section>
+      <SiteFooter />
     </div>
   )
 }

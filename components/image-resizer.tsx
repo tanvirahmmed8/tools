@@ -6,6 +6,7 @@ import { GlowCard } from "@/components/ui/glow-card"
 import { DropZone } from "@/components/drop-zone"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
+import { SiteFooter } from "@/components/site-footer"
 import { Download, ImageIcon, Loader2, RefreshCcw, Ruler, Sparkles } from "lucide-react"
 
 const MIN_DIMENSION = 0
@@ -569,6 +570,7 @@ export function ImageResizer() {
           </div>
         </GlowCard>
       </PageContainer>
+      <SiteFooter />
     </div>
   )
 }

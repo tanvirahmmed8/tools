@@ -6,6 +6,7 @@ import { GlowCard } from "@/components/ui/glow-card"
 import { DropZone } from "@/components/drop-zone"
 import { PageContainer } from "@/components/page-container"
 import { SiteNavigation } from "@/components/site-navigation"
+import { SiteFooter } from "@/components/site-footer"
 import { Check, Copy, Download, Images, Loader2, Sparkles, SwatchBook, X } from "lucide-react"
 
 interface FormatOption {
@@ -305,6 +306,7 @@ export function ImageFormatConverter() {
           </GlowCard>
         </PageContainer>
       </section>
+      <SiteFooter />
     </div>
   )
 }

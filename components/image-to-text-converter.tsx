@@ -9,6 +9,7 @@ import { GlowCard } from "@/components/ui/glow-card"
 import { DropZone } from "@/components/drop-zone"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
+import { SiteFooter } from "@/components/site-footer"
 import { extractTextFromImage } from "@/app/actions"
 
 export function ImageToTextConverter() {
@@ -211,12 +212,7 @@ export function ImageToTextConverter() {
         </PageContainer>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border">
-        <PageContainer className="py-8 text-center text-sm text-muted-foreground">
-          <p>Built with AI • Extract text from images instantly</p>
-        </PageContainer>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

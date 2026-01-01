@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { GlowCard } from "@/components/ui/glow-card"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
+import { SiteFooter } from "@/components/site-footer"
 import { mergePdfs, splitPdf } from "@/app/actions"
 
 const PDF_MIME = "application/pdf"
@@ -384,6 +385,7 @@ export function PdfMergeSplitConverter() {
           )}
         </PageContainer>
       </section>
+      <SiteFooter />
     </div>
   )
 }

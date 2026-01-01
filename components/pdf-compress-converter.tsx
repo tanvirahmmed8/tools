@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { GlowCard } from "@/components/ui/glow-card"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
+import { SiteFooter } from "@/components/site-footer"
 import { compressPdf } from "@/app/actions"
 
 const PDF_MIME = "application/pdf"
@@ -237,6 +238,7 @@ export function PdfCompressConverter() {
           </GlowCard>
         </PageContainer>
       </section>
+      <SiteFooter />
     </div>
   )
 }

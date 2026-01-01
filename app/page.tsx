@@ -8,6 +8,7 @@ import { GlowCard } from "@/components/ui/glow-card"
 import { SiteNavigation } from "@/components/site-navigation"
 import { StructuredDataScript } from "@/components/structured-data"
 import { PageContainer } from "@/components/page-container"
+import { SiteFooter } from "@/components/site-footer"
 import { buildMetadata } from "@/lib/seo"
 import { toneStyles, type ToneKey } from "@/lib/tones"
 import homeSeo from "@/seo/home.json"
@@ -338,6 +339,7 @@ export default function Home() {
           </div>
         </PageContainer>
       </section>
+      <SiteFooter />
     </main>
   )
 }

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { GlowCard } from "@/components/ui/glow-card"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
+import { SiteFooter } from "@/components/site-footer"
 import { Download, Image as ImageIcon, Loader2, RefreshCcw, Sparkles } from "lucide-react"
 import JSZip from "jszip"
 
@@ -398,6 +399,7 @@ export function ImageWatermark() {
           </GlowCard>
         </PageContainer>
       </section>
+      <SiteFooter />
     </div>
   )
 }

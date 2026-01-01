@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { GlowCard } from "@/components/ui/glow-card"
 import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
+import { SiteFooter } from "@/components/site-footer"
 import { extractTextFromPdf } from "@/app/actions"
 
 export function PdfToTextConverter() {
@@ -266,11 +267,11 @@ export function PdfToTextConverter() {
         </PageContainer>
       </section>
 
-      <footer className="border-t border-border">
-        <PageContainer className="py-8 text-center text-sm text-muted-foreground">
-          <p>Switch back to the <a href="/" className="text-foreground underline-offset-4 underline">image converter</a> anytime.</p>
-        </PageContainer>
-      </footer>
+      <SiteFooter>
+        <p>
+          Switch back to the <a href="/" className="text-foreground underline-offset-4 underline">image converter</a> anytime.
+        </p>
+      </SiteFooter>
     </div>
   )
 }
