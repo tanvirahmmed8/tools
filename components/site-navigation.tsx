@@ -90,7 +90,7 @@ export function SiteNavigation({ title = "TextExtract", className }: SiteNavigat
   return (
     <header
       className={cn(
-        "relative border-b border-black/5 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:border-white/10 dark:bg-[#050912]/95",
+        "relative z-50 border-b border-black/5 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:border-white/10 dark:bg-[#050912]/95",
         className,
       )}
     >
