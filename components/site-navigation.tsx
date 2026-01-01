@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { FileText } from "lucide-react"
@@ -9,7 +10,16 @@ import { PageContainer } from "@/components/page-container"
 
 const navItems = [
   { label: "Overview", href: "/" },
-  { label: "Image to Text", href: "/image-to-text" },
+  {
+    label: "Image",
+    dropdown: true,
+    items: [
+      { label: "Image to Text", href: "/image-to-text" },
+      { label: "Image Converter", href: "/image-converter" },
+      { label: "Image Resizer", href: "/image-resizer" },
+      { label: "Image Watermark", href: "/image-watermark" },
+    ],
+  },
   {
     label: "PDF",
     dropdown: true,
@@ -24,9 +34,6 @@ const navItems = [
   },
   { label: "QR Toolkit", href: "/qr-tools" },
   { label: "Barcode Toolkit", href: "/barcode-tools" },
-  { label: "Image Converter", href: "/image-converter" },
-  { label: "Image Resizer", href: "/image-resizer" },
-  { label: "Image Watermark", href: "/image-watermark" },
   { label: "Privacy Policy", href: "/privacy-policy" },
   { label: "Terms and Conditions", href: "/terms-and-conditions" },
   { label: "Contact", href: "/contact" },
@@ -39,6 +46,31 @@ interface SiteNavigationProps {
 
 export function SiteNavigation({ title = "TextExtract", className }: SiteNavigationProps) {
   const pathname = usePathname()
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+  const dropdownCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (dropdownCloseTimer.current) {
+        clearTimeout(dropdownCloseTimer.current)
+      }
+    }
+  }, [])
+
+  const handleDropdownEnter = (label: string) => {
+    if (dropdownCloseTimer.current) {
+      clearTimeout(dropdownCloseTimer.current)
+      dropdownCloseTimer.current = null
+    }
+    setOpenDropdown(label)
+  }
+
+  const handleDropdownLeave = () => {
+    if (dropdownCloseTimer.current) {
+      clearTimeout(dropdownCloseTimer.current)
+    }
+    dropdownCloseTimer.current = window.setTimeout(() => setOpenDropdown(null), 120)
+  }
 
   return (
     <header className={cn("border-b border-border", className)}>
@@ -54,29 +86,50 @@ export function SiteNavigation({ title = "TextExtract", className }: SiteNavigat
             if (item.dropdown) {
               // PDF Dropdown
               const isActive = item.items.some((sub) => pathname.startsWith(sub.href))
+              const isDropdownOpen = openDropdown === item.label
               return (
-                <div key={item.label} className="relative group" tabIndex={0} onBlur={e => { if (!e.currentTarget.contains(e.relatedTarget)) e.currentTarget.classList.remove('dropdown-open') }} onFocus={e => e.currentTarget.classList.add('dropdown-open')} onMouseEnter={e => e.currentTarget.classList.add('dropdown-open')} onMouseLeave={e => e.currentTarget.classList.remove('dropdown-open')}>
+                <div
+                  key={item.label}
+                  className="relative"
+                  onMouseEnter={() => handleDropdownEnter(item.label)}
+                  onMouseLeave={handleDropdownLeave}
+                  onFocus={() => handleDropdownEnter(item.label)}
+                  onBlur={(event) => {
+                    if (!event.currentTarget.contains(event.relatedTarget as Node)) {
+                      handleDropdownLeave()
+                    }
+                  }}
+                >
                   <button
                     className={cn(
                       "transition-colors flex items-center gap-1 focus:outline-none",
                       isActive ? "text-foreground font-medium" : "text-muted-foreground hover:text-foreground"
                     )}
                     aria-haspopup="true"
-                    aria-expanded={undefined}
+                    aria-expanded={isDropdownOpen}
                     tabIndex={0}
-                    onFocus={e => e.currentTarget.parentElement?.classList.add('dropdown-open')}
-                    onBlur={e => e.currentTarget.parentElement?.classList.remove('dropdown-open')}
+                    onFocus={() => handleDropdownEnter(item.label)}
+                    onBlur={handleDropdownLeave}
                   >
                     {item.label}
                     <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
                   </button>
-                  <div className="absolute left-0 mt-2 min-w-[180px] bg-popover border border-border rounded shadow-lg opacity-0 pointer-events-none transition-opacity z-20 group-[.dropdown-open]:opacity-100 group-[.dropdown-open]:pointer-events-auto group-hover:opacity-100 group-hover:pointer-events-auto">
+                  <div
+                    className={cn(
+                      "absolute left-0 mt-2 min-w-[200px] rounded border border-border bg-popover shadow-lg transition-opacity duration-150 z-20",
+                      isDropdownOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+                    )}
+                    onMouseEnter={() => handleDropdownEnter(item.label)}
+                    onMouseLeave={handleDropdownLeave}
+                  >
                     <div className="flex flex-col py-2">
                       {item.items.map((sub) => (
                         <Link
                           key={sub.href}
                           href={sub.href}
                           tabIndex={0}
+                          onFocus={() => handleDropdownEnter(item.label)}
+                          onBlur={handleDropdownLeave}
                           className={cn(
                             "px-4 py-2 text-left text-sm transition-colors focus:bg-accent focus:text-foreground",
                             pathname.startsWith(sub.href)

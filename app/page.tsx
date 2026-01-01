@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowRight, FileOutput, FileText, ImageIcon, Images, Layers, QrCode, Ruler, ScanBarcode, Shield, Sparkles, SwatchBook, Zap } from "lucide-react"
+import type { LucideIcon } from "lucide-react"
+import { ArrowRight, FileOutput, FileText, Images, Layers, QrCode, Ruler, ScanBarcode, Shield, Sparkles, SwatchBook, Zap } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -10,16 +11,102 @@ import { PageContainer } from "@/components/page-container"
 import { buildMetadata } from "@/lib/seo"
 import homeSeo from "@/seo/home.json"
 
-const featureCards = [
-  // PDF Tools
+const toneStyles = {
+  iris: {
+    glow: "from-[#8b5cf6]/40 via-transparent to-transparent",
+    iconBg: "bg-[#8b5cf6]/15 text-[#f5f3ff]",
+    badge: "text-[#c4b5fd]",
+    aura: "bg-[#8b5cf6]/35",
+  },
+  rose: {
+    glow: "from-[#fb7185]/35 via-transparent to-transparent",
+    iconBg: "bg-[#fb7185]/15 text-[#ffe4e6]",
+    badge: "text-[#fecdd3]",
+    aura: "bg-[#fb7185]/30",
+  },
+  azure: {
+    glow: "from-[#38bdf8]/35 via-transparent to-transparent",
+    iconBg: "bg-[#38bdf8]/15 text-[#e0f2fe]",
+    badge: "text-[#bae6fd]",
+    aura: "bg-[#38bdf8]/30",
+  },
+  emerald: {
+    glow: "from-[#34d399]/35 via-transparent to-transparent",
+    iconBg: "bg-[#34d399]/15 text-[#d1fae5]",
+    badge: "text-[#a7f3d0]",
+    aura: "bg-[#34d399]/30",
+  },
+  amber: {
+    glow: "from-[#fbbf24]/35 via-transparent to-transparent",
+    iconBg: "bg-[#fbbf24]/15 text-[#fef3c7]",
+    badge: "text-[#fde68a]",
+    aura: "bg-[#fbbf24]/30",
+  },
+  magenta: {
+    glow: "from-[#ec4899]/35 via-transparent to-transparent",
+    iconBg: "bg-[#ec4899]/15 text-[#fdf2f8]",
+    badge: "text-[#fbcfe8]",
+    aura: "bg-[#ec4899]/30",
+  },
+  cobalt: {
+    glow: "from-[#4b70ff]/35 via-transparent to-transparent",
+    iconBg: "bg-[#4b70ff]/15 text-[#eff4ff]",
+    badge: "text-[#c7d2fe]",
+    aura: "bg-[#4b70ff]/30",
+  },
+  lime: {
+    glow: "from-[#a3e635]/30 via-transparent to-transparent",
+    iconBg: "bg-[#a3e635]/15 text-[#ecfccb]",
+    badge: "text-[#d9f99d]",
+    aura: "bg-[#a3e635]/25",
+  },
+  sunset: {
+    glow: "from-[#fb923c]/35 via-transparent to-transparent",
+    iconBg: "bg-[#fb923c]/15 text-[#fff1e6]",
+    badge: "text-[#fed7aa]",
+    aura: "bg-[#fb923c]/30",
+  },
+  teal: {
+    glow: "from-[#2dd4bf]/35 via-transparent to-transparent",
+    iconBg: "bg-[#2dd4bf]/15 text-[#d5f5ef]",
+    badge: "text-[#99f6e4]",
+    aura: "bg-[#2dd4bf]/30",
+  },
+  violet: {
+    glow: "from-[#c084fc]/35 via-transparent to-transparent",
+    iconBg: "bg-[#c084fc]/15 text-[#f5e1ff]",
+    badge: "text-[#e9d5ff]",
+    aura: "bg-[#c084fc]/30",
+  },
+  slate: {
+    glow: "from-[#94a3b8]/35 via-transparent to-transparent",
+    iconBg: "bg-[#94a3b8]/15 text-[#f1f5f9]",
+    badge: "text-[#cbd5f5]",
+    aura: "bg-[#94a3b8]/25",
+  },
+} as const
+
+type ToneKey = keyof typeof toneStyles
+
+interface FeatureCardConfig {
+  title: string
+  description: string
+  href: string
+  badge: string
+  icon: LucideIcon
+  category: string
+  tone: ToneKey
+}
+
+const featureCards: FeatureCardConfig[] = [
   {
     title: "PDF Merge / Split",
     description: "Combine multiple PDFs into one or split a PDF by pages or ranges — all on-device.",
     href: "/pdf-merge-split",
     badge: "Reorder pages",
     icon: Layers,
-    category: "PDF",
-    color: "from-purple-500 to-indigo-500",
+    category: "PDF Suite",
+    tone: "iris",
   },
   {
     title: "PDF Compress",
@@ -27,8 +114,8 @@ const featureCards = [
     href: "/pdf-compress",
     badge: "Reduce size",
     icon: Sparkles,
-    category: "PDF",
-    color: "from-pink-500 to-red-500",
+    category: "PDF Suite",
+    tone: "rose",
   },
   {
     title: "PDF to Text",
@@ -36,8 +123,8 @@ const featureCards = [
     href: "/pdf-to-text",
     badge: "Multi-page",
     icon: FileText,
-    category: "PDF",
-    color: "from-blue-500 to-cyan-500",
+    category: "PDF Suite",
+    tone: "azure",
   },
   {
     title: "PDF to Images",
@@ -45,8 +132,8 @@ const featureCards = [
     href: "/pdf-to-image",
     badge: "High fidelity",
     icon: Images,
-    category: "PDF",
-    color: "from-green-500 to-emerald-500",
+    category: "PDF Suite",
+    tone: "emerald",
   },
   {
     title: "PDF to Word",
@@ -54,18 +141,17 @@ const featureCards = [
     href: "/pdf-to-word",
     badge: "DOCX export",
     icon: FileOutput,
-    category: "PDF",
-    color: "from-yellow-500 to-orange-500",
+    category: "PDF Suite",
+    tone: "amber",
   },
-  // Image Tools
   {
     title: "Image to Text",
     description: "Paste or drop screenshots, handwritten notes, and slides to grab clean, editable text instantly.",
     href: "/image-to-text",
     badge: "Vision AI",
     icon: Zap,
-    category: "Image",
-    color: "from-fuchsia-500 to-pink-500",
+    category: "Image Studio",
+    tone: "magenta",
   },
   {
     title: "Image to PDF",
@@ -73,8 +159,8 @@ const featureCards = [
     href: "/image-to-pdf",
     badge: "Image → PDF",
     icon: Layers,
-    category: "Image",
-    color: "from-indigo-500 to-blue-500",
+    category: "Image Studio",
+    tone: "cobalt",
   },
   {
     title: "Image Resizer",
@@ -82,8 +168,8 @@ const featureCards = [
     href: "/image-resizer",
     badge: "Canvas tools",
     icon: Ruler,
-    category: "Image",
-    color: "from-lime-500 to-green-500",
+    category: "Image Studio",
+    tone: "lime",
   },
   {
     title: "Image Converter",
@@ -91,8 +177,8 @@ const featureCards = [
     href: "/image-converter",
     badge: "Format lab",
     icon: SwatchBook,
-    category: "Image",
-    color: "from-orange-500 to-yellow-500",
+    category: "Image Studio",
+    tone: "sunset",
   },
   {
     title: "Image Watermark",
@@ -100,18 +186,17 @@ const featureCards = [
     href: "/image-watermark",
     badge: "Protect assets",
     icon: Shield,
-    category: "Image",
-    color: "from-cyan-500 to-teal-500",
+    category: "Image Studio",
+    tone: "teal",
   },
-  // Code Tools
   {
     title: "QR Toolkit",
     description: "Decode QR snapshots or generate brand-new QR codes with full on-device privacy.",
     href: "/qr-tools",
     badge: "QR codes",
     icon: QrCode,
-    category: "Code",
-    color: "from-violet-500 to-purple-500",
+    category: "Scanner Ops",
+    tone: "violet",
   },
   {
     title: "Barcode Toolkit",
@@ -119,8 +204,8 @@ const featureCards = [
     href: "/barcode-tools",
     badge: "Barcodes",
     icon: ScanBarcode,
-    category: "Code",
-    color: "from-gray-500 to-slate-500",
+    category: "Scanner Ops",
+    tone: "slate",
   },
 ]
 
@@ -206,37 +291,48 @@ export default function Home() {
             Each workspace is tuned for a specific job, from OCR to rendering entire decks.
           </p>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {featureCards.map((feature) => {
-              const Icon = feature.icon;
+              const Icon = feature.icon
+              const tone = toneStyles[feature.tone]
+
               return (
                 <Card
                   key={feature.title}
-                  className={
-                    `flex flex-col gap-4 border-2 border-transparent bg-card/70 p-6 shadow-lg transition-transform hover:scale-[1.03] hover:border-primary/70 hover:z-10 hover:shadow-2xl group` +
-                    ` bg-gradient-to-br ${feature.color}`
-                  }
+                  className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-white/5 bg-[#090f1c] p-6 text-white shadow-[0_20px_60px_-30px_rgba(15,23,42,0.9)] transition duration-300 hover:-translate-y-1 hover:border-white/20"
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="rounded-xl bg-white/80 p-3 text-primary shadow group-hover:bg-primary group-hover:text-white transition-colors">
-                        <Icon className="size-6" />
-                      </div>
-                      <div>
-                        <p className="text-xs uppercase tracking-wide text-muted-foreground group-hover:text-primary font-bold">{feature.badge}</p>
-                        <h3 className="text-lg font-semibold group-hover:text-primary">{feature.title}</h3>
-                      </div>
+                  <div
+                    className={`pointer-events-none absolute inset-0 bg-gradient-to-br opacity-0 transition duration-300 group-hover:opacity-100 ${tone.glow}`}
+                  />
+                  <div
+                    className={`pointer-events-none absolute -top-12 right-0 h-32 w-32 rounded-full opacity-60 blur-3xl ${tone.aura}`}
+                  />
+                  <div className="relative z-10 flex items-start justify-between">
+                    <div className={`rounded-2xl p-3 transition duration-300 ${tone.iconBg}`}>
+                      <Icon className="size-6" />
                     </div>
+                    <span className={`text-[11px] font-semibold uppercase tracking-[0.3em] ${tone.badge}`}>
+                      {feature.badge}
+                    </span>
                   </div>
-                  <p className="text-sm text-muted-foreground group-hover:text-primary-foreground">{feature.description}</p>
-                  <Button asChild variant="default" className="px-0 mt-2 bg-primary/90 hover:bg-primary text-white font-semibold shadow group-hover:scale-105 transition-transform">
+                  <div className="relative z-10 mt-6 space-y-2">
+                    <p className="text-xs uppercase tracking-[0.4em] text-white/50">{feature.category}</p>
+                    <h3 className="text-xl font-semibold text-white">{feature.title}</h3>
+                    <p className="text-sm text-white/70">{feature.description}</p>
+                  </div>
+                  <Button
+                    asChild
+                    size="sm"
+                    variant="ghost"
+                    className="relative z-10 mt-6 w-fit gap-2 rounded-full border border-white/15 bg-white/10 px-5 text-sm font-semibold text-white transition hover:bg-white hover:text-slate-900"
+                  >
                     <Link href={feature.href}>
                       Open workspace
-                      <ArrowRight className="size-4 ml-1" />
+                      <ArrowRight className="size-4" />
                     </Link>
                   </Button>
                 </Card>
-              );
+              )
             })}
           </div>
         </PageContainer>
