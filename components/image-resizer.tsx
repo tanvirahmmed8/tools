@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactNode } from "react"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { GlowCard } from "@/components/ui/glow-card"
@@ -47,7 +48,11 @@ interface InteractionState {
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 
-export function ImageResizer() {
+type ImageResizerProps = {
+  children?: ReactNode
+}
+
+export function ImageResizer({ children }: ImageResizerProps) {
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [imageElement, setImageElement] = useState<HTMLImageElement | null>(null)
   const [fileName, setFileName] = useState("resized-image")
@@ -570,6 +575,7 @@ export function ImageResizer() {
           </div>
         </GlowCard>
       </PageContainer>
+      {children}
       <SiteFooter />
     </div>
   )

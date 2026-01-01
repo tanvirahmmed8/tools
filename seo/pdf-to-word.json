@@ -9,17 +9,17 @@
     "document workflow",
     "word export"
   ],
-  "canonical": "https://tools.tanvirsoft.com/pdf-to-word",
+  "canonical": "/pdf-to-word",
   "robots": "index,follow",
   "openGraph": {
     "title": "PDF to Word Converter",
     "description": "Drag and drop a PDF to create a polished Word document in seconds.",
-    "url": "https://tools.tanvirsoft.com/pdf-to-word",
+    "url": "/pdf-to-word",
     "type": "article",
     "siteName": "AI Document Studio",
     "images": [
       {
-        "url": "https://tools.tanvirsoft.com/og-pdf-to-word.png",
+        "url": "/og-pdf-to-word.png",
         "width": 1200,
         "height": 630,
         "alt": "PDF to Word converter workspace"
@@ -30,14 +30,14 @@
     "card": "summary_large_image",
     "title": "Instant PDF to Word",
     "description": "Upload PDFs and download DOCX files optimized for quick edits.",
-    "image": "https://tools.tanvirsoft.com/og-pdf-to-word.png"
+    "image": "/og-pdf-to-word.png"
   },
   "structuredData": {
     "@context": "https://schema.org",
     "@type": "TechArticle",
     "headline": "PDF to Word Converter",
     "description": "Convert PDFs into Word documents for editing, commenting, and collaboration.",
-    "mainEntityOfPage": "https://tools.tanvirsoft.com/pdf-to-word",
+    "mainEntityOfPage": "/pdf-to-word",
     "author": {
       "@type": "Organization",
       "name": "AI Document Studio"
@@ -47,8 +47,11 @@
       "name": "AI Document Studio",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://tools.tanvirsoft.com/logo.png"
+        "url": "/logo.png"
       }
     }
   }
 }
+
+
+

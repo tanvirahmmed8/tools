@@ -36,7 +36,8 @@ const navItems: Array<NavLink | NavDropdown> = [
     label: "PDF",
     dropdown: true,
     items: [
-      { label: "PDF Merge/Split", href: "/pdf-merge-split" },
+      { label: "PDF Merge", href: "/pdf-merge" },
+      { label: "PDF Split", href: "/pdf-split" },
       { label: "Image to PDF", href: "/image-to-pdf" },
       { label: "PDF Compress", href: "/pdf-compress" },
       { label: "PDF to Text", href: "/pdf-to-text" },

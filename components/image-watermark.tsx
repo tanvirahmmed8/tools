@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactNode } from "react"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { GlowCard } from "@/components/ui/glow-card"
@@ -19,7 +20,11 @@ interface ImageItem {
 type Position = "top-left" | "top-right" | "center" | "bottom-left" | "bottom-right"
 type Mode = "text" | "image"
 
-export function ImageWatermark() {
+type ImageWatermarkProps = {
+  children?: ReactNode
+}
+
+export function ImageWatermark({ children }: ImageWatermarkProps) {
   const [items, setItems] = useState<ImageItem[]>([])
   const [isDragging, setIsDragging] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -399,6 +404,7 @@ export function ImageWatermark() {
           </GlowCard>
         </PageContainer>
       </section>
+      {children}
       <SiteFooter />
     </div>
   )

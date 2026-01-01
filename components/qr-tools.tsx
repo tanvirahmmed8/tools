@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactNode } from "react"
 import { useState, useCallback, useEffect } from "react"
 import jsQR from "jsqr"
 import QRCode from "qrcode"
@@ -14,7 +15,11 @@ import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
 import { SiteFooter } from "@/components/site-footer"
 
-export function QrTools() {
+type QrToolsProps = {
+  children?: ReactNode
+}
+
+export function QrTools({ children }: QrToolsProps) {
     // Helper to convert dataURL to File (must be inside the component for client-only use)
     function dataUrlToFile(dataUrl: string, filename: string, mimeType: string) {
       const arr = dataUrl.split(',')
@@ -470,6 +475,7 @@ export function QrTools() {
           </GlowCard>
         </PageContainer>
       </section>
+      {children}
       <SiteFooter />
     </div>
   )

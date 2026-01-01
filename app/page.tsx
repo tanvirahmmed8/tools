@@ -25,13 +25,22 @@ interface FeatureCardConfig {
 
 const featureCards: FeatureCardConfig[] = [
   {
-    title: "PDF Merge / Split",
-    description: "Combine multiple PDFs into one or split a PDF by pages or ranges — all on-device.",
-    href: "/pdf-merge-split",
+    title: "PDF Merge",
+    description: "Combine multiple PDFs into a single document and reorder before exporting — all on-device.",
+    href: "/pdf-merge",
     badge: "Reorder pages",
     icon: Layers,
     category: "PDF Suite",
     tone: "iris",
+  },
+  {
+    title: "PDF Split",
+    description: "Upload a PDF and extract specific pages or ranges into fresh files without leaving your browser.",
+    href: "/pdf-split",
+    badge: "Extract ranges",
+    icon: FileText,
+    category: "PDF Suite",
+    tone: "rose",
   },
   {
     title: "PDF Compress",

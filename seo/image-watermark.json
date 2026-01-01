@@ -7,17 +7,17 @@
     "text watermark",
     "protect images"
   ],
-  "canonical": "https://tools.tanvirsoft.com/image-watermark",
+  "canonical": "/image-watermark",
   "robots": "index,follow",
   "openGraph": {
     "title": "Image Watermark Tool",
     "description": "Add customizable text watermarks to images with on-device processing.",
-    "url": "https://tools.tanvirsoft.com/image-watermark",
+    "url": "/image-watermark",
     "type": "article",
     "siteName": "AI Document Studio",
     "images": [
       {
-        "url": "https://tools.tanvirsoft.com/og-image-watermark.png",
+        "url": "/og-image-watermark.png",
         "width": 1200,
         "height": 630,
         "alt": "Watermark UI preview"
@@ -28,7 +28,7 @@
     "card": "summary_large_image",
     "title": "Image Watermark Tool",
     "description": "Add text watermarks to images in seconds.",
-    "image": "https://tools.tanvirsoft.com/og-image-watermark.png"
+    "image": "/og-image-watermark.png"
   },
   "structuredData": {
     "@context": "https://schema.org",
@@ -42,3 +42,6 @@
     ]
   }
 }
+
+
+

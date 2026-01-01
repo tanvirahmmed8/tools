@@ -1,6 +1,6 @@
 {
   "title": "QR Toolkit | Decode & Generate QR Codes",
-  "description": "Read QR codes to text, generate new codes, or bulk-create QR codes from a CSV — all processed in your browser.",
+  "description": "Read QR codes to text, generate new codes, or bulk-create QR codes from a CSV â€” all processed in your browser.",
   "keywords": [
     "qr code to text",
     "text to qr",
@@ -8,17 +8,17 @@
     "qr decoder",
     "qr toolkit"
   ],
-  "canonical": "https://tools.tanvirsoft.com/qr-tools",
+  "canonical": "/qr-tools",
   "robots": "index,follow",
   "openGraph": {
     "title": "QR Toolkit by TextExtract",
-    "description": "Convert QR codes to text, create single codes, or bulk-generate from a CSV — all on-device.",
-    "url": "https://tools.tanvirsoft.com/qr-tools",
+    "description": "Convert QR codes to text, create single codes, or bulk-generate from a CSV â€” all on-device.",
+    "url": "/qr-tools",
     "type": "website",
     "siteName": "TextExtract AI",
     "images": [
       {
-        "url": "https://tools.tanvirsoft.com/og-qr.png",
+        "url": "/og-qr.png",
         "width": 1200,
         "height": 630,
         "alt": "QR toolkit interface preview"
@@ -29,13 +29,13 @@
     "card": "summary_large_image",
     "title": "QR Toolkit",
     "description": "Decode QR payloads, generate new QR codes, or bulk-create from a CSV.",
-    "image": "https://tools.tanvirsoft.com/og-qr.png"
+    "image": "/og-qr.png"
   },
   "structuredData": {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "TextExtract QR Toolkit",
-    "url": "https://tools.tanvirsoft.com/qr-tools",
+    "url": "/qr-tools",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Any",
     "description": "Browser-based QR utilities for decoding and generating codes.",
@@ -46,3 +46,6 @@
     }
   }
 }
+
+
+

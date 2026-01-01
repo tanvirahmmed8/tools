@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactNode } from "react"
 import { useCallback, useEffect, useState } from "react"
 import { FileText, Download, Loader2, Sparkles, Upload, X, FileOutput } from "lucide-react"
 
@@ -30,7 +31,11 @@ const base64ToBlob = (base64: string, mimeType: string) => {
   return new Blob([bytes], { type: mimeType })
 }
 
-export function PdfCompressConverter() {
+type PdfCompressConverterProps = {
+  children?: ReactNode
+}
+
+export function PdfCompressConverter({ children }: PdfCompressConverterProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [pdfName, setPdfName] = useState("")
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null)
@@ -238,6 +243,7 @@ export function PdfCompressConverter() {
           </GlowCard>
         </PageContainer>
       </section>
+      {children}
       <SiteFooter />
     </div>
   )

@@ -1,6 +1,6 @@
 {
   "title": "Barcode Toolkit | Decode & Generate Barcodes",
-  "description": "Read barcode payloads or generate new CODE128 labels for SKUs, shipments, and IDs directly in your browser — including bulk barcode generation from CSV.",
+  "description": "Read barcode payloads or generate new CODE128 labels for SKUs, shipments, and IDs directly in your browser â€” including bulk barcode generation from CSV.",
   "keywords": [
     "barcode to text",
     "text to barcode",
@@ -8,17 +8,17 @@
     "barcode decoder",
     "code128"
   ],
-  "canonical": "https://tools.tanvirsoft.com/barcode-tools",
+  "canonical": "/barcode-tools",
   "robots": "index,follow",
   "openGraph": {
     "title": "TextExtract Barcode Toolkit",
     "description": "Drop a barcode image to read it, make single labels, or bulk-generate barcodes from a CSV.",
-    "url": "https://tools.tanvirsoft.com/barcode-tools",
+    "url": "/barcode-tools",
     "type": "website",
     "siteName": "TextExtract AI",
     "images": [
       {
-        "url": "https://tools.tanvirsoft.com/og-barcode.png",
+        "url": "/og-barcode.png",
         "width": 1200,
         "height": 630,
         "alt": "Barcode toolkit interface preview"
@@ -29,13 +29,13 @@
     "card": "summary_large_image",
     "title": "Barcode Toolkit",
     "description": "Convert barcode images to text, output new CODE128 barcodes, or bulk-generate from CSV.",
-    "image": "https://tools.tanvirsoft.com/og-barcode.png"
+    "image": "/og-barcode.png"
   },
   "structuredData": {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "TextExtract Barcode Toolkit",
-    "url": "https://tools.tanvirsoft.com/barcode-tools",
+    "url": "/barcode-tools",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Any",
     "description": "Browser-based barcode utilities for decoding and generating labels.",
@@ -46,3 +46,6 @@
     }
   }
 }
+
+
+

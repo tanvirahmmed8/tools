@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactNode } from "react"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { GlowCard } from "@/components/ui/glow-card"
@@ -29,7 +30,11 @@ const QUALITY_FORMATS = new Set(FORMAT_OPTIONS.filter((option) => option.lossy).
 
 const SUPPORTED_INPUT_TYPES = ["image/png", "image/jpeg", "image/webp", "image/gif", "image/bmp", "image/avif", "image/svg+xml", "image/heic", "image/heif"]
 
-export function ImageFormatConverter() {
+type ImageFormatConverterProps = {
+  children?: ReactNode
+}
+
+export function ImageFormatConverter({ children }: ImageFormatConverterProps) {
   const [fileName, setFileName] = useState("uploaded-image")
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [imageElement, setImageElement] = useState<HTMLImageElement | null>(null)
@@ -306,6 +311,7 @@ export function ImageFormatConverter() {
           </GlowCard>
         </PageContainer>
       </section>
+      {children}
       <SiteFooter />
     </div>
   )

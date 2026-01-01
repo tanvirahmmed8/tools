@@ -1,0 +1,60 @@
+{
+  "title": "Split PDF Pages Online | Extract Ranges Instantly",
+  "description": "Upload a PDF, choose specific pages or ranges, and download each part as a separate file. Everything processes locally in your browser.",
+  "keywords": [
+    "split pdf",
+    "extract pdf pages",
+    "pdf splitter",
+    "separate pdf",
+    "pdf tools"
+  ],
+  "canonical": "/pdf-split",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Split PDF Pages Online",
+    "description": "Extract specific pages or ranges into individual PDFs without uploads.",
+    "url": "/pdf-split",
+    "type": "article",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-pdf-merge-split.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Interface showing PDF pages being split"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Split PDF Pages Online",
+    "description": "Separate pages or ranges into new PDFs locally and securely.",
+    "image": "/og-pdf-merge-split.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to split a PDF",
+    "description": "Upload a PDF and optionally set page ranges to download each part as its own file.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Upload a PDF",
+        "text": "Drag a PDF into the drop zone or click to pick one from your device."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Choose ranges",
+        "text": "Enter ranges like 1-3,5 or leave blank to turn every page into its own file."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Split & download",
+        "text": "Click Split PDF and download each generated document."
+      }
+    ]
+  }
+}
+
+
+

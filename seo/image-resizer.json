@@ -9,17 +9,17 @@
     "image crop",
     "browser image editor"
   ],
-  "canonical": "https://tools.tanvirsoft.com/image-resizer",
+  "canonical": "/image-resizer",
   "robots": "index,follow",
   "openGraph": {
     "title": "TextExtract Image Resizer",
     "description": "Upload an image, pick your dimensions, and export a polished PNG with custom radius.",
-    "url": "https://tools.tanvirsoft.com/image-resizer",
+    "url": "/image-resizer",
     "type": "website",
     "siteName": "TextExtract AI",
     "images": [
       {
-        "url": "https://tools.tanvirsoft.com/og-resizer.png",
+        "url": "/og-resizer.png",
         "width": 1200,
         "height": 630,
         "alt": "Image resizer interface preview"
@@ -30,13 +30,13 @@
     "card": "summary_large_image",
     "title": "Image Resizer",
     "description": "Resize and round corners on any image without leaving your browser.",
-    "image": "https://tools.tanvirsoft.com/og-resizer.png"
+    "image": "/og-resizer.png"
   },
   "structuredData": {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "TextExtract Image Resizer",
-    "url": "https://tools.tanvirsoft.com/image-resizer",
+    "url": "/image-resizer",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Any",
     "description": "Browser-based image resizing with width, height, and corner radius controls.",
@@ -47,3 +47,6 @@
     }
   }
 }
+
+
+

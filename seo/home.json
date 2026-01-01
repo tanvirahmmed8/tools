@@ -9,17 +9,17 @@
     "ai ocr suite",
     "text extraction"
   ],
-  "canonical": "https://tools.tanvirsoft.com/",
+  "canonical": "/",
   "robots": "index,follow",
   "openGraph": {
     "title": "TextExtract AI Marketing Site",
     "description": "Explore the AI toolkit for turning images and PDFs into structured assets.",
-    "url": "https://tools.tanvirsoft.com/",
+    "url": "/",
     "type": "website",
     "siteName": "TextExtract AI",
     "images": [
       {
-        "url": "https://tools.tanvirsoft.com/og-home.png",
+        "url": "/og-home.png",
         "width": 1200,
         "height": 630,
         "alt": "Overview of TextExtract AI product cards"
@@ -30,18 +30,21 @@
     "card": "summary_large_image",
     "title": "Document Intelligence Toolkit",
     "description": "Choose Image to Text, PDF to Text, or PDF to Images from one dashboard.",
-    "image": "https://tools.tanvirsoft.com/og-home.png"
+    "image": "/og-home.png"
   },
   "structuredData": {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "TextExtract AI",
-    "url": "https://tools.tanvirsoft.com/",
+    "url": "/",
     "description": "Marketing site for the TextExtract AI toolkit featuring image and PDF utilities.",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://tools.tanvirsoft.com/?q={search_term_string}",
+      "target": "/?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   }
 }
+
+
+

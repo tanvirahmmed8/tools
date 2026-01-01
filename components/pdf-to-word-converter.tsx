@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactNode } from "react"
 import { useCallback, useEffect, useState } from "react"
 import { Check, Copy, Download, FileOutput, FileText, Loader2, Sparkles, Upload, X } from "lucide-react"
 
@@ -30,7 +31,11 @@ const base64ToBlob = (base64: string, mimeType: string) => {
   return new Blob([bytes], { type: mimeType })
 }
 
-export function PdfToWordConverter() {
+type PdfToWordConverterProps = {
+  children?: ReactNode
+}
+
+export function PdfToWordConverter({ children }: PdfToWordConverterProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [pdfName, setPdfName] = useState("")
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null)
@@ -314,6 +319,7 @@ export function PdfToWordConverter() {
           </GlowCard>
         </PageContainer>
       </section>
+      {children}
       <SiteFooter />
     </div>
   )

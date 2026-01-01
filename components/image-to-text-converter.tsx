@@ -12,7 +12,11 @@ import { PageContainer } from "@/components/page-container"
 import { SiteFooter } from "@/components/site-footer"
 import { extractTextFromImage } from "@/app/actions"
 
-export function ImageToTextConverter() {
+type ImageToTextConverterProps = {
+  children?: React.ReactNode
+}
+
+export function ImageToTextConverter({ children }: ImageToTextConverterProps) {
   const [image, setImage] = useState<string | null>(null)
   const [extractedText, setExtractedText] = useState<string>("")
   const [isProcessing, setIsProcessing] = useState(false)
@@ -211,7 +215,7 @@ export function ImageToTextConverter() {
           </div>
         </PageContainer>
       </section>
-
+      {children}
       <SiteFooter />
     </div>
   )

@@ -22,7 +22,11 @@ interface PageImage {
   height: number
 }
 
-export function PdfToImageConverter() {
+type PdfToImageConverterProps = {
+  children?: React.ReactNode
+}
+
+export function PdfToImageConverter({ children }: PdfToImageConverterProps) {
   const [pdfName, setPdfName] = useState<string>("")
   const [images, setImages] = useState<PageImage[]>([])
   const [isProcessing, setIsProcessing] = useState(false)
@@ -277,6 +281,7 @@ export function PdfToImageConverter() {
           </GlowCard>
         </PageContainer>
       </section>
+      {children}
       <SiteFooter />
     </div>
   )

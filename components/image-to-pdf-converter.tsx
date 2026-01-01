@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactNode } from "react"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Download, FileImage, Loader2, Sparkles, Upload, X, ArrowUp, ArrowDown } from "lucide-react"
 
@@ -30,7 +31,11 @@ const base64ToBlob = (base64: string, mimeType: string) => {
 
 type ImageItem = { file: File; url: string }
 
-export function ImageToPdfConverter() {
+type ImageToPdfConverterProps = {
+  children?: ReactNode
+}
+
+export function ImageToPdfConverter({ children }: ImageToPdfConverterProps) {
   const [items, setItems] = useState<ImageItem[]>([])
   const [isDragging, setIsDragging] = useState(false)
   const [isConverting, setIsConverting] = useState(false)
@@ -216,6 +221,7 @@ export function ImageToPdfConverter() {
           </GlowCard>
         </PageContainer>
       </section>
+      {children}
       <SiteFooter />
     </div>
   )

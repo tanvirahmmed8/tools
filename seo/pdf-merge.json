@@ -1,0 +1,60 @@
+{
+  "title": "Merge PDF Files Online | Combine PDFs Instantly",
+  "description": "Combine multiple PDF files into a single document, reorder pages, and download the result without leaving your browser.",
+  "keywords": [
+    "merge pdf",
+    "combine pdf",
+    "join pdf",
+    "pdf merger",
+    "pdf tools"
+  ],
+  "canonical": "/pdf-merge",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Merge PDF Files Online",
+    "description": "Drag, drop, reorder, and merge PDFs entirely on-device.",
+    "url": "/pdf-merge",
+    "type": "article",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-pdf-merge-split.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Interface showing PDF files being merged"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Merge PDF Files Online",
+    "description": "Combine unlimited PDFs securely in your browser.",
+    "image": "/og-pdf-merge-split.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to merge PDF files",
+    "description": "Upload multiple PDFs, arrange their order, and download a single merged file.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Upload PDFs",
+        "text": "Drag and drop two or more PDF files or click to browse."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Arrange order",
+        "text": "Use the arrow buttons to reorder the files before merging."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Merge & download",
+        "text": "Click Merge PDFs and download the combined document instantly."
+      }
+    ]
+  }
+}
+
+
+

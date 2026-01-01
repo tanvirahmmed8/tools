@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useState } from "react"
+import type { ReactNode } from "react"
 import { Download, FileText, Layers, Loader2, Sparkles, Upload, X, ArrowUp, ArrowDown } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -32,8 +33,16 @@ type SplitResult = { totalPages: number; parts: { fileName: string; pdfBase64: s
 
 type Tab = "merge" | "split"
 
-export function PdfMergeSplitConverter() {
-  const [tab, setTab] = useState<Tab>("merge")
+interface PdfMergeSplitConverterProps {
+  initialTab?: Tab
+  showTabs?: boolean
+  navigationTitle?: string
+  children?: ReactNode
+}
+
+export function PdfMergeSplitConverter(props: PdfMergeSplitConverterProps = {}) {
+  const { initialTab = "merge", showTabs = true, navigationTitle, children } = props
+  const [tab, setTab] = useState<Tab>(initialTab)
 
   // Merge state
   const [mergeFiles, setMergeFiles] = useState<File[]>([])
@@ -173,38 +182,62 @@ export function PdfMergeSplitConverter() {
     URL.revokeObjectURL(url)
   }
 
-  const headerTitle = useMemo(() => (tab === "merge" ? "PDF Merge" : "PDF Split"), [tab])
+  const heroContent = useMemo(() => {
+    if (showTabs) {
+      return {
+        badge: "PDF merge & split",
+        heading: "Merge or split PDFs in seconds",
+        description: "Combine multiple PDFs into one or split a document by page ranges without uploading to a server.",
+      }
+    }
+
+    if (tab === "merge") {
+      return {
+        badge: "PDF merge",
+        heading: "Merge PDF files in seconds",
+        description: "Combine multiple PDFs into a single, perfectly ordered file. Processing stays inside your browser.",
+      }
+    }
+
+    return {
+      badge: "PDF split",
+      heading: "Split PDF pages instantly",
+      description: "Extract specific pages or ranges into new PDFs without sharing your document with any server.",
+    }
+  }, [showTabs, tab])
+
+  const resolvedNavTitle = navigationTitle ?? (showTabs ? "PDF Merge / Split" : tab === "merge" ? "PDF Merge" : "PDF Split")
 
   return (
     <div className="min-h-screen bg-background">
-      <SiteNavigation title="PDF Merge / Split" />
+      <SiteNavigation title={resolvedNavTitle} />
       <section className="border-b border-border bg-gradient-to-b from-background via-background to-muted/30">
         <PageContainer className="py-16 md:py-24">
           <div className="inline-flex items-center gap-2 rounded-full bg-secondary/70 px-4 py-1 text-sm text-secondary-foreground">
             <Sparkles className="size-4" />
-            <span>PDF merge & split</span>
+            <span>{heroContent.badge}</span>
           </div>
           <div className="mt-6 max-w-3xl space-y-4">
             <h1 className="text-4xl font-bold tracking-tight text-balance md:text-5xl">
-              {headerTitle} files in seconds
+              {heroContent.heading}
             </h1>
-            <p className="text-lg text-muted-foreground">
-              Combine multiple PDFs into one or split a PDF by pages or ranges. All processing happens on-device.
-            </p>
+            <p className="text-lg text-muted-foreground">{heroContent.description}</p>
           </div>
         </PageContainer>
       </section>
 
       <section className="py-4">
         <PageContainer>
-          <div className="mb-4 flex gap-2">
-            <Button variant={tab === "merge" ? "default" : "outline"} onClick={() => setTab("merge")}>
-              Merge PDFs
-            </Button>
-            <Button variant={tab === "split" ? "default" : "outline"} onClick={() => setTab("split")}>
-              Split PDF
-            </Button>
-          </div>
+          {showTabs && (
+            <div className="mb-4 flex gap-2">
+              <Button variant={tab === "merge" ? "default" : "outline"} onClick={() => setTab("merge")}>
+                Merge PDFs
+              </Button>
+              <Button variant={tab === "split" ? "default" : "outline"} onClick={() => setTab("split")}>
+                Split PDF
+              </Button>
+            </div>
+          )}
 
           {tab === "merge" ? (
             <GlowCard tone="iris" className="p-6 md:p-8">
@@ -385,6 +418,7 @@ export function PdfMergeSplitConverter() {
           )}
         </PageContainer>
       </section>
+      {children}
       <SiteFooter />
     </div>
   )

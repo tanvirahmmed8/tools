@@ -9,17 +9,17 @@
     "document graphics",
     "pdf screenshot"
   ],
-  "canonical": "https://tools.tanvirsoft.com/pdf-to-image",
+  "canonical": "/pdf-to-image",
   "robots": "index,follow",
   "openGraph": {
     "title": "Download PDF Pages as Images",
     "description": "Upload a PDF and export every page as a crisp PNG or download them all in a single ZIP.",
-    "url": "https://tools.tanvirsoft.com/pdf-to-image",
+    "url": "/pdf-to-image",
     "type": "article",
     "siteName": "AI Document Studio",
     "images": [
       {
-        "url": "https://tools.tanvirsoft.com/og-pdf-to-image.png",
+        "url": "/og-pdf-to-image.png",
         "width": 1200,
         "height": 630,
         "alt": "Grid of exported PDF page thumbnails"
@@ -30,7 +30,7 @@
     "card": "summary_large_image",
     "title": "PDF to Image Converter",
     "description": "Turn PDFs into shareable PNGs and download them in bulk as a ZIP.",
-    "image": "https://tools.tanvirsoft.com/og-pdf-to-image.png"
+    "image": "/og-pdf-to-image.png"
   },
   "structuredData": {
     "@context": "https://schema.org",
@@ -56,3 +56,6 @@
     ]
   }
 }
+
+
+

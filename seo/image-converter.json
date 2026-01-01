@@ -9,17 +9,17 @@
     "online image tool",
     "image format change"
   ],
-  "canonical": "https://tools.tanvirsoft.com/image-converter",
+  "canonical": "/image-converter",
   "robots": "index,follow",
   "openGraph": {
     "title": "Image Converter | Any Format In, Any Format Out",
     "description": "Drop any image, pick a format, and download a fresh file without leaving your browser.",
-    "url": "https://tools.tanvirsoft.com/image-converter",
+    "url": "/image-converter",
     "type": "article",
     "siteName": "AI Document Studio",
     "images": [
       {
-        "url": "https://tools.tanvirsoft.com/og-image-converter.png",
+        "url": "/og-image-converter.png",
         "width": 1200,
         "height": 630,
         "alt": "Image converter workspace"
@@ -30,14 +30,14 @@
     "card": "summary_large_image",
     "title": "Instant Image Converter",
     "description": "Convert PNG, JPG, WEBP, GIF, or AVIF assets in your browser.",
-    "image": "https://tools.tanvirsoft.com/og-image-converter.png"
+    "image": "/og-image-converter.png"
   },
   "structuredData": {
     "@context": "https://schema.org",
     "@type": "TechArticle",
     "headline": "Image Converter",
     "description": "Browser-based image converter for PNG, JPG, WEBP, GIF, BMP, and AVIF formats.",
-    "mainEntityOfPage": "https://tools.tanvirsoft.com/image-converter",
+    "mainEntityOfPage": "/image-converter",
     "author": {
       "@type": "Organization",
       "name": "AI Document Studio"
@@ -47,8 +47,11 @@
       "name": "AI Document Studio",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://tools.tanvirsoft.com/logo.png"
+        "url": "/logo.png"
       }
     }
   }
 }
+
+
+

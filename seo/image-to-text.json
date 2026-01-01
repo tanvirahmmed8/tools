@@ -9,17 +9,17 @@
     "screenshot to text",
     "handwriting transcription"
   ],
-  "canonical": "https://tools.tanvirsoft.com/image-to-text",
+  "canonical": "/image-to-text",
   "robots": "index,follow",
   "openGraph": {
     "title": "Instant Image to Text Converter",
     "description": "Upload or paste images and copy structured text instantly with GPT-4o vision.",
-    "url": "https://tools.tanvirsoft.com/image-to-text",
+    "url": "/image-to-text",
     "type": "website",
     "siteName": "AI Document Studio",
     "images": [
       {
-        "url": "https://tools.tanvirsoft.com/og-image.png",
+        "url": "/og-image.png",
         "width": 1200,
         "height": 630,
         "alt": "Preview of the AI image to text workspace"
@@ -30,13 +30,13 @@
     "card": "summary_large_image",
     "title": "Image to Text Converter",
     "description": "Extract clean text from screenshots, PDFs, or whiteboard photos in seconds.",
-    "image": "https://tools.tanvirsoft.com/og-image.png"
+    "image": "/og-image.png"
   },
   "structuredData": {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "AI Document Studio - Image to Text",
-    "url": "https://tools.tanvirsoft.com/image-to-text",
+    "url": "/image-to-text",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Any",
     "description": "Instant AI OCR that converts any image into editable text using GPT-4o.",
@@ -47,3 +47,6 @@
     }
   }
 }
+
+
+

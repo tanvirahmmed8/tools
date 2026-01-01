@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactNode } from "react"
 import { useState, useCallback, useEffect, useRef } from "react"
 import JsBarcode from "jsbarcode"
 import JSZip from "jszip"
@@ -14,7 +15,11 @@ import { SiteNavigation } from "@/components/site-navigation"
 import { PageContainer } from "@/components/page-container"
 import { SiteFooter } from "@/components/site-footer"
 
-export function BarcodeTools() {
+type BarcodeToolsProps = {
+  children?: ReactNode
+}
+
+export function BarcodeTools({ children }: BarcodeToolsProps) {
     // Helper to convert dataURL to File (must be inside the component for client-only use)
     function dataUrlToFile(dataUrl: string, filename: string, mimeType: string) {
       const arr = dataUrl.split(',')
@@ -509,6 +514,7 @@ export function BarcodeTools() {
           </GlowCard>
         </PageContainer>
       </section>
+      {children}
       <SiteFooter />
     </div>
   )

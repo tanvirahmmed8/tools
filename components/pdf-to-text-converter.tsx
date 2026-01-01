@@ -12,7 +12,11 @@ import { PageContainer } from "@/components/page-container"
 import { SiteFooter } from "@/components/site-footer"
 import { extractTextFromPdf } from "@/app/actions"
 
-export function PdfToTextConverter() {
+type PdfToTextConverterProps = {
+  children?: React.ReactNode
+}
+
+export function PdfToTextConverter({ children }: PdfToTextConverterProps) {
   const [pdfName, setPdfName] = useState<string>("")
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null)
   const [extractedText, setExtractedText] = useState<string>("")
@@ -266,7 +270,7 @@ export function PdfToTextConverter() {
           </div>
         </PageContainer>
       </section>
-
+      {children}
       <SiteFooter>
         <p>
           Switch back to the <a href="/" className="text-foreground underline-offset-4 underline">image converter</a> anytime.
