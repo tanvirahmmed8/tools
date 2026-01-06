@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
-import { ArrowRight, FileText, Moon, Sun } from "lucide-react"
+import { ArrowRight, FileText, Menu, Moon, Sun, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { PageContainer } from "@/components/page-container"
@@ -62,6 +62,7 @@ export function SiteNavigation({ title = "TextExtract", className }: SiteNavigat
   const { resolvedTheme, setTheme } = useTheme()
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
   const [mounted, setMounted] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
   const dropdownCloseTimer = useRef<number | null>(null)
 
   useEffect(() => {
@@ -72,6 +73,10 @@ export function SiteNavigation({ title = "TextExtract", className }: SiteNavigat
       }
     }
   }, [])
+
+  useEffect(() => {
+    setMobileOpen(false)
+  }, [pathname])
 
   const handleDropdownEnter = (label: string) => {
     if (dropdownCloseTimer.current !== null) {
@@ -215,7 +220,91 @@ export function SiteNavigation({ title = "TextExtract", className }: SiteNavigat
             <ArrowRight className="size-4" />
           </Link>
         </div>
+
+        <div className="flex items-center gap-3 md:hidden">
+          <button
+            type="button"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white text-slate-700 shadow-sm transition hover:scale-105 dark:border-white/15 dark:bg-white/10 dark:text-white"
+            onClick={() => {
+              if (!mounted) return
+              setTheme(resolvedTheme === "dark" ? "light" : "dark")
+            }}
+            aria-label="Toggle theme"
+            disabled={!mounted}
+          >
+            {mounted ? (
+              resolvedTheme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />
+            ) : (
+              <span className="inline-block size-5" />
+            )}
+          </button>
+          <button
+            type="button"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white text-slate-700 shadow-sm transition hover:scale-105 dark:border-white/15 dark:bg-white/10 dark:text-white"
+            onClick={() => setMobileOpen((prev) => !prev)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          >
+            {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
       </PageContainer>
+
+      {mobileOpen && (
+        <div className="md:hidden border-t border-black/5 bg-white/95 backdrop-blur dark:border-white/10 dark:bg-[#050912]/95">
+          <PageContainer className="py-4">
+            <nav className="space-y-3 text-sm text-slate-800 dark:text-white">
+              {navItems.map((item) => {
+                if ("dropdown" in item) {
+                  return (
+                    <div key={item.label} className="space-y-2 rounded-2xl border border-black/5 bg-white/80 p-3 shadow-sm dark:border-white/10 dark:bg-white/5">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{item.label}</p>
+                      <div className="space-y-1">
+                        {item.items.map((sub) => {
+                          const isActive = pathname.startsWith(sub.href)
+                          return (
+                            <Link
+                              key={sub.href}
+                              href={sub.href}
+                              className={cn(
+                                "block rounded-md px-3 py-2 transition-colors",
+                                isActive
+                                  ? "bg-slate-900/5 font-semibold text-slate-900 dark:bg-white/10 dark:text-white"
+                                  : "text-slate-700 hover:bg-slate-100 dark:text-white/70 dark:hover:bg-white/5",
+                              )}
+                            >
+                              {sub.label}
+                            </Link>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )
+                }
+
+                const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href)
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "block rounded-2xl border border-black/5 bg-white/80 px-4 py-3 font-medium shadow-sm transition hover:bg-slate-100 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10",
+                      isActive ? "text-slate-900 dark:text-white" : "text-slate-700 dark:text-white/80",
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                )
+              })}
+              <Link
+                href="/image-to-text"
+                className="block rounded-2xl bg-gradient-to-r from-[#6366f1] via-[#ec4899] to-[#f97316] px-4 py-3 text-center text-sm font-semibold text-white shadow-[0_15px_35px_-20px_rgba(236,72,153,0.8)] transition hover:scale-[1.01]"
+              >
+                Launch Studio
+              </Link>
+            </nav>
+          </PageContainer>
+        </div>
+      )}
     </header>
   )
 }
