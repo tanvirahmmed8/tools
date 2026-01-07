@@ -47,9 +47,6 @@ const navItems: Array<NavLink | NavDropdown> = [
   },
   { label: "QR Toolkit", href: "/qr-tools" },
   { label: "Barcode Toolkit", href: "/barcode-tools" },
-  { label: "Privacy Policy", href: "/privacy-policy" },
-  { label: "Terms and Conditions", href: "/terms-and-conditions" },
-  { label: "Contact", href: "/contact" },
 ]
 
 interface SiteNavigationProps {
