@@ -4,7 +4,6 @@ import type { ReactNode } from "react"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { PDFDocument } from "pdf-lib"
 import { Download, Loader2, RotateCcw, RotateCw, Sparkles, Upload, X } from "lucide-react"
-import * as pdfjsLib from "pdfjs-dist"
 
 import { rotatePdfPages } from "@/app/actions"
 import { Button } from "@/components/ui/button"
@@ -15,7 +14,14 @@ import { SiteNavigation } from "@/components/site-navigation"
 
 const PDF_MIME = "application/pdf"
 const ROTATION_OPTIONS = [0, 90, 180, 270] as const
-;(pdfjsLib as any).GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs"
+
+// Lazy-load pdf.js and configure worker to match API version
+async function getPdfJs() {
+  const mod: any = await import("pdfjs-dist")
+  const apiVersion: string = mod.version || "4.10.38"
+  mod.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${apiVersion}/build/pdf.worker.min.mjs`
+  return mod
+}
 
 type PdfRotateConverterProps = {
   children?: ReactNode
@@ -86,6 +92,7 @@ export function PdfRotateConverter({ children }: PdfRotateConverterProps) {
     setPdfBase64(await fileToBase64(file))
 
     // Render thumbnails with PDF.js
+    const pdfjsLib = await getPdfJs()
     const loadingTask = (pdfjsLib as any).getDocument({ data: arrayBuffer })
     const pdf = await loadingTask.promise
     const newThumbs: string[] = []

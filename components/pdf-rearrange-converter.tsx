@@ -4,7 +4,6 @@ import type { ReactNode } from "react"
 import { useCallback, useEffect, useState } from "react"
 import { PDFDocument } from "pdf-lib"
 import { Download, FileStack, GripVertical, Loader2, RefreshCcw, Sparkles, Upload, X } from "lucide-react"
-import * as pdfjsLib from "pdfjs-dist"
 
 import { rearrangePdfPages } from "@/app/actions"
 import { Button } from "@/components/ui/button"
@@ -14,7 +13,14 @@ import { SiteFooter } from "@/components/site-footer"
 import { SiteNavigation } from "@/components/site-navigation"
 
 const PDF_MIME = "application/pdf"
-;(pdfjsLib as any).GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs"
+
+// Lazy-load pdf.js only in the browser and set the worker to match the API version
+async function getPdfJs() {
+  const mod: any = await import("pdfjs-dist")
+  const apiVersion: string = mod.version || "4.10.38"
+  mod.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${apiVersion}/build/pdf.worker.min.mjs`
+  return mod
+}
 
 const fileToBase64 = (file: File) =>
   new Promise<string>((resolve, reject) => {
@@ -82,6 +88,7 @@ export function PdfRearrangeConverter({ children }: PdfRearrangeConverterProps) 
     setPdfBase64(await fileToBase64(file))
 
     // Render thumbnails with PDF.js
+    const pdfjsLib = await getPdfJs()
     const loadingTask = (pdfjsLib as any).getDocument({ data: arrayBuffer })
     const pdf = await loadingTask.promise
     const newThumbs: string[] = []

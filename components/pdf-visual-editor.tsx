@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Download, MousePointer2, RefreshCcw, Square, TextCursorInput, Type } from "lucide-react"
-import * as pdfjsLib from "pdfjs-dist"
 import { PDFDocument, rgb, StandardFonts } from "pdf-lib"
 
 import { Button } from "@/components/ui/button"
@@ -11,9 +10,13 @@ import { PageContainer } from "@/components/page-container"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteNavigation } from "@/components/site-navigation"
 
-// Configure PDF.js worker from CDN to avoid bundler worker config issues
-// Use the ESM worker (.mjs) from unpkg (cdnjs path for this file returns 404)
-;(pdfjsLib as any).GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs"
+// Lazy-load pdfjs to ensure we only touch DOM APIs in the browser
+async function getPdfJs() {
+  const mod: any = await import("pdfjs-dist")
+  const apiVersion: string = mod.version || "4.10.38"
+  mod.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${apiVersion}/build/pdf.worker.min.mjs`
+  return mod
+}
 
 type Tool = "select" | "text" | "rect"
 
@@ -71,6 +74,7 @@ export function PdfVisualEditor({ children }: { children?: React.ReactNode }) {
     async function render() {
       if (!arrayBuffer) return
       setPagesRendered(0)
+      const pdfjsLib = await getPdfJs()
       const loadingTask = (pdfjsLib as any).getDocument({ data: arrayBuffer })
       const pdf = await loadingTask.promise
       if (cancelled) return

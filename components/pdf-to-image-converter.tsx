@@ -92,7 +92,7 @@ export function PdfToImageConverter({ children, format, hero, navTitle }: PdfToI
         canvas.width = viewport.width
         canvas.height = viewport.height
 
-        const renderContext = { canvasContext: context, viewport }
+        const renderContext = { canvasContext: context, viewport, canvas }
         await page.render(renderContext).promise
 
         const dataUrl = format === "jpg" ? canvas.toDataURL(mimeType, 0.92) : canvas.toDataURL(mimeType)
