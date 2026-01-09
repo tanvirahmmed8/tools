@@ -27,7 +27,7 @@ import { generateText } from "ai"
 import { createOpenAI } from "@ai-sdk/openai"
 import pdfParse from "pdf-parse/lib/pdf-parse.js"
 
-const { OPENAI_API_KEY } = process.env
+const { OPENAI_API_KEY, PDF_PROTECT_API_URL, PDF_PROTECT_API_KEY } = process.env
 
 const openai = OPENAI_API_KEY
   ? createOpenAI({
@@ -40,6 +40,16 @@ const getOpenAI = () => {
     throw new Error("OPENAI_API_KEY is not set. Add it to your environment before running image extraction.")
   }
   return openai
+}
+
+const getProtectApiConfig = () => {
+  if (!PDF_PROTECT_API_URL) {
+    throw new Error("PDF_PROTECT_API_URL is not configured. Add it to your environment to enable PDF password protection.")
+  }
+  return {
+    url: PDF_PROTECT_API_URL,
+    apiKey: PDF_PROTECT_API_KEY,
+  }
 }
 
 const toPdfBuffer = (pdfInput: string | Buffer): Buffer => {
@@ -284,6 +294,34 @@ function parsePagesToDelete(input: string, totalPages: number): number[] {
   return Array.from(selected).sort((a, b) => a - b)
 }
 
+function normalizePageOrder(order: number[] | undefined, totalPages: number): number[] {
+  if (!order || !Array.isArray(order) || !order.length) {
+    throw new Error("Provide the new page order before rearranging the PDF.")
+  }
+
+  const normalized = order.map((value) => {
+    const page = Math.floor(Number(value))
+    if (!Number.isFinite(page)) {
+      throw new Error("Page order contains an invalid value. Only numbers are allowed.")
+    }
+    if (page < 1 || page > totalPages) {
+      throw new Error(`Page order references page ${page}, but this PDF has ${totalPages} pages.`)
+    }
+    return page
+  })
+
+  if (normalized.length !== totalPages) {
+    throw new Error(`Include every page exactly once. Expected ${totalPages} entries, received ${normalized.length}.`)
+  }
+
+  const unique = new Set(normalized)
+  if (unique.size !== totalPages) {
+    throw new Error("Each page must appear once. Remove duplicates and try again.")
+  }
+
+  return normalized
+}
+
 export async function deletePdfPages(
   pdfBase64: string,
   options?: { pages?: string },
@@ -318,5 +356,101 @@ export async function deletePdfPages(
     totalPages,
     removedPages: pagesToRemove,
     remainingPages: totalPages - pagesToRemove.length,
+  }
+}
+
+export async function rearrangePdfPages(
+  pdfBase64: string,
+  options: { order: number[] },
+) {
+  const base64Data = pdfBase64.includes(",") ? pdfBase64.split(",")[1] ?? "" : pdfBase64
+  const pdfBuffer = Buffer.from(base64Data, "base64")
+  const srcDoc = await PDFDocument.load(pdfBuffer)
+  const totalPages = srcDoc.getPageCount()
+
+  const normalizedOrder = normalizePageOrder(options?.order, totalPages)
+
+  const out = await PDFDocument.create()
+  for (const pageNumber of normalizedOrder) {
+    const [copiedPage] = await out.copyPages(srcDoc, [pageNumber - 1])
+    out.addPage(copiedPage)
+  }
+
+  const bytes = await out.save({ useObjectStreams: true })
+
+  return {
+    fileName: `reordered-${new Date().toISOString().replace(/[:.]/g, "-")}.pdf`,
+    pdfBase64: Buffer.from(bytes).toString("base64"),
+    totalPages,
+    order: normalizedOrder,
+  }
+}
+
+export async function protectPdfWithPassword(
+  pdfBase64: string,
+  options: { userPassword: string; ownerPassword?: string; permissions?: string[] },
+) {
+  const userPassword = options?.userPassword?.trim()
+  if (!userPassword) {
+    throw new Error("Provide the password you want to require before opening the PDF.")
+  }
+
+  const { url, apiKey } = getProtectApiConfig()
+  const pdfBuffer = toPdfBuffer(pdfBase64)
+  const formData = new FormData()
+  const uploadName = `protect-${new Date().toISOString().replace(/[:.]/g, "-")}.pdf`
+  const fileBytes = new Uint8Array(pdfBuffer)
+  formData.append("file", new Blob([fileBytes], { type: "application/pdf" }), uploadName)
+  formData.append("userPassword", userPassword)
+
+  if (options?.ownerPassword?.trim()) {
+    formData.append("ownerPassword", options.ownerPassword.trim())
+  }
+  if (options?.permissions?.length) {
+    formData.append("permissions", JSON.stringify(options.permissions))
+  }
+
+  const headers: Record<string, string> = {}
+  if (apiKey) headers["x-api-key"] = apiKey
+
+  const response = await fetch(url, {
+    method: "POST",
+    body: formData,
+    headers: Object.keys(headers).length ? headers : undefined,
+    cache: "no-store",
+  })
+
+  if (!response.ok) {
+    throw new Error("PDF protection service unavailable. Please try again later.")
+  }
+
+  const payload: {
+    fileName?: string
+    pdfBase64?: string
+    downloadUrl?: string
+    expiresOn?: string
+    permissions?: string[]
+  } = await response.json()
+
+  let protectedBase64 = payload.pdfBase64
+  if (!protectedBase64 && payload.downloadUrl) {
+    const protectedResponse = await fetch(payload.downloadUrl, { cache: "no-store" })
+    if (!protectedResponse.ok) {
+      throw new Error("Unable to download protected PDF from the service response.")
+    }
+    const bytes = await protectedResponse.arrayBuffer()
+    protectedBase64 = Buffer.from(bytes).toString("base64")
+  }
+
+  if (!protectedBase64) {
+    throw new Error("Invalid response from PDF protection service.")
+  }
+
+  return {
+    fileName: payload.fileName ?? `protected-${new Date().toISOString().replace(/[:.]/g, "-")}.pdf`,
+    pdfBase64: protectedBase64,
+    downloadUrl: payload.downloadUrl,
+    expiresOn: payload.expiresOn,
+    enforcedPermissions: payload.permissions ?? options?.permissions ?? [],
   }
 }

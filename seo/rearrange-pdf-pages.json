@@ -1,0 +1,58 @@
+{
+  "title": "Rearrange PDF Pages | Drag & Drop Order Fixes",
+  "description": "Upload a PDF, drag pages into the right sequence, and export a clean deck that matches your storyline.",
+  "keywords": [
+    "rearrange pdf pages",
+    "reorder pdf",
+    "drag and drop pdf pages",
+    "organize pdf",
+    "shuffle pdf pages",
+    "resequence pdf"
+  ],
+  "canonical": "/rearrange-pdf-pages",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Reorder PDF Pages Online",
+    "description": "Drag PDF pages into a new order and download the updated document instantly.",
+    "url": "/rearrange-pdf-pages",
+    "type": "article",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-rearrange-pdf-pages.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Screenshot of dragging PDF pages into a new order"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Drag & Reorder PDF Pages",
+    "description": "Drop any PDF, rearrange slides, and export a polished version.",
+    "image": "/og-rearrange-pdf-pages.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Rearrange pages in a PDF",
+    "description": "How to drag and drop PDF pages into a new sequence before sending files externally.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Upload your PDF",
+        "text": "Drop a PDF up to 20 MB and wait for the page list to populate."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Drag pages into place",
+        "text": "Use the handle to drag slides into the order your audience expects."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Download the reordered file",
+        "text": "Export the PDF and share it along with your meeting agenda."
+      }
+    ]
+  }
+}

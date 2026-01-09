@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import type { LucideIcon } from "lucide-react"
-import { ArrowRight, FileOutput, FileText, Images, Layers, QrCode, Ruler, ScanBarcode, Shield, Sparkles, SwatchBook, Trash2, Zap } from "lucide-react"
+import { ArrowRight, ArrowUpDown, FileOutput, FileText, Images, Layers, LockKeyhole, QrCode, Ruler, ScanBarcode, Shield, Sparkles, SwatchBook, Trash2, Zap } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { GlowCard } from "@/components/ui/glow-card"
@@ -68,6 +68,24 @@ const featureCards: FeatureCardConfig[] = [
     icon: Trash2,
     category: "PDF Suite",
     tone: "teal",
+  },
+  {
+    title: "Protect PDF Password",
+    description: "Encrypt PDFs with open and owner passwords plus shareable permission presets.",
+    href: "/protect-pdf-password",
+    badge: "Password lock",
+    icon: LockKeyhole,
+    category: "PDF Suite",
+    tone: "iris",
+  },
+  {
+    title: "Rearrange PDF Pages",
+    description: "Drag page chips to match your storyline before exporting the PDF.",
+    href: "/rearrange-pdf-pages",
+    badge: "Drag reorder",
+    icon: ArrowUpDown,
+    category: "PDF Suite",
+    tone: "cobalt",
   },
   {
     title: "PDF to PNG",
