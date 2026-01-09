@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react"
 import { Check, Download, FileText, Image as ImageIcon, Loader2, RefreshCcw, Type } from "lucide-react"
 import { PDFDocument, degrees, rgb, StandardFonts } from "pdf-lib"
 
@@ -42,7 +42,9 @@ type PositionPreset = "center" | "top-left" | "top-right" | "bottom-left" | "bot
 
 type Mode = "text" | "image"
 
-export function PdfWatermarkConverter() {
+type PdfWatermarkConverterProps = { children?: ReactNode }
+
+export function PdfWatermarkConverter({ children }: PdfWatermarkConverterProps) {
   const [pdfFile, setPdfFile] = useState<File | null>(null)
   const [pdfName, setPdfName] = useState("")
 
@@ -331,6 +333,7 @@ export function PdfWatermarkConverter() {
         </PageContainer>
       </section>
 
+      {children}
       <SiteFooter />
     </div>
   )

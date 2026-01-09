@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo, useState, type ReactNode } from "react"
 import { Check, Copy, FileText, RefreshCcw, Hash } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -27,7 +27,9 @@ function countLines(text: string): number {
   return text.split(/\r\n|\r|\n/).length
 }
 
-export function CharacterCounter() {
+type CharacterCounterProps = { children?: ReactNode }
+
+export function CharacterCounter({ children }: CharacterCounterProps) {
   const [text, setText] = useState("")
   const [copied, setCopied] = useState(false)
 
@@ -115,6 +117,7 @@ export function CharacterCounter() {
         </PageContainer>
       </section>
 
+      {children}
       <SiteFooter />
     </div>
   )

@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo, useState, type ReactNode } from "react"
 import { Braces, Check, Copy, Download, FileText, RefreshCcw, Wand2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -28,7 +28,9 @@ function downloadText(filename: string, text: string) {
   URL.revokeObjectURL(url)
 }
 
-export function JsonFormatter() {
+type JsonFormatterProps = { children?: ReactNode }
+
+export function JsonFormatter({ children }: JsonFormatterProps) {
   const [input, setInput] = useState("")
   const [output, setOutput] = useState("")
   const [error, setError] = useState<string | null>(null)
@@ -193,6 +195,7 @@ export function JsonFormatter() {
         </PageContainer>
       </section>
 
+      {children}
       <SiteFooter />
     </div>
   )

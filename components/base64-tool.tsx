@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import { useCallback, useState, type ReactNode } from "react"
 import { Check, Copy, Download, FileText, RefreshCcw, Shield, Sigma } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -54,7 +54,9 @@ function download(filename: string, text: string) {
   URL.revokeObjectURL(url)
 }
 
-export function Base64Tool() {
+type Base64ToolProps = { children?: ReactNode }
+
+export function Base64Tool({ children }: Base64ToolProps) {
   const [input, setInput] = useState("")
   const [output, setOutput] = useState("")
   const [copied, setCopied] = useState(false)
@@ -189,6 +191,7 @@ export function Base64Tool() {
         </PageContainer>
       </section>
 
+      {children}
       <SiteFooter />
     </div>
   )

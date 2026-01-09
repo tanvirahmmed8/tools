@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import { useCallback, useState, type ReactNode } from "react"
 import { CaseSensitive, Check, Copy, FileText, RefreshCcw, Type } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -18,7 +18,9 @@ function toTitle(text: string) {
   })
 }
 
-export function CaseConverter() {
+type CaseConverterProps = { children?: ReactNode }
+
+export function CaseConverter({ children }: CaseConverterProps) {
   const [text, setText] = useState("")
   const [copied, setCopied] = useState(false)
 
@@ -111,6 +113,7 @@ export function CaseConverter() {
         </PageContainer>
       </section>
 
+      {children}
       <SiteFooter />
     </div>
   )

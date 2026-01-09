@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo, useState, type ReactNode } from "react"
 import { Check, Copy, Download, Hash, RefreshCcw, Shield, Sparkles } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -35,7 +35,9 @@ function formatUuid(u: string, uppercase: boolean, noHyphens: boolean): string {
   return out
 }
 
-export function UuidGenerator() {
+type UuidGeneratorProps = { children?: ReactNode }
+
+export function UuidGenerator({ children }: UuidGeneratorProps) {
   const [count, setCount] = useState(10)
   const [uppercase, setUppercase] = useState(false)
   const [noHyphens, setNoHyphens] = useState(false)
@@ -171,6 +173,7 @@ export function UuidGenerator() {
         </PageContainer>
       </section>
 
+      {children}
       <SiteFooter />
     </div>
   )

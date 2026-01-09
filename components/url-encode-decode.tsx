@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import { useCallback, useState, type ReactNode } from "react"
 import { Check, Copy, Download, FileText, Link2, RefreshCcw, Settings2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -31,7 +31,9 @@ function download(filename: string, text: string) {
   URL.revokeObjectURL(url)
 }
 
-export function UrlEncodeDecode() {
+type UrlEncodeDecodeProps = { children?: ReactNode }
+
+export function UrlEncodeDecode({ children }: UrlEncodeDecodeProps) {
   const [input, setInput] = useState("")
   const [output, setOutput] = useState("")
   const [copied, setCopied] = useState(false)
@@ -187,6 +189,7 @@ export function UrlEncodeDecode() {
         </PageContainer>
       </section>
 
+      {children}
       <SiteFooter />
     </div>
   )

@@ -336,10 +336,17 @@ export function PdfRotateConverter({ children }: PdfRotateConverterProps) {
                   <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
                     {thumbs.length ? (
                       thumbs.map((src, index) => (
-                        <div key={index} className="relative rounded-lg border border-border">
+                        <div key={index} className="relative rounded-lg border border-border overflow-hidden bg-white">
                           <div className="absolute left-2 top-2 rounded bg-background/80 px-1 text-xs">{index + 1}</div>
                           <button type="button" className="block w-full" onClick={() => rotatePage(index, 90)} title="Click to rotate 90°">
-                            <img src={src} alt={`Page ${index + 1}`} className="w-full rounded-md" />
+                            <div className="flex h-48 items-center justify-center">
+                              <img
+                                src={src}
+                                alt={`Page ${index + 1}`}
+                                className="max-h-full max-w-full rounded-md object-contain transition-transform"
+                                style={{ transform: `rotate(${pageRotations[index]}deg)` }}
+                              />
+                            </div>
                           </button>
                           <div className="absolute bottom-2 right-2 rounded bg-background/80 px-1 text-xs">{pageRotations[index]}°</div>
                           <div className="absolute bottom-2 left-2 inline-flex items-center gap-2">

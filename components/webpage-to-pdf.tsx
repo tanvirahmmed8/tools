@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo, useState, type ReactNode } from "react"
 import { Check, Download, ExternalLink, FileText, Link2, Loader2, RefreshCcw } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -18,7 +18,11 @@ function isValidHttpUrl(value: string): boolean {
   }
 }
 
-export function WebpageToPdf() {
+type WebpageToPdfProps = {
+  children?: ReactNode
+}
+
+export function WebpageToPdf({ children }: WebpageToPdfProps) {
   const [url, setUrl] = useState("")
   const [format, setFormat] = useState("A4")
   const [landscape, setLandscape] = useState(false)
@@ -178,6 +182,7 @@ export function WebpageToPdf() {
         </PageContainer>
       </section>
 
+      {children}
       <SiteFooter />
     </div>
   )

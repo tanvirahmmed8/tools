@@ -58,7 +58,7 @@ const navItems: Array<NavLink | NavDropdown> = [
     ],
   },
   {
-    label: "Dev tools",
+    label: "Dev Tools",
     dropdown: true,
     items: [
       { label: "Word Counter", href: "/word-counter" },

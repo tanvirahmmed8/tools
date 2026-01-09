@@ -337,13 +337,16 @@ export function PdfRearrangeConverter({ children }: PdfRearrangeConverterProps) 
                     {thumbs.length ? (
                       thumbs.map((src, index) => (
                         <div
-                          key={pageOrder[index]}
+                          key={`thumb-${index}`}
                           className={`relative rounded-lg border ${activeDragIndex === index ? "border-primary" : "border-border"}`}
                           onDragEnter={handleDragEnter(index)}
                           onDragEnd={handleDragEnd}
                         >
-                          <div className="absolute left-2 top-2 rounded bg-background/80 px-1 text-xs">{index + 1}</div>
-                          <img src={src} alt={`Page ${index + 1}`} className="w-full rounded-md" draggable={false} />
+                          {/* Current position (updates as you drag) */}
+                          <div className="absolute left-2 top-2 rounded bg-background/80 px-1 text-xs font-semibold">{index + 1}</div>
+                          <img src={src} alt={`Page ${pageOrder[index]}`} className="w-full rounded-md" draggable={false} />
+                          {/* Original page number (stays with the page tile) */}
+                          <div className="absolute right-2 bottom-2 rounded bg-background/80 px-1 text-xs">p{pageOrder[index]}</div>
                           <button
                             type="button"
                             className="absolute bottom-2 left-2 inline-flex size-8 items-center justify-center rounded-full border bg-background/90"

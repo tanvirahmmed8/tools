@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo, useState, type ReactNode } from "react"
 import { Check, Copy, FileText, RefreshCcw, Sparkles } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -49,7 +49,9 @@ function readingTime(words: number): { label: string } {
   return { label: `${mins} min ${secs} sec` }
 }
 
-export function WordCounter() {
+type WordCounterProps = { children?: ReactNode }
+
+export function WordCounter({ children }: WordCounterProps) {
   const [text, setText] = useState("")
   const [copied, setCopied] = useState(false)
 
@@ -141,6 +143,7 @@ export function WordCounter() {
         </PageContainer>
       </section>
 
+      {children}
       <SiteFooter />
     </div>
   )

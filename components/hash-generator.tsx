@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo, useState, type ReactNode } from "react"
 import { Check, Copy, Download, Fingerprint, Hash, RefreshCcw, Shield } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -196,7 +196,9 @@ function download(filename: string, text: string) {
   URL.revokeObjectURL(url)
 }
 
-export function HashGenerator() {
+type HashGeneratorProps = { children?: ReactNode }
+
+export function HashGenerator({ children }: HashGeneratorProps) {
   const [input, setInput] = useState("")
   const [algo, setAlgo] = useState<Algo>("sha256")
   const [fmt, setFmt] = useState<OutFmt>("hex")
@@ -348,6 +350,7 @@ export function HashGenerator() {
         </PageContainer>
       </section>
 
+      {children}
       <SiteFooter />
     </div>
   )

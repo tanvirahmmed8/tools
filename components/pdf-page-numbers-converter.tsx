@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react"
 import { Check, Download, FileText, Hash, Loader2, RefreshCcw, Type } from "lucide-react"
 import { PDFDocument, rgb, StandardFonts } from "pdf-lib"
 
@@ -46,7 +46,9 @@ type PositionPreset =
   | "top-center"
   | "top-right"
 
-export function PdfPageNumbersConverter() {
+type PdfPageNumbersConverterProps = { children?: ReactNode }
+
+export function PdfPageNumbersConverter({ children }: PdfPageNumbersConverterProps) {
   const [pdfFile, setPdfFile] = useState<File | null>(null)
   const [pdfName, setPdfName] = useState("")
 
@@ -273,6 +275,7 @@ export function PdfPageNumbersConverter() {
         </PageContainer>
       </section>
 
+      {children}
       <SiteFooter />
     </div>
   )

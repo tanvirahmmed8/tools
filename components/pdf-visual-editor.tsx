@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { createPortal } from "react-dom"
 import { Download, MousePointer2, RefreshCcw, Square, TextCursorInput, Type } from "lucide-react"
 import { PDFDocument, rgb, StandardFonts } from "pdf-lib"
 
@@ -109,7 +110,8 @@ export function PdfVisualEditor({ children }: { children?: React.ReactNode }) {
         overlay.className = "absolute left-0 top-0"
         overlay.style.width = `${viewport.width}px`
         overlay.style.height = `${viewport.height}px`
-        overlay.style.pointerEvents = "none"
+        overlay.style.pointerEvents = "auto"
+        overlay.setAttribute("data-page-index", String(i - 1))
         pageWrap.appendChild(overlay)
 
         containerRef.current?.appendChild(pageWrap)
@@ -127,6 +129,30 @@ export function PdfVisualEditor({ children }: { children?: React.ReactNode }) {
     render().catch((e) => console.error(e))
     return () => { cancelled = true }
   }, [arrayBuffer])
+
+  // Enable click-to-add on each page overlay with current tool/color/fontSize
+  useEffect(() => {
+    overlayRefs.current.forEach((overlay, pageIndex) => {
+      const handler = (e: MouseEvent) => {
+        if (tool === "select") return
+        const rect = overlay.getBoundingClientRect()
+        const x = e.clientX - rect.left
+        const y = e.clientY - rect.top
+        if (tool === "text") {
+          const id = uid()
+          const newItem: TextItem = { id, kind: "text", pageIndex, x, y, text: "Double-click to edit", color, fontSize }
+          setItems((prev) => [...prev, newItem])
+          setSelectedId(id)
+        } else if (tool === "rect") {
+          const id = uid(); const w = 240, h = 40
+          const newItem: RectItem = { id, kind: "rect", pageIndex, x: Math.max(0, x - w / 2), y: Math.max(0, y - h / 2), w, h, color }
+          setItems((prev) => [...prev, newItem])
+          setSelectedId(id)
+        }
+      }
+      overlay.onclick = handler
+    })
+  }, [tool, color, fontSize])
 
   const onFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0]
@@ -361,16 +387,14 @@ export function PdfVisualEditor({ children }: { children?: React.ReactNode }) {
                 if (tool === "select") startDrag(it.id, it.pageIndex, e)
                 setSelectedId(it.id)
               }
-              if (it.kind === "text") {
-                return (
-                  <div key={it.id} style={style} onMouseDown={handleDown} onDoubleClick={(e) => e.stopPropagation()}>
-                    {(it as TextItem).text}
-                  </div>
-                )
-              }
-              return (
+              const node = it.kind === "text" ? (
+                <div key={it.id} style={style} onMouseDown={handleDown} onDoubleClick={(e) => e.stopPropagation()}>
+                  {(it as TextItem).text}
+                </div>
+              ) : (
                 <div key={it.id} style={style} onMouseDown={handleDown} />
               )
+              return createPortal(node, overlay)
             })}
 
             <div className="mt-3 text-xs text-muted-foreground">

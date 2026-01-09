@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo, useState, type ReactNode } from "react"
 import { Braces, Check, Copy, Download, FileText, RefreshCcw, Rows4 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -134,7 +134,9 @@ function mdToHtml(md: string): string {
   return html
 }
 
-export function MarkdownToHtml() {
+type MarkdownToHtmlProps = { children?: ReactNode }
+
+export function MarkdownToHtml({ children }: MarkdownToHtmlProps) {
   const [input, setInput] = useState("")
   const [output, setOutput] = useState("")
   const [copied, setCopied] = useState(false)
@@ -247,6 +249,7 @@ export function MarkdownToHtml() {
         </PageContainer>
       </section>
 
+      {children}
       <SiteFooter />
     </div>
   )
