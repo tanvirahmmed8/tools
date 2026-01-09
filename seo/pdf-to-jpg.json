@@ -1,0 +1,58 @@
+{
+  "title": "PDF to JPG Converter | Lightweight Page Images",
+  "description": "Convert PDF decks and statements into compressed JPG files for galleries, CMS uploads, and social posts.",
+  "keywords": [
+    "pdf to jpg",
+    "convert pdf to jpeg",
+    "document to photo",
+    "ppt to jpg",
+    "pdf preview image",
+    "compressed pdf export"
+  ],
+  "canonical": "/pdf-to-jpg",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Download PDF Pages as JPG",
+    "description": "Upload a PDF and save each page as a lightweight JPG or download all pages in one archive.",
+    "url": "/pdf-to-jpg",
+    "type": "article",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-pdf-to-image.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Collection of PDF pages converted into JPG"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "PDF to JPG Converter",
+    "description": "Export PDF slides and brochures as share-ready JPG files.",
+    "image": "/og-pdf-to-image.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Convert PDF pages into JPG files",
+    "description": "Guide for turning PDF pages into compressed JPG assets.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Upload PDF",
+        "text": "Drop any PDF (up to 20 MB) into the converter to start rendering JPGs."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Render Pages",
+        "text": "Each PDF page is rasterized into a high-quality JPEG preview."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Download JPG or ZIP",
+        "text": "Grab individual JPGs or export all pages at once inside a ZIP file."
+      }
+    ]
+  }
+}

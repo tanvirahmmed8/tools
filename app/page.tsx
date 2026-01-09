@@ -61,13 +61,22 @@ const featureCards: FeatureCardConfig[] = [
     tone: "azure",
   },
   {
-    title: "PDF to Images",
-    description: "Render every PDF page as a crisp PNG that is ready for decks, help centers, or submissions.",
-    href: "/pdf-to-image",
-    badge: "High fidelity",
+    title: "PDF to PNG",
+    description: "Render every PDF page as a lossless PNG with transparent backgrounds intact for decks or LMS uploads.",
+    href: "/pdf-to-png",
+    badge: "Lossless PNG",
     icon: Images,
     category: "PDF Suite",
     tone: "emerald",
+  },
+  {
+    title: "PDF to JPG",
+    description: "Export PDFs as lightweight JPGs that load fast inside galleries, CRMs, or client previews.",
+    href: "/pdf-to-jpg",
+    badge: "Lightweight JPG",
+    icon: Images,
+    category: "PDF Suite",
+    tone: "sunset",
   },
   {
     title: "PDF to Word",
@@ -167,7 +176,7 @@ const highlights: Array<{ title: string; description: string; icon: LucideIcon; 
 const workflow: Array<{ title: string; body: string; tone: ToneKey }> = [
   {
     title: "Choose a workspace",
-    body: "Pick Image to Text, PDF to Text, or PDF to Images depending on the asset you have on hand.",
+    body: "Pick Image to Text, PDF to Text, or PDF to PNG/JPG depending on the asset you have on hand.",
     tone: "iris",
   },
   {

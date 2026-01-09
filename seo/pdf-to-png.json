@@ -1,0 +1,58 @@
+{
+  "title": "PDF to PNG Converter | Export Slides as PNG",
+  "description": "Turn every PDF page into a high-resolution PNG that is perfect for decks, receipts, and LMS uploads.",
+  "keywords": [
+    "pdf to png",
+    "convert pdf pages",
+    "slide to png",
+    "pdf screenshot",
+    "document to image",
+    "export pdf"
+  ],
+  "canonical": "/pdf-to-png",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Download PDF Pages as PNG",
+    "description": "Upload a PDF and export each page as a crisp PNG or grab them all in a single ZIP.",
+    "url": "/pdf-to-png",
+    "type": "article",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-pdf-to-image.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Grid of exported PDF page thumbnails"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "PDF to PNG Converter",
+    "description": "Export PDF decks, receipts, or worksheets as ready-to-share PNG files.",
+    "image": "/og-pdf-to-image.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Convert PDF pages into PNG files",
+    "description": "Workflow for exporting PDF pages as downloadable PNG images.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Upload PDF",
+        "text": "Drag and drop any PDF up to 20 MB into the PNG converter."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Render Pages",
+        "text": "Each PDF page is rendered at high resolution for preview and review."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Download PNG or ZIP",
+        "text": "Download individual PNG files or bundle everything inside a ZIP archive."
+      }
+    ]
+  }
+}

@@ -22,17 +22,32 @@ interface PageImage {
   height: number
 }
 
-type PdfToImageConverterProps = {
-  children?: React.ReactNode
+type RasterFormat = "png" | "jpg"
+
+type HeroContent = {
+  badge: string
+  title: string
+  description: string
 }
 
-export function PdfToImageConverter({ children }: PdfToImageConverterProps) {
+type PdfToImageConverterProps = {
+  children?: React.ReactNode
+  format: RasterFormat
+  hero: HeroContent
+  navTitle?: string
+}
+
+export function PdfToImageConverter({ children, format, hero, navTitle }: PdfToImageConverterProps) {
   const [pdfName, setPdfName] = useState<string>("")
   const [images, setImages] = useState<PageImage[]>([])
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [isDownloadingAll, setIsDownloadingAll] = useState(false)
+
+  const formatLabel = format.toUpperCase()
+  const fileExtension = format === "jpg" ? "jpg" : "png"
+  const mimeType = format === "jpg" ? "image/jpeg" : "image/png"
 
   const resetState = useCallback(() => {
     setPdfName("")
@@ -80,9 +95,10 @@ export function PdfToImageConverter({ children }: PdfToImageConverterProps) {
         const renderContext = { canvasContext: context, viewport }
         await page.render(renderContext).promise
 
+        const dataUrl = format === "jpg" ? canvas.toDataURL(mimeType, 0.92) : canvas.toDataURL(mimeType)
         pageImages.push({
           page: pageNumber,
-          url: canvas.toDataURL("image/png"),
+          url: dataUrl,
           width: canvas.width,
           height: canvas.height,
         })
@@ -96,7 +112,7 @@ export function PdfToImageConverter({ children }: PdfToImageConverterProps) {
     } finally {
       setIsProcessing(false)
     }
-  }, [])
+  }, [format, mimeType])
 
   const handleDrop = useCallback(
     (event: React.DragEvent<HTMLLabelElement>) => {
@@ -125,10 +141,10 @@ export function PdfToImageConverter({ children }: PdfToImageConverterProps) {
       const link = document.createElement("a")
       link.href = imageUrl
       const safeName = pdfName ? pdfName.replace(/\.pdf$/i, "") : "page"
-      link.download = `${safeName}-page-${pageNumber}.png`
+      link.download = `${safeName}-page-${pageNumber}.${fileExtension}`
       link.click()
     },
-    [pdfName],
+    [fileExtension, pdfName],
   )
 
   const handleDownloadAll = useCallback(async () => {
@@ -145,7 +161,7 @@ export function PdfToImageConverter({ children }: PdfToImageConverterProps) {
         images.map(async (image) => {
           const response = await fetch(image.url)
           const blob = await response.blob()
-          zip.file(`${safeName}-page-${image.page}.png`, blob)
+          zip.file(`${safeName}-page-${image.page}.${fileExtension}`, blob)
         }),
       )
 
@@ -162,7 +178,7 @@ export function PdfToImageConverter({ children }: PdfToImageConverterProps) {
     } finally {
       setIsDownloadingAll(false)
     }
-  }, [images, isDownloadingAll, pdfName])
+  }, [fileExtension, images, isDownloadingAll, pdfName])
 
   const handleClear = useCallback(() => {
     resetState()
@@ -170,21 +186,17 @@ export function PdfToImageConverter({ children }: PdfToImageConverterProps) {
 
   return (
     <div className="min-h-screen">
-      <SiteNavigation title="PDF to Images" />
+      <SiteNavigation title={navTitle ?? `PDF to ${formatLabel}`} />
 
       <section className="py-16 md:py-24">
         <PageContainer>
           <div className="max-w-4xl mx-auto text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary text-sm mb-6">
-            <Sparkles className="size-3.5" />
-            <span>Crystal clear exports</span>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 text-balance">
-            Turn any PDF page into a downloadable image
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty">
-            Upload a PDF and instantly export each page as a crisp PNG. Perfect for sharing slides, receipts, or handouts.
-          </p>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary text-sm mb-6">
+              <Sparkles className="size-3.5" />
+              <span>{hero.badge}</span>
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 text-balance">{hero.title}</h1>
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty">{hero.description}</p>
           </div>
 
           <GlowCard tone="emerald" className="max-w-5xl mx-auto p-6 md:p-8">
@@ -222,7 +234,7 @@ export function PdfToImageConverter({ children }: PdfToImageConverterProps) {
                 <p className="text-sm font-medium">
                   {isDragging ? "Drop your PDF here" : pdfName ? pdfName : "Drag & drop or click to upload"}
                 </p>
-                <p className="text-xs text-muted-foreground mt-1">Max 20 MB • Outputs PNG files</p>
+                <p className="text-xs text-muted-foreground mt-1">Max 20 MB • Outputs {formatLabel} files</p>
               </label>
             </div>
 
@@ -257,7 +269,7 @@ export function PdfToImageConverter({ children }: PdfToImageConverterProps) {
                           <span className="font-medium">Page {image.page}</span>
                           <Button variant="outline" size="sm" onClick={() => handleDownload(image.url, image.page)}>
                             <Download className="size-4 mr-1" />
-                            PNG
+                            {formatLabel}
                           </Button>
                         </div>
                         <div className="border border-border rounded-lg overflow-hidden bg-background">
