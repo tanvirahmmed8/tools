@@ -26,6 +26,7 @@ const ROUTES = [
   "/pdf-to-text",
   "/pdf-to-word",
   "/pdf-watermark",
+  "/pdf-page-numbers",
   "/webpage-to-pdf",
   "/qr-tools",
   "/word-counter",

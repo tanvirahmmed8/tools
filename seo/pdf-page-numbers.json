@@ -1,0 +1,43 @@
+{
+  "title": "Add Page Numbers to PDF | Footer & Header Numbering",
+  "description": "Add page numbers to your PDF. Choose header/footer position, start number, template (Page {n} of {total}), font size, color, and margin.",
+  "keywords": [
+    "add page numbers pdf",
+    "pdf numbering",
+    "page numbers",
+    "header footer pdf",
+    "pdf tools"
+  ],
+  "canonical": "/pdf-page-numbers",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Add Page Numbers to PDF",
+    "description": "Number pages in your PDF with flexible templates and positions.",
+    "url": "/pdf-page-numbers",
+    "type": "website",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-pdf-page-numbers.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "PDF page numbering interface"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Add Page Numbers to PDF",
+    "description": "Place page numbers with templates like Page {n} of {total}.",
+    "image": "/og-pdf-page-numbers.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Add Page Numbers to PDF",
+    "url": "/pdf-page-numbers",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "description": "Online tool to add page numbers to PDFs with customizable templates and positions."
+  }
+}

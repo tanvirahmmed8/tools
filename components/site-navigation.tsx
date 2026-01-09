@@ -54,6 +54,7 @@ const navItems: Array<NavLink | NavDropdown> = [
       { label: "PDF to Word", href: "/pdf-to-word" },
       { label: "Add PDF Watermark", href: "/pdf-watermark" },
       { label: "Webpage to PDF", href: "/webpage-to-pdf" },
+      { label: "Add Page Numbers", href: "/pdf-page-numbers" },
     ],
   },
   {
