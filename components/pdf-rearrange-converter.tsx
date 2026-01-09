@@ -4,6 +4,7 @@ import type { ReactNode } from "react"
 import { useCallback, useEffect, useState } from "react"
 import { PDFDocument } from "pdf-lib"
 import { Download, FileStack, GripVertical, Loader2, RefreshCcw, Sparkles, Upload, X } from "lucide-react"
+import * as pdfjsLib from "pdfjs-dist"
 
 import { rearrangePdfPages } from "@/app/actions"
 import { Button } from "@/components/ui/button"
@@ -13,6 +14,7 @@ import { SiteFooter } from "@/components/site-footer"
 import { SiteNavigation } from "@/components/site-navigation"
 
 const PDF_MIME = "application/pdf"
+;(pdfjsLib as any).GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.js"
 
 const fileToBase64 = (file: File) =>
   new Promise<string>((resolve, reject) => {
@@ -43,6 +45,7 @@ export function PdfRearrangeConverter({ children }: PdfRearrangeConverterProps) 
   const [resultOrder, setResultOrder] = useState<number[]>([])
   const [pageCount, setPageCount] = useState<number | null>(null)
   const [pdfBase64, setPdfBase64] = useState<string | null>(null)
+  const [thumbs, setThumbs] = useState<string[]>([])
   const [resultUrl, setResultUrl] = useState<string | null>(null)
   const [resultFileName, setResultFileName] = useState("reordered-document.pdf")
   const [isProcessing, setIsProcessing] = useState(false)
@@ -77,6 +80,22 @@ export function PdfRearrangeConverter({ children }: PdfRearrangeConverterProps) 
     setPageCount(totalPages)
     setPageOrder(Array.from({ length: totalPages }, (_, index) => index + 1))
     setPdfBase64(await fileToBase64(file))
+
+    // Render thumbnails with PDF.js
+    const loadingTask = (pdfjsLib as any).getDocument({ data: arrayBuffer })
+    const pdf = await loadingTask.promise
+    const newThumbs: string[] = []
+    for (let i = 1; i <= pdf.numPages; i += 1) {
+      const page = await pdf.getPage(i)
+      const viewport = page.getViewport({ scale: 0.3 })
+      const canvas = document.createElement("canvas")
+      const ctx = canvas.getContext("2d")!
+      canvas.width = Math.floor(viewport.width)
+      canvas.height = Math.floor(viewport.height)
+      await page.render({ canvasContext: ctx, viewport }).promise
+      newThumbs.push(canvas.toDataURL("image/png"))
+    }
+    setThumbs(newThumbs)
   }, [])
 
   const handleFile = useCallback(
@@ -144,6 +163,12 @@ export function PdfRearrangeConverter({ children }: PdfRearrangeConverterProps) 
       next.splice(toIndex, 0, moved)
       return next
     })
+    setThumbs((current) => {
+      const arr = [...current]
+      const [moved] = arr.splice(fromIndex, 1)
+      arr.splice(toIndex, 0, moved)
+      return arr
+    })
   }, [])
 
   const handleDragStart = (index: number) => (event: React.DragEvent<HTMLButtonElement>) => {
@@ -151,7 +176,7 @@ export function PdfRearrangeConverter({ children }: PdfRearrangeConverterProps) 
     setActiveDragIndex(index)
   }
 
-  const handleDragEnter = (index: number) => (event: React.DragEvent<HTMLLIElement>) => {
+  const handleDragEnter = (index: number) => (event: React.DragEvent<HTMLElement>) => {
     event.preventDefault()
     if (activeDragIndex === null || activeDragIndex === index) return
     reorderPages(activeDragIndex, index)
@@ -243,7 +268,6 @@ export function PdfRearrangeConverter({ children }: PdfRearrangeConverterProps) 
                     </Button>
                   )}
                 </div>
-
                 <label
                   className={`relative flex min-h-[220px] flex-col items-center justify-center rounded-xl border-2 border-dashed px-4 text-center text-sm transition-all duration-200 ${
                     isDragging ? "border-primary bg-primary/5" : "border-border hover:border-primary/60 hover:bg-muted/40"
@@ -267,9 +291,9 @@ export function PdfRearrangeConverter({ children }: PdfRearrangeConverterProps) 
                 <div className="rounded-xl border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
                   <p className="font-semibold text-foreground">Tips for smooth sorting</p>
                   <ul className="mt-2 list-disc space-y-1 pl-5">
-                    <li>Drag the handle to move a page; use Restore order to undo experiments.</li>
+                    <li>Drag the handle on each page to move it.</li>
                     <li>Group related slides (intro, metrics, appendix) before exporting.</li>
-                    <li>Re-run the tool whenever stakeholders request a different storyline.</li>
+                    <li>Use Restore original order to reset quickly.</li>
                   </ul>
                 </div>
 
@@ -287,9 +311,7 @@ export function PdfRearrangeConverter({ children }: PdfRearrangeConverterProps) 
                     <div>
                       <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Reorder status</p>
                       <p className="text-lg font-semibold">{pdfName || "No PDF selected"}</p>
-                      {pageCount ? (
-                        <p className="mt-1 text-xs text-muted-foreground">{pageCount} total pages</p>
-                      ) : null}
+                      {pageCount ? <p className="mt-1 text-xs text-muted-foreground">{pageCount} total pages</p> : null}
                     </div>
                     <Button onClick={handleRearrange} disabled={!pageOrder.length || isProcessing}>
                       {isProcessing ? <Loader2 className="mr-2 size-4 animate-spin" /> : <Sparkles className="mr-2 size-4" />}
@@ -297,67 +319,55 @@ export function PdfRearrangeConverter({ children }: PdfRearrangeConverterProps) 
                     </Button>
                   </div>
                   {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
-                  {resultUrl && !error && !isProcessing && (
-                    <p className="mt-3 text-sm text-muted-foreground">New sequence ready. Download below.</p>
-                  )}
                 </div>
 
                 <div className="rounded-xl border border-border bg-background/90 p-4">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-semibold">Drag to reorder</p>
+                    <p className="text-sm font-semibold">Drag and drop the pages to change the order</p>
                     <span className="text-xs text-muted-foreground">{pageOrder.length ? `${pageOrder.length} pages` : "Waiting for PDF"}</span>
                   </div>
-                  <ul className="mt-4 max-h-[360px] space-y-2 overflow-y-auto pr-2">
-                    {pageOrder.length ? (
-                      pageOrder.map((pageNumber, index) => (
-                        <li
-                          key={pageNumber}
+                  <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+                    {thumbs.length ? (
+                      thumbs.map((src, index) => (
+                        <div
+                          key={pageOrder[index]}
+                          className={`relative rounded-lg border ${activeDragIndex === index ? "border-primary" : "border-border"}`}
                           onDragEnter={handleDragEnter(index)}
                           onDragEnd={handleDragEnd}
-                          className={`flex items-center justify-between rounded-xl border px-3 py-2 text-sm transition ${
-                            activeDragIndex === index ? "border-primary bg-primary/5" : "border-border bg-muted/40"
-                          }`}
                         >
-                          <div className="flex items-center gap-3">
-                            <button
-                              type="button"
-                              className="inline-flex size-9 items-center justify-center rounded-full border border-border bg-background"
-                              draggable
-                              onDragStart={handleDragStart(index)}
-                            >
-                              <GripVertical className="size-4" />
-                            </button>
-                            <div>
-                              <p className="font-semibold">Page {pageNumber}</p>
-                              <p className="text-xs text-muted-foreground">Position {index + 1}</p>
-                            </div>
-                          </div>
-                        </li>
+                          <div className="absolute left-2 top-2 rounded bg-background/80 px-1 text-xs">{index + 1}</div>
+                          <img src={src} alt={`Page ${index + 1}`} className="w-full rounded-md" draggable={false} />
+                          <button
+                            type="button"
+                            className="absolute bottom-2 left-2 inline-flex size-8 items-center justify-center rounded-full border bg-background/90"
+                            draggable
+                            onDragStart={handleDragStart(index)}
+                            aria-label="Drag to reorder"
+                          >
+                            <GripVertical className="size-4" />
+                          </button>
+                        </div>
                       ))
                     ) : (
-                      <li className="rounded-xl border border-dashed border-border px-3 py-10 text-center text-sm text-muted-foreground">
-                        Upload a PDF to generate sortable page chips.
-                      </li>
+                      <div className="col-span-full rounded-xl border border-dashed border-border px-3 py-10 text-center text-sm text-muted-foreground">
+                        Upload a PDF to generate visual thumbnails for sorting.
+                      </div>
                     )}
-                  </ul>
+                  </div>
                 </div>
 
                 <div className="rounded-xl border border-border/70 bg-muted/20 p-4 space-y-3">
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div>
                       <p className="text-sm font-semibold">Reordered PDF</p>
-                      <p className="text-xs text-muted-foreground">
-                        {resultUrl ? resultFileName : "Rearrange pages to enable download"}
-                      </p>
+                      <p className="text-xs text-muted-foreground">{resultUrl ? resultFileName : "Rearrange pages to enable download"}</p>
                     </div>
                     <Button onClick={downloadReorderedPdf} disabled={!resultUrl || isProcessing}>
                       <Download className="mr-2 size-4" />
                       Download PDF
                     </Button>
                   </div>
-                  {resultOrder.length ? (
-                    <p className="text-xs text-muted-foreground">New order: {resultOrder.join(" → ")}</p>
-                  ) : null}
+                  {resultOrder.length ? <p className="text-xs text-muted-foreground">New order: {resultOrder.join(" → ")}</p> : null}
                 </div>
               </div>
             </div>

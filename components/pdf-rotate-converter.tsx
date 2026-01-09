@@ -4,6 +4,7 @@ import type { ReactNode } from "react"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { PDFDocument } from "pdf-lib"
 import { Download, Loader2, RotateCcw, RotateCw, Sparkles, Upload, X } from "lucide-react"
+import * as pdfjsLib from "pdfjs-dist"
 
 import { rotatePdfPages } from "@/app/actions"
 import { Button } from "@/components/ui/button"
@@ -14,6 +15,7 @@ import { SiteNavigation } from "@/components/site-navigation"
 
 const PDF_MIME = "application/pdf"
 const ROTATION_OPTIONS = [0, 90, 180, 270] as const
+;(pdfjsLib as any).GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.js"
 
 type PdfRotateConverterProps = {
   children?: ReactNode
@@ -47,6 +49,7 @@ export function PdfRotateConverter({ children }: PdfRotateConverterProps) {
   const [pageCount, setPageCount] = useState<number | null>(null)
   const [pdfBase64, setPdfBase64] = useState<string | null>(null)
   const [pageRotations, setPageRotations] = useState<number[]>([])
+  const [thumbs, setThumbs] = useState<string[]>([])
   const [resultRotations, setResultRotations] = useState<RotationInstruction[]>([])
   const [resultUrl, setResultUrl] = useState<string | null>(null)
   const [resultFileName, setResultFileName] = useState("rotated-document.pdf")
@@ -81,6 +84,22 @@ export function PdfRotateConverter({ children }: PdfRotateConverterProps) {
     setPageCount(totalPages)
     setPageRotations(Array.from({ length: totalPages }, () => 0))
     setPdfBase64(await fileToBase64(file))
+
+    // Render thumbnails with PDF.js
+    const loadingTask = (pdfjsLib as any).getDocument({ data: arrayBuffer })
+    const pdf = await loadingTask.promise
+    const newThumbs: string[] = []
+    for (let i = 1; i <= pdf.numPages; i += 1) {
+      const page = await pdf.getPage(i)
+      const viewport = page.getViewport({ scale: 0.3 })
+      const canvas = document.createElement("canvas")
+      const ctx = canvas.getContext("2d")!
+      canvas.width = Math.floor(viewport.width)
+      canvas.height = Math.floor(viewport.height)
+      await page.render({ canvasContext: ctx, viewport }).promise
+      newThumbs.push(canvas.toDataURL("image/png"))
+    }
+    setThumbs(newThumbs)
   }, [])
 
   const handleFile = useCallback(
@@ -234,6 +253,7 @@ export function PdfRotateConverter({ children }: PdfRotateConverterProps) {
         <PageContainer>
           <GlowCard tone="amber" className="p-6 md:p-8">
             <div className="grid gap-8 md:grid-cols-2">
+              {/* Left column: upload and global actions */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <h2 className="flex items-center gap-2 text-lg font-semibold">
@@ -247,7 +267,6 @@ export function PdfRotateConverter({ children }: PdfRotateConverterProps) {
                     </Button>
                   )}
                 </div>
-
                 <label
                   className={`relative flex min-h-[220px] flex-col items-center justify-center rounded-xl border-2 border-dashed px-4 text-center text-sm transition-all duration-200 ${
                     isDragging ? "border-primary bg-primary/5" : "border-border hover:border-primary/60 hover:bg-muted/40"
@@ -267,37 +286,22 @@ export function PdfRotateConverter({ children }: PdfRotateConverterProps) {
                   <p className="font-medium">{isDragging ? "Drop your PDF here" : pdfName || "Drag & drop or click to browse"}</p>
                   <p className="mt-1 text-xs text-muted-foreground">Max 20 MB • loads every page for rotation</p>
                 </label>
-
                 <div className="rounded-xl border border-border bg-muted/30 p-4 space-y-3">
                   <p className="text-sm font-semibold">Global actions</p>
                   <div className="flex flex-wrap gap-2">
                     <Button variant="outline" size="sm" onClick={() => rotateAll(-90)} disabled={!pageRotations.length}>
-                      <RotateCcw className="mr-1 size-4" />
-                      Rotate all 90° CCW
+                      <RotateCcw className="mr-1 size-4" /> Rotate all 90° CCW
                     </Button>
                     <Button variant="outline" size="sm" onClick={() => rotateAll(90)} disabled={!pageRotations.length}>
-                      <RotateCw className="mr-1 size-4" />
-                      Rotate all 90° CW
+                      <RotateCw className="mr-1 size-4" /> Rotate all 90° CW
                     </Button>
-                    <Button variant="ghost" size="sm" onClick={clearAllRotations} disabled={!pendingRotations.length}>
-                      Reset all
-                    </Button>
+                    <Button variant="ghost" size="sm" onClick={clearAllRotations} disabled={!pendingRotations.length}>Reset all</Button>
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    Rotations happen instantly in the browser. Re-export whenever reviewers find another sideways scan.
-                  </p>
-                </div>
-
-                <div className="rounded-xl border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
-                  <p className="font-semibold text-foreground">Rotation checklist</p>
-                  <ul className="mt-2 list-disc space-y-1 pl-5">
-                    <li>Rotate only the scans that need help. Others stay untouched.</li>
-                    <li>Mix clockwise and counterclockwise on the same export.</li>
-                    <li>Download a clean file and pass it to the next stakeholder without extra tooling.</li>
-                  </ul>
+                  <p className="text-xs text-muted-foreground">Rotations happen instantly in the browser.</p>
                 </div>
               </div>
 
+              {/* Right column: status, grid thumbnails, and download */}
               <div className="space-y-4">
                 <div className="rounded-xl border border-border/70 bg-background/80 p-4">
                   <div className="flex items-center justify-between">
@@ -316,74 +320,41 @@ export function PdfRotateConverter({ children }: PdfRotateConverterProps) {
                     </Button>
                   </div>
                   {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
-                  {resultUrl && !error && !isProcessing && (
-                    <p className="mt-3 text-sm text-muted-foreground">Rotation applied. Download the fixed PDF below.</p>
-                  )}
                 </div>
-
                 <div className="rounded-xl border border-border bg-background/90 p-4">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-semibold">Page-specific rotations</p>
+                    <p className="text-sm font-semibold">Click a page to rotate 90°</p>
                     <span className="text-xs text-muted-foreground">{pageRotations.length ? `${pageRotations.length} pages` : "Waiting for PDF"}</span>
                   </div>
-                  <ul className="mt-4 max-h-[360px] space-y-2 overflow-y-auto pr-2">
-                    {pageRotations.length ? (
-                      pageRotations.map((rotation, index) => (
-                        <li key={index} className="rounded-xl border border-border bg-muted/30 p-3">
-                          <div className="flex items-center justify-between gap-3">
-                            <div>
-                              <p className="font-semibold">Page {index + 1}</p>
-                              <p className="text-xs text-muted-foreground">Rotation: {rotation}°</p>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="icon"
-                                onClick={() => rotatePage(index, -90)}
-                                className="size-9"
-                              >
-                                <RotateCcw className="size-4" />
-                              </Button>
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="icon"
-                                onClick={() => rotatePage(index, 90)}
-                                className="size-9"
-                              >
-                                <RotateCw className="size-4" />
-                              </Button>
-                              <select
-                                className="rounded-md border border-input bg-background px-2 py-1 text-xs"
-                                value={rotation}
-                                onChange={(event) => updatePageRotation(index, Number(event.target.value))}
-                              >
-                                {ROTATION_OPTIONS.map((option) => (
-                                  <option key={option} value={option}>
-                                    {option}°
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
+                  <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+                    {thumbs.length ? (
+                      thumbs.map((src, index) => (
+                        <div key={index} className="relative rounded-lg border border-border">
+                          <div className="absolute left-2 top-2 rounded bg-background/80 px-1 text-xs">{index + 1}</div>
+                          <button type="button" className="block w-full" onClick={() => rotatePage(index, 90)} title="Click to rotate 90°">
+                            <img src={src} alt={`Page ${index + 1}`} className="w-full rounded-md" />
+                          </button>
+                          <div className="absolute bottom-2 right-2 rounded bg-background/80 px-1 text-xs">{pageRotations[index]}°</div>
+                          <div className="absolute bottom-2 left-2 inline-flex items-center gap-2">
+                            <Button type="button" variant="outline" size="icon" onClick={() => rotatePage(index, -90)} className="size-8">
+                              <RotateCcw className="size-4" />
+                            </Button>
+                            <Button type="button" variant="outline" size="icon" onClick={() => rotatePage(index, 90)} className="size-8">
+                              <RotateCw className="size-4" />
+                            </Button>
                           </div>
-                        </li>
+                        </div>
                       ))
                     ) : (
-                      <li className="rounded-xl border border-dashed border-border px-3 py-10 text-center text-sm text-muted-foreground">
-                        Upload a PDF to unlock per-page rotations.
-                      </li>
+                      <div className="col-span-full rounded-xl border border-dashed border-border px-3 py-10 text-center text-sm text-muted-foreground">Upload a PDF to see page thumbnails. Click a page to rotate 90°.</div>
                     )}
-                  </ul>
+                  </div>
                 </div>
-
                 <div className="rounded-xl border border-border/70 bg-muted/20 p-4 space-y-3">
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div>
                       <p className="text-sm font-semibold">Rotated PDF</p>
-                      <p className="text-xs text-muted-foreground">
-                        {resultUrl ? resultFileName : "Rotate pages to enable download"}
-                      </p>
+                      <p className="text-xs text-muted-foreground">{resultUrl ? resultFileName : "Rotate pages to enable download"}</p>
                     </div>
                     <Button onClick={downloadRotatedPdf} disabled={!resultUrl || isProcessing}>
                       <Download className="mr-2 size-4" />
@@ -391,9 +362,7 @@ export function PdfRotateConverter({ children }: PdfRotateConverterProps) {
                     </Button>
                   </div>
                   {resultRotations.length ? (
-                    <p className="text-xs text-muted-foreground">
-                      Applied rotations: {resultRotations.map((item) => `p${item.page}→${item.rotation}°`).join(", ")}
-                    </p>
+                    <p className="text-xs text-muted-foreground">Applied rotations: {resultRotations.map((item) => `p${item.page}→${item.rotation}°`).join(", ")}</p>
                   ) : null}
                 </div>
               </div>

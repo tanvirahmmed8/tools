@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 
-import { PdfEditConverter } from "@/components/pdf-edit-converter"
+import { PdfVisualEditor } from "@/components/pdf-visual-editor"
 import { PageContainer } from "@/components/page-container"
 import { StructuredDataScript } from "@/components/structured-data"
 import { buildMetadata } from "@/lib/seo"
@@ -62,7 +62,7 @@ export default function EditPdfPage() {
   return (
     <main className="min-h-screen bg-background">
       <StructuredDataScript data={editPdfSeo.structuredData} />
-      <PdfEditConverter>
+      <PdfVisualEditor>
         <section className="border-t border-border bg-muted/30 py-16 md:py-24">
           <PageContainer>
             <div className="space-y-4">
@@ -95,7 +95,7 @@ export default function EditPdfPage() {
             </div>
           </PageContainer>
         </section>
-      </PdfEditConverter>
+      </PdfVisualEditor>
     </main>
   )
 }
