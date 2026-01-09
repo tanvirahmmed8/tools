@@ -1,0 +1,58 @@
+{
+  "title": "Rotate PDF Pages | Fix Sideways Scans",
+  "description": "Upload a PDF, rotate any page 90°/180°/270°, and download a polished deck without reopening desktop software.",
+  "keywords": [
+    "rotate pdf pages",
+    "turn pdf page",
+    "fix sideways pdf",
+    "pdf rotation tool",
+    "rotate single pdf page",
+    "pdf orientation"
+  ],
+  "canonical": "/rotate-pdf-pages",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Rotate PDF Pages Online",
+    "description": "Drag a PDF, rotate whatever pages need a turn, and export in seconds.",
+    "url": "/rotate-pdf-pages",
+    "type": "article",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-rotate-pdf-pages.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Screenshot of rotating PDF pages"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Rotate PDF Pages",
+    "description": "Fix sideways slides before sharing a deck or training packet.",
+    "image": "/og-rotate-pdf-pages.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Rotate pages inside a PDF",
+    "description": "How to correct mixed orientation scans in a PDF before sending it out.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Upload the PDF",
+        "text": "Drop in your PDF up to 20 MB to load every page in a list."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Choose rotations",
+        "text": "Rotate individual pages clockwise or counterclockwise until the orientation looks right."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Download the fixed file",
+        "text": "Export the rotated PDF and share it with stakeholders."
+      }
+    ]
+  }
+}

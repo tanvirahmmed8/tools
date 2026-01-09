@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import type { LucideIcon } from "lucide-react"
-import { ArrowRight, ArrowUpDown, FileOutput, FileText, Images, Layers, LockKeyhole, QrCode, Ruler, ScanBarcode, Shield, Sparkles, SwatchBook, Trash2, Zap } from "lucide-react"
+import { ArrowRight, ArrowUpDown, FileOutput, FileText, Images, KeyRound, Layers, LockKeyhole, PenSquare, QrCode, RotateCw, Ruler, ScanBarcode, Shield, Sparkles, SwatchBook, Trash2, Zap } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { GlowCard } from "@/components/ui/glow-card"
@@ -86,6 +86,33 @@ const featureCards: FeatureCardConfig[] = [
     icon: ArrowUpDown,
     category: "PDF Suite",
     tone: "cobalt",
+  },
+  {
+    title: "Rotate PDF Pages",
+    description: "Fix sideways scans by rotating individual pages 90° at a time.",
+    href: "/rotate-pdf-pages",
+    badge: "Fix orientation",
+    icon: RotateCw,
+    category: "PDF Suite",
+    tone: "rose",
+  },
+  {
+    title: "Unlock PDF",
+    description: "Remove open passwords so printers, OCR, and e-sign tools accept the file.",
+    href: "/unlock-pdf",
+    badge: "Password removal",
+    icon: KeyRound,
+    category: "PDF Suite",
+    tone: "teal",
+  },
+  {
+    title: "Edit PDF",
+    description: "Overlay headers, review notes, or disclaimers on any PDF and refresh metadata before sharing.",
+    href: "/edit-pdf",
+    badge: "Text overlays",
+    icon: PenSquare,
+    category: "PDF Suite",
+    tone: "magenta",
   },
   {
     title: "PDF to PNG",

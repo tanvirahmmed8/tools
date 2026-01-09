@@ -1,0 +1,58 @@
+{
+  "title": "Unlock PDF | Remove Passwords from PDFs",
+  "description": "Upload a secured PDF, enter the password once, and download an unlocked copy ready for printers, OCR, and e-sign tools.",
+  "keywords": [
+    "unlock pdf",
+    "remove pdf password",
+    "pdf unlock tool",
+    "decrypt pdf",
+    "unlock secured pdf",
+    "pdf password remover"
+  ],
+  "canonical": "/unlock-pdf",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Unlock PDFs Online",
+    "description": "Strip PDF passwords locally and export a clean version in seconds.",
+    "url": "/unlock-pdf",
+    "type": "article",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-unlock-pdf.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Screenshot of unlocking a PDF"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Unlock PDF",
+    "description": "Remove PDF passwords before sharing or archiving.",
+    "image": "/og-unlock-pdf.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Unlock a password-protected PDF",
+    "description": "Steps to remove open-password enforcement from PDFs when you already know the password.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Upload the locked PDF",
+        "text": "Drag a PDF up to 20 MB that currently requires a password to open."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Enter the password",
+        "text": "Provide the existing open password so the file can be decrypted locally."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Download the unlocked copy",
+        "text": "Export a new PDF without password protection and share it with teammates or tools."
+      }
+    ]
+  }
+}

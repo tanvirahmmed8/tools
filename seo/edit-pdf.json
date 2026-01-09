@@ -1,0 +1,63 @@
+{
+  "title": "Edit PDF Online | Add Text & Metadata",
+  "description": "Drop a PDF, add headers, notes, or disclaimers, refresh metadata, and export a polished version in minutes—all in the browser.",
+  "keywords": [
+    "edit pdf online",
+    "add text to pdf",
+    "pdf annotations",
+    "pdf metadata editor",
+    "browser pdf editor",
+    "quick pdf markup"
+  ],
+  "canonical": "/edit-pdf",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Edit PDFs with Text Blocks",
+    "description": "Overlay notes, sign-offs, and metadata updates without desktop software.",
+    "url": "/edit-pdf",
+    "type": "article",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-edit-pdf.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Screenshot of an online PDF editor adding text blocks"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Edit PDF Online",
+    "description": "Add callouts and refresh metadata from your browser in seconds.",
+    "image": "/og-edit-pdf.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Edit a PDF online",
+    "description": "Workflow for adding text overlays and metadata updates to an existing PDF.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Upload the PDF",
+        "text": "Rename the file and drag it into the tool. Files up to 20 MB process locally."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Configure text blocks",
+        "text": "Add one or more blocks, pick the page and placement, then style font size, alignment, and color."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Update metadata",
+        "text": "Optionally set a new document title and author before exporting."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Download the edited PDF",
+        "text": "Export the updates and download the refreshed PDF for review or sharing."
+      }
+    ]
+  }
+}

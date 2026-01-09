@@ -1,5 +1,5 @@
 "use server"
-import { PDFDocument } from "pdf-lib"
+import { PDFDocument, StandardFonts, degrees, rgb } from "pdf-lib"
 
 export async function compressPdf(pdfBase64: string) {
   const base64Data = pdfBase64.includes(",") ? pdfBase64.split(",")[1] ?? "" : pdfBase64
@@ -322,6 +322,112 @@ function normalizePageOrder(order: number[] | undefined, totalPages: number): nu
   return normalized
 }
 
+type RotationInstruction = { page: number; rotation: number }
+
+type PdfTextEdit = {
+  page: number
+  text: string
+  position?: "top" | "middle" | "bottom"
+  align?: "left" | "center" | "right"
+  fontSize?: number
+  color?: string
+}
+
+function normalizeRotationInstructions(
+  rotations: RotationInstruction[] | undefined,
+  totalPages: number,
+): RotationInstruction[] {
+  if (!rotations || !Array.isArray(rotations) || !rotations.length) {
+    throw new Error("Select at least one page to rotate before exporting.")
+  }
+
+  const normalized = new Map<number, number>()
+
+  for (const entry of rotations) {
+    const page = Math.floor(Number(entry?.page))
+    const rawRotation = Number(entry?.rotation)
+
+    if (!Number.isFinite(page) || !Number.isFinite(rawRotation)) {
+      throw new Error("Rotation list contains invalid values. Use numeric page numbers and degrees.")
+    }
+
+    if (page < 1 || page > totalPages) {
+      throw new Error(`Page ${page} is out of range. This PDF has ${totalPages} pages.`)
+    }
+
+    const normalizedRotation = ((rawRotation % 360) + 360) % 360
+    if (normalizedRotation % 90 !== 0) {
+      throw new Error("Rotations must be set in 90° increments.")
+    }
+
+    if (normalizedRotation === 0) {
+      normalized.delete(page)
+    } else {
+      normalized.set(page, normalizedRotation)
+    }
+  }
+
+  if (!normalized.size) {
+    throw new Error("No rotation changes detected. Adjust a page angle before exporting.")
+  }
+
+  return Array.from(normalized.entries()).map(([page, rotation]) => ({ page, rotation }))
+}
+
+function parseHexColor(value?: string) {
+  if (!value) {
+    return undefined
+  }
+  const normalized = value.trim().replace(/^#/, "")
+  if (!normalized.length || !/^[0-9a-f]+$/i.test(normalized)) {
+    return undefined
+  }
+  const hex = normalized.length === 3 ? normalized.split("").map((char) => char + char).join("") : normalized
+  if (hex.length !== 6) {
+    return undefined
+  }
+  const r = parseInt(hex.slice(0, 2), 16) / 255
+  const g = parseInt(hex.slice(2, 4), 16) / 255
+  const b = parseInt(hex.slice(4, 6), 16) / 255
+  return rgb(r, g, b)
+}
+
+function normalizeTextEdits(edits: PdfTextEdit[] | undefined, totalPages: number) {
+  if (!edits || !Array.isArray(edits) || !edits.length) {
+    throw new Error("Add at least one text block before exporting the edited PDF.")
+  }
+
+  const mapped = edits
+    .map((entry) => ({
+      page: Math.floor(Number(entry?.page)),
+      text: String(entry?.text ?? "").trim(),
+      position: (entry?.position ?? "top") as PdfTextEdit["position"],
+      align: (entry?.align ?? "left") as PdfTextEdit["align"],
+      fontSize: Number(entry?.fontSize) || 16,
+      color: entry?.color,
+    }))
+    .filter((entry) => entry.text.length)
+
+  if (!mapped.length) {
+    throw new Error("Text blocks cannot be empty. Enter copy for each edit before exporting.")
+  }
+
+  mapped.forEach((entry) => {
+    if (!Number.isFinite(entry.page) || entry.page < 1 || entry.page > totalPages) {
+      throw new Error(`Text block references page ${entry.page}. This PDF has ${totalPages} pages.`)
+    }
+    entry.fontSize = Math.min(Math.max(entry.fontSize ?? 16, 8), 48)
+    if (!entry.position || !["top", "middle", "bottom"].includes(entry.position)) {
+      entry.position = "top"
+    }
+    if (!entry.align || !["left", "center", "right"].includes(entry.align)) {
+      entry.align = "left"
+    }
+  })
+
+  return mapped
+}
+
 export async function deletePdfPages(
   pdfBase64: string,
   options?: { pages?: string },
@@ -452,5 +558,136 @@ export async function protectPdfWithPassword(
     downloadUrl: payload.downloadUrl,
     expiresOn: payload.expiresOn,
     enforcedPermissions: payload.permissions ?? options?.permissions ?? [],
+  }
+}
+
+export async function rotatePdfPages(
+  pdfBase64: string,
+  options: { rotations: RotationInstruction[] },
+) {
+  const base64Data = pdfBase64.includes(",") ? pdfBase64.split(",")[1] ?? "" : pdfBase64
+  const pdfBuffer = Buffer.from(base64Data, "base64")
+  const pdfDoc = await PDFDocument.load(pdfBuffer)
+  const totalPages = pdfDoc.getPageCount()
+
+  const instructions = normalizeRotationInstructions(options?.rotations, totalPages)
+
+  for (const instruction of instructions) {
+    const page = pdfDoc.getPage(instruction.page - 1)
+    page.setRotation(degrees(instruction.rotation))
+  }
+
+  const bytes = await pdfDoc.save({ useObjectStreams: true })
+
+  return {
+    fileName: `rotated-${new Date().toISOString().replace(/[:.]/g, "-")}.pdf`,
+    pdfBase64: Buffer.from(bytes).toString("base64"),
+    totalPages,
+    rotations: instructions,
+  }
+}
+
+export async function editPdf(
+  pdfBase64: string,
+  options: { edits: PdfTextEdit[]; metadata?: { title?: string; author?: string } },
+) {
+  const base64Data = pdfBase64.includes(",") ? pdfBase64.split(",")[1] ?? "" : pdfBase64
+  const pdfBuffer = Buffer.from(base64Data, "base64")
+  const pdfDoc = await PDFDocument.load(pdfBuffer)
+  const totalPages = pdfDoc.getPageCount()
+
+  const edits = normalizeTextEdits(options?.edits, totalPages)
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica)
+
+  if (options?.metadata?.title?.trim()) {
+    pdfDoc.setTitle(options.metadata.title.trim())
+  }
+  if (options?.metadata?.author?.trim()) {
+    pdfDoc.setAuthor(options.metadata.author.trim())
+  }
+
+  const margin = 40
+  const defaultColor = rgb(32 / 255, 36 / 255, 46 / 255)
+
+  for (const edit of edits) {
+    const page = pdfDoc.getPage(edit.page - 1)
+    const { width, height } = page.getSize()
+    const fontSize = edit.fontSize ?? 16
+    const text = edit.text
+    const color = parseHexColor(edit.color) ?? defaultColor
+    let y: number
+    switch (edit.position) {
+      case "middle":
+        y = height / 2 - fontSize / 2
+        break
+      case "bottom":
+        y = margin
+        break
+      case "top":
+      default:
+        y = height - margin - fontSize
+        break
+    }
+
+    const textWidth = font.widthOfTextAtSize(text, fontSize)
+    let x: number
+    switch (edit.align) {
+      case "center":
+        x = Math.max(margin, (width - textWidth) / 2)
+        break
+      case "right":
+        x = Math.max(margin, width - margin - textWidth)
+        break
+      case "left":
+      default:
+        x = margin
+        break
+    }
+
+    page.drawText(text, {
+      x,
+      y,
+      size: fontSize,
+      font,
+      color,
+    })
+  }
+
+  const bytes = await pdfDoc.save({ useObjectStreams: true })
+
+  return {
+    fileName: `edited-${new Date().toISOString().replace(/[:.]/g, "-")}.pdf`,
+    pdfBase64: Buffer.from(bytes).toString("base64"),
+    totalPages,
+    edits,
+  }
+}
+
+export async function unlockPdf(
+  pdfBase64: string,
+  options: { password: string },
+) {
+  const password = options?.password?.trim()
+  if (!password) {
+    throw new Error("Enter the password required to open this PDF before unlocking it.")
+  }
+
+  const base64Data = pdfBase64.includes(",") ? pdfBase64.split(",")[1] ?? "" : pdfBase64
+  const pdfBuffer = Buffer.from(base64Data, "base64")
+
+  let pdfDoc: PDFDocument
+  try {
+    const loadOptions = { password } as Parameters<typeof PDFDocument.load>[1]
+    pdfDoc = await PDFDocument.load(pdfBuffer, loadOptions)
+  } catch (error) {
+    throw new Error("Unable to open the PDF with the provided password. Double-check it and try again.")
+  }
+
+  // Clearing encryption simply means resaving without password protection
+  const bytes = await pdfDoc.save({ useObjectStreams: true })
+
+  return {
+    fileName: `unlocked-${new Date().toISOString().replace(/[:.]/g, "-")}.pdf`,
+    pdfBase64: Buffer.from(bytes).toString("base64"),
   }
 }
