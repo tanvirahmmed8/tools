@@ -52,6 +52,8 @@ const navItems: Array<NavLink | NavDropdown> = [
       { label: "PDF to PNG", href: "/pdf-to-png" },
       { label: "PDF to JPG", href: "/pdf-to-jpg" },
       { label: "PDF to Word", href: "/pdf-to-word" },
+      { label: "Add PDF Watermark", href: "/pdf-watermark" },
+      { label: "Webpage to PDF", href: "/webpage-to-pdf" },
     ],
   },
   {
@@ -66,6 +68,7 @@ const navItems: Array<NavLink | NavDropdown> = [
       { label: "URL Encode/Decode", href: "/url-encode-decode" },
       { label: "UUID Generator", href: "/uuid-generator" },
       { label: "Hash Generator", href: "/hash-generator" },
+      { label: "Markdown to HTML", href: "/markdown-to-html" },
     ],
   },
   { label: "QR Toolkit", href: "/qr-tools" },

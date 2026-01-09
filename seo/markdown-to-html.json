@@ -1,0 +1,43 @@
+{
+  "title": "Markdown to HTML | Convert Markdown Safely",
+  "description": "Convert Markdown to sanitized HTML in your browser. Supports headings, lists, links, bold, italics, and code blocks.",
+  "keywords": [
+    "markdown to html",
+    "markdown converter",
+    "markdown",
+    "html",
+    "markdown sanitizer"
+  ],
+  "canonical": "/markdown-to-html",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Markdown to HTML",
+    "description": "Convert Markdown to safe HTML (headings, lists, links, code).",
+    "url": "/markdown-to-html",
+    "type": "website",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-markdown-to-html.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Markdown to HTML interface"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Markdown to HTML",
+    "description": "Convert Markdown to HTML in the browser.",
+    "image": "/og-markdown-to-html.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Markdown to HTML",
+    "url": "/markdown-to-html",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "description": "Online Markdown to HTML converter with basic formatting support."
+  }
+}

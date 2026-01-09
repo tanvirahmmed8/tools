@@ -1,0 +1,43 @@
+{
+  "title": "Add PDF Watermark | Text or Image Watermarks",
+  "description": "Add a text or PNG watermark to your PDF. Choose opacity, rotation, position, and apply to all pages.",
+  "keywords": [
+    "pdf watermark",
+    "add watermark to pdf",
+    "text watermark",
+    "image watermark",
+    "pdf tools"
+  ],
+  "canonical": "/pdf-watermark",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Add PDF Watermark",
+    "description": "Overlay text or image watermarks over your PDFs with one click.",
+    "url": "/pdf-watermark",
+    "type": "website",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-pdf-watermark.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "PDF watermark interface"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Add PDF Watermark",
+    "description": "Text or PNG watermark with rotation, opacity, and position options.",
+    "image": "/og-pdf-watermark.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Add PDF Watermark",
+    "url": "/pdf-watermark",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "description": "Online PDF watermark tool supporting text and image watermarks."
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "title": "Webpage to PDF | Convert URL to PDF",
+  "description": "Enter a webpage URL and download a clean, printer-friendly PDF. Supports A4/Letter, landscape, and background colors.",
+  "keywords": [
+    "webpage to pdf",
+    "url to pdf",
+    "print webpage",
+    "save as pdf",
+    "html to pdf"
+  ],
+  "canonical": "/webpage-to-pdf",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Webpage to PDF",
+    "description": "Convert any public URL to a printable PDF.",
+    "url": "/webpage-to-pdf",
+    "type": "website",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-webpage-to-pdf.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Webpage to PDF interface"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Webpage to PDF",
+    "description": "Convert a URL to PDF with A4/Letter support.",
+    "image": "/og-webpage-to-pdf.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Webpage to PDF",
+    "url": "/webpage-to-pdf",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "description": "Online Webpage to PDF converter supporting page size and orientation."
+  }
+}
