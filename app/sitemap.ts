@@ -14,6 +14,7 @@ const ROUTES = [
   "/pdf-merge",
   "/pdf-split",
   "/delete-pdf-pages",
+  "/extract-pdf-images",
   "/edit-pdf",
   "/sign-pdf",
   "/protect-pdf-password",

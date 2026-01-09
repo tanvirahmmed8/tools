@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import type { LucideIcon } from "lucide-react"
-import { ArrowRight, ArrowUpDown, FileOutput, FileText, Images, KeyRound, Layers, LockKeyhole, PenSquare, QrCode, RotateCw, Ruler, ScanBarcode, Shield, Signature, Sparkles, SwatchBook, Trash2, Zap } from "lucide-react"
+import { ArrowRight, ArrowUpDown, FileOutput, FileText, ImageDown, Images, KeyRound, Layers, LockKeyhole, PenSquare, QrCode, RotateCw, Ruler, ScanBarcode, Shield, Signature, Sparkles, SwatchBook, Trash2, Zap } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { GlowCard } from "@/components/ui/glow-card"
@@ -122,6 +122,15 @@ const featureCards: FeatureCardConfig[] = [
     icon: Signature,
     category: "PDF Suite",
     tone: "emerald",
+  },
+  {
+    title: "Extract PDF Images",
+    description: "Scan PDFs for embedded PNGs/JPGs and download every asset as standalone PNGs or a ZIP.",
+    href: "/extract-pdf-images",
+    badge: "Asset scrape",
+    icon: ImageDown,
+    category: "PDF Suite",
+    tone: "teal",
   },
   {
     title: "PDF to PNG",

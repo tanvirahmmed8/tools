@@ -1,0 +1,63 @@
+{
+  "title": "Extract Images from PDF | Download Embedded Assets",
+  "description": "Upload a PDF and download every embedded image at its original resolution. Perfect for decks, reports, and marketing kits.",
+  "keywords": [
+    "extract pdf images",
+    "download images from pdf",
+    "pdf image extractor",
+    "export pdf assets",
+    "pdf to images online",
+    "pdf photo downloader"
+  ],
+  "canonical": "/extract-pdf-images",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Extract Images from any PDF",
+    "description": "Surface every embedded PNG or JPG from a PDF and export them in a single ZIP.",
+    "url": "/extract-pdf-images",
+    "type": "article",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-extract-pdf-images.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "PDF image extractor interface"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Extract PDF Images",
+    "description": "Drop a PDF, scan every page, and download each image as a PNG.",
+    "image": "/og-extract-pdf-images.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Extract images from a PDF",
+    "description": "Workflow for scanning PDFs and exporting embedded images as PNG files.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Upload the PDF",
+        "text": "Drag a PDF into the tool. Files process locally and remain private."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Scan every page",
+        "text": "The analyzer inspects each page, locating embedded XObjects and inline images."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Preview images",
+        "text": "Review every extracted asset along with resolution details."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Download PNGs or a ZIP",
+        "text": "Save individual PNGs or export everything as a single archive."
+      }
+    ]
+  }
+}

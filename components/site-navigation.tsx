@@ -43,6 +43,7 @@ const navItems: Array<NavLink | NavDropdown> = [
       { label: "PDF to Text", href: "/pdf-to-text" },
       { label: "Delete PDF Pages", href: "/delete-pdf-pages" },
       { label: "Edit PDF", href: "/edit-pdf" },
+      { label: "Extract PDF Images", href: "/extract-pdf-images" },
       { label: "Sign PDF", href: "/sign-pdf" },
       { label: "Protect PDF Password", href: "/protect-pdf-password" },
       { label: "Rearrange PDF Pages", href: "/rearrange-pdf-pages" },
