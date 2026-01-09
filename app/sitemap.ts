@@ -26,6 +26,8 @@ const ROUTES = [
   "/pdf-to-text",
   "/pdf-to-word",
   "/qr-tools",
+  "/word-counter",
+  "/character-counter",
   "/about-us",
   "/disclaimer",
   "/contact",

@@ -54,6 +54,14 @@ const navItems: Array<NavLink | NavDropdown> = [
       { label: "PDF to Word", href: "/pdf-to-word" },
     ],
   },
+  {
+    label: "Dev tools",
+    dropdown: true,
+    items: [
+      { label: "Word Counter", href: "/word-counter" },
+      { label: "Character Counter", href: "/character-counter" },
+    ],
+  },
   { label: "QR Toolkit", href: "/qr-tools" },
   { label: "Barcode Toolkit", href: "/barcode-tools" },
 ]

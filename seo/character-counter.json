@@ -1,0 +1,44 @@
+{
+  "title": "Character Counter | Count Characters, Lines, and Bytes",
+  "description": "Paste or type text to instantly count characters with/without spaces, total lines, and UTF-8 bytes.",
+  "keywords": [
+    "character counter",
+    "count characters",
+    "count bytes",
+    "utf-8 bytes",
+    "line counter",
+    "online character counter"
+  ],
+  "canonical": "/character-counter",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Character Counter",
+    "description": "Count characters, lines, and bytes for any text.",
+    "url": "/character-counter",
+    "type": "website",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-character-counter.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Character counter interface"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Character Counter",
+    "description": "Instantly count characters, lines, and UTF-8 bytes.",
+    "image": "/og-character-counter.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Character Counter",
+    "url": "/character-counter",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "description": "Online character, line, and byte counter."
+  }
+}
