@@ -1,0 +1,58 @@
+{
+  "title": "Delete PDF Pages | Remove Sensitive Sections",
+  "description": "Upload a PDF, select the pages you want to delete, and download a clean document without re-running layout tools.",
+  "keywords": [
+    "delete pdf pages",
+    "remove pdf pages",
+    "pdf page remover",
+    "trim pdf",
+    "pdf cleanup",
+    "pdf editor online"
+  ],
+  "canonical": "/delete-pdf-pages",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Delete Pages from a PDF",
+    "description": "Drop a PDF, list the pages you want to remove, and download a cleaner version instantly.",
+    "url": "/delete-pdf-pages",
+    "type": "article",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-pdf-delete-pages.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Screenshot of PDF page deletion workflow"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Delete PDF Pages Online",
+    "description": "Cut pages from PDFs without uploading to slow desktop software.",
+    "image": "/og-pdf-delete-pages.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Delete pages from a PDF",
+    "description": "Steps for removing unwanted PDF pages before sharing.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Upload PDF",
+        "text": "Drop a PDF up to 20 MB into the tool to inspect its page count."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Select pages to delete",
+        "text": "Enter page numbers or ranges (e.g., 2-4,7) to mark them for removal."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Download cleaned PDF",
+        "text": "Generate a new PDF that excludes the selected pages."
+      }
+    ]
+  }
+}

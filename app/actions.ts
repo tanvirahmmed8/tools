@@ -248,3 +248,75 @@ export async function splitPdf(
 
   return { totalPages, parts: outputs }
 }
+
+function parsePagesToDelete(input: string, totalPages: number): number[] {
+  const cleaned = input.replace(/\s+/g, "")
+  if (!cleaned) {
+    throw new Error("Enter the pages you want to delete, e.g., 1-3,6.")
+  }
+
+  const parts = cleaned.split(",").filter(Boolean)
+  const selected = new Set<number>()
+
+  for (const part of parts) {
+    if (/^\d+$/.test(part)) {
+      const page = Math.min(Math.max(parseInt(part, 10), 1), totalPages)
+      selected.add(page)
+    } else {
+      const match = part.match(/^(\d+)-(\d+)$/)
+      if (match) {
+        let start = parseInt(match[1], 10)
+        let end = parseInt(match[2], 10)
+        if (start > end) [start, end] = [end, start]
+        start = Math.min(Math.max(start, 1), totalPages)
+        end = Math.min(Math.max(end, 1), totalPages)
+        for (let page = start; page <= end; page += 1) {
+          selected.add(page)
+        }
+      }
+    }
+  }
+
+  if (!selected.size) {
+    throw new Error("No valid pages found to delete. Use commas and hyphens for ranges.")
+  }
+
+  return Array.from(selected).sort((a, b) => a - b)
+}
+
+export async function deletePdfPages(
+  pdfBase64: string,
+  options?: { pages?: string },
+) {
+  const base64Data = pdfBase64.includes(",") ? pdfBase64.split(",")[1] ?? "" : pdfBase64
+  const pdfBuffer = Buffer.from(base64Data, "base64")
+  const srcDoc = await PDFDocument.load(pdfBuffer)
+  const totalPages = srcDoc.getPageCount()
+
+  const pagesToRemove = parsePagesToDelete(options?.pages ?? "", totalPages)
+  if (pagesToRemove.length >= totalPages) {
+    throw new Error("Cannot delete every page. Leave at least one page in the PDF.")
+  }
+
+  const removalSet = new Set(pagesToRemove)
+  const keepIndices: number[] = []
+  for (let page = 1; page <= totalPages; page += 1) {
+    if (!removalSet.has(page)) {
+      keepIndices.push(page - 1)
+    }
+  }
+
+  const out = await PDFDocument.create()
+  const copiedPages = await out.copyPages(srcDoc, keepIndices)
+  copiedPages.forEach((p) => out.addPage(p))
+
+  const bytes = await out.save({ useObjectStreams: true })
+
+  return {
+    fileName: `cleaned-${new Date().toISOString().replace(/[:.]/g, "-")}.pdf`,
+    pdfBase64: Buffer.from(bytes).toString("base64"),
+    totalPages,
+    removedPages: pagesToRemove,
+    remainingPages: totalPages - pagesToRemove.length,
+  }
+}

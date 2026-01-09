@@ -13,6 +13,7 @@ const ROUTES = [
   "/pdf-compress",
   "/pdf-merge",
   "/pdf-split",
+  "/delete-pdf-pages",
   "/pdf-to-png",
   "/pdf-to-jpg",
   "/pdf-to-text",

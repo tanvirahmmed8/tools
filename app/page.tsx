@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import type { LucideIcon } from "lucide-react"
-import { ArrowRight, FileOutput, FileText, Images, Layers, QrCode, Ruler, ScanBarcode, Shield, Sparkles, SwatchBook, Zap } from "lucide-react"
+import { ArrowRight, FileOutput, FileText, Images, Layers, QrCode, Ruler, ScanBarcode, Shield, Sparkles, SwatchBook, Trash2, Zap } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { GlowCard } from "@/components/ui/glow-card"
@@ -59,6 +59,15 @@ const featureCards: FeatureCardConfig[] = [
     icon: FileText,
     category: "PDF Suite",
     tone: "azure",
+  },
+  {
+    title: "Delete PDF Pages",
+    description: "Remove outdated or sensitive PDF pages without disturbing the remaining layout or metadata.",
+    href: "/delete-pdf-pages",
+    badge: "Page cleanup",
+    icon: Trash2,
+    category: "PDF Suite",
+    tone: "teal",
   },
   {
     title: "PDF to PNG",
