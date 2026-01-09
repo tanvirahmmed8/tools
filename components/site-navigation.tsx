@@ -60,6 +60,12 @@ const navItems: Array<NavLink | NavDropdown> = [
     items: [
       { label: "Word Counter", href: "/word-counter" },
       { label: "Character Counter", href: "/character-counter" },
+      { label: "Case Converter", href: "/case-converter" },
+      { label: "JSON Formatter", href: "/json-formatter" },
+      { label: "Base64 Encode/Decode", href: "/base64" },
+      { label: "URL Encode/Decode", href: "/url-encode-decode" },
+      { label: "UUID Generator", href: "/uuid-generator" },
+      { label: "Hash Generator", href: "/hash-generator" },
     ],
   },
   { label: "QR Toolkit", href: "/qr-tools" },

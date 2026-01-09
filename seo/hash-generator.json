@@ -1,0 +1,43 @@
+{
+  "title": "Hash Generator | MD5 & SHA-256",
+  "description": "Generate MD5 and SHA-256 hashes for any text. Output as hex or Base64.",
+  "keywords": [
+    "hash generator",
+    "md5",
+    "sha256",
+    "checksum",
+    "hash online"
+  ],
+  "canonical": "/hash-generator",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Hash Generator (MD5 / SHA-256)",
+    "description": "Create MD5 and SHA-256 hashes with hex or Base64 output.",
+    "url": "/hash-generator",
+    "type": "website",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-hash-generator.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Hash generator interface"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Hash Generator",
+    "description": "MD5 and SHA-256 hashing online.",
+    "image": "/og-hash-generator.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Hash Generator",
+    "url": "/hash-generator",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "description": "Online hash generator supporting MD5 and SHA-256 with hex/Base64 output."
+  }
+}

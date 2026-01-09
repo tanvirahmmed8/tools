@@ -1,0 +1,44 @@
+{
+  "title": "URL Encode/Decode | Encode URI Components & Full URLs",
+  "description": "Encode or decode URL components and full URLs. Choose space handling (+ or %20).",
+  "keywords": [
+    "url encode",
+    "url decode",
+    "encodeURIComponent",
+    "decodeURIComponent",
+    "encodeURI",
+    "decodeURI"
+  ],
+  "canonical": "/url-encode-decode",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "URL Encode/Decode",
+    "description": "Encode or decode URL components and full URLs, with space handling.",
+    "url": "/url-encode-decode",
+    "type": "website",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-url-encode-decode.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "URL encode decode interface"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "URL Encode/Decode",
+    "description": "Encode/decode URL components or full URLs.",
+    "image": "/og-url-encode-decode.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "URL Encode/Decode",
+    "url": "/url-encode-decode",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "description": "Online tool for encoding and decoding URL components and full URLs."
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "title": "JSON Formatter | Pretty Print, Minify, Validate JSON",
+  "description": "Paste JSON and instantly format, minify, validate, and copy. Choose indentation and download the result.",
+  "keywords": [
+    "json formatter",
+    "json validator",
+    "json beautifier",
+    "json minify",
+    "online json formatter"
+  ],
+  "canonical": "/json-formatter",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "JSON Formatter & Validator",
+    "description": "Pretty print, minify, and validate JSON with one click.",
+    "url": "/json-formatter",
+    "type": "website",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-json-formatter.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "JSON formatter interface"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "JSON Formatter",
+    "description": "Format, minify, and validate JSON online.",
+    "image": "/og-json-formatter.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "JSON Formatter",
+    "url": "/json-formatter",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "description": "Online JSON formatter and validator with minify and copy options."
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "title": "UUID Generator | Generate UUIDv4 Identifiers",
+  "description": "Generate cryptographically secure UUIDv4 values in batches. Toggle uppercase and hyphen removal.",
+  "keywords": [
+    "uuid generator",
+    "uuid v4",
+    "guid",
+    "generate uuid",
+    "unique id"
+  ],
+  "canonical": "/uuid-generator",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "UUID Generator (v4)",
+    "description": "Batch-generate UUIDv4 identifiers with formatting options.",
+    "url": "/uuid-generator",
+    "type": "website",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-uuid-generator.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "UUID generator interface"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "UUID Generator",
+    "description": "Generate v4 UUIDs with uppercase and hyphenless options.",
+    "image": "/og-uuid-generator.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "UUID Generator",
+    "url": "/uuid-generator",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "description": "Online UUID v4 generator with batch count, uppercase, and hyphen removal options."
+  }
+}

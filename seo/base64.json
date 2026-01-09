@@ -1,0 +1,44 @@
+{
+  "title": "Base64 Encode/Decode | Text to Base64 & Back",
+  "description": "Encode text to Base64 or decode Base64 back to text. Handles UTF-8 and data URLs.",
+  "keywords": [
+    "base64",
+    "base64 encoder",
+    "base64 decoder",
+    "decode base64",
+    "encode base64",
+    "text to base64"
+  ],
+  "canonical": "/base64",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Base64 Encode/Decode",
+    "description": "Convert text to Base64 and back with UTF-8 support.",
+    "url": "/base64",
+    "type": "website",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-base64.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Base64 tool interface"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Base64 Encode/Decode",
+    "description": "Encode or decode Base64 online, with UTF-8 support.",
+    "image": "/og-base64.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Base64 Encode/Decode",
+    "url": "/base64",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "description": "Online Base64 encoder/decoder with UTF-8 and data URL support."
+  }
+}
