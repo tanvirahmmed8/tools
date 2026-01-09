@@ -333,6 +333,14 @@ type PdfTextEdit = {
   color?: string
 }
 
+type PdfSignatureOptions = {
+  signature: string
+  page: number
+  position?: "top" | "middle" | "bottom"
+  align?: "left" | "center" | "right"
+  width?: number
+}
+
 function normalizeRotationInstructions(
   rotations: RotationInstruction[] | undefined,
   totalPages: number,
@@ -426,6 +434,54 @@ function normalizeTextEdits(edits: PdfTextEdit[] | undefined, totalPages: number
   })
 
   return mapped
+}
+
+function normalizeSignatureOptions(options: PdfSignatureOptions | undefined, totalPages: number) {
+  const signature = options?.signature?.trim()
+  if (!signature) {
+    throw new Error("Draw or upload a signature before exporting the PDF.")
+  }
+
+  const page = Math.floor(Number(options?.page))
+  if (!Number.isFinite(page) || page < 1 || page > totalPages) {
+    throw new Error(`Signature placement references page ${page}. This PDF has ${totalPages} pages.`)
+  }
+
+  const position = (options?.position ?? "bottom") as PdfSignatureOptions["position"]
+  const align = (options?.align ?? "right") as PdfSignatureOptions["align"]
+  const width = Math.min(Math.max(Number(options?.width) || 180, 60), 600)
+
+  const validPositions: PdfSignatureOptions["position"][] = ["top", "middle", "bottom"]
+  const validAlignments: PdfSignatureOptions["align"][] = ["left", "center", "right"]
+
+  return {
+    signature,
+    page,
+    position: validPositions.includes(position) ? position : "bottom",
+    align: validAlignments.includes(align) ? align : "right",
+    width,
+  }
+}
+
+async function embedSignatureImage(pdfDoc: PDFDocument, signatureData: string) {
+  const base64Data = signatureData.includes(",") ? signatureData.split(",")[1] ?? "" : signatureData
+  if (!base64Data) {
+    throw new Error("Signature image payload is empty. Draw again or upload a new image.")
+  }
+
+  const bytes = Buffer.from(base64Data, "base64")
+  const lowerCaseHeader = signatureData.slice(0, 50).toLowerCase()
+  const prefersJpg = lowerCaseHeader.includes("image/jpeg") || lowerCaseHeader.includes("image/jpg")
+
+  try {
+    return prefersJpg ? await pdfDoc.embedJpg(bytes) : await pdfDoc.embedPng(bytes)
+  } catch (primaryError) {
+    try {
+      return prefersJpg ? await pdfDoc.embedPng(bytes) : await pdfDoc.embedJpg(bytes)
+    } catch {
+      throw new Error("Unable to embed the signature image. Try exporting it as PNG or JPG.")
+    }
+  }
 }
 
 export async function deletePdfPages(
@@ -660,6 +716,89 @@ export async function editPdf(
     pdfBase64: Buffer.from(bytes).toString("base64"),
     totalPages,
     edits,
+  }
+}
+
+export async function signPdf(
+  pdfBase64: string,
+  options: PdfSignatureOptions & { metadata?: { title?: string; author?: string; signedBy?: string; reason?: string } },
+) {
+  const base64Data = pdfBase64.includes(",") ? pdfBase64.split(",")[1] ?? "" : pdfBase64
+  const pdfBuffer = Buffer.from(base64Data, "base64")
+  const pdfDoc = await PDFDocument.load(pdfBuffer)
+  const totalPages = pdfDoc.getPageCount()
+
+  const normalized = normalizeSignatureOptions(options, totalPages)
+  const { signature, ...placement } = normalized
+  const signatureImage = await embedSignatureImage(pdfDoc, signature)
+  const signatureDimensions = signatureImage.scale(1)
+
+  if (!signatureDimensions.width || !signatureDimensions.height) {
+    throw new Error("Signature dimensions are invalid. Recreate the signature and try again.")
+  }
+
+  const scale = placement.width / signatureDimensions.width
+  const targetWidth = placement.width
+  const targetHeight = signatureDimensions.height * scale
+  const page = pdfDoc.getPage(placement.page - 1)
+  const { width: pageWidth, height: pageHeight } = page.getSize()
+  const margin = 36
+
+  let y: number
+  switch (placement.position) {
+    case "top":
+      y = Math.max(margin, pageHeight - margin - targetHeight)
+      break
+    case "middle":
+      y = Math.max(margin, pageHeight / 2 - targetHeight / 2)
+      break
+    case "bottom":
+    default:
+      y = margin
+      break
+  }
+
+  let x: number
+  switch (placement.align) {
+    case "left":
+      x = margin
+      break
+    case "center":
+      x = Math.max(margin, (pageWidth - targetWidth) / 2)
+      break
+    case "right":
+    default:
+      x = Math.max(margin, pageWidth - margin - targetWidth)
+      break
+  }
+
+  page.drawImage(signatureImage, {
+    x,
+    y,
+    width: targetWidth,
+    height: targetHeight,
+  })
+
+  if (options?.metadata?.title?.trim()) {
+    pdfDoc.setTitle(options.metadata.title.trim())
+  }
+  if (options?.metadata?.author?.trim()) {
+    pdfDoc.setAuthor(options.metadata.author.trim())
+  }
+  if (options?.metadata?.signedBy?.trim()) {
+    pdfDoc.setSubject(`Signed by ${options.metadata.signedBy.trim()}`)
+  }
+  if (options?.metadata?.reason?.trim()) {
+    pdfDoc.setKeywords([options.metadata.reason.trim()])
+  }
+
+  const bytes = await pdfDoc.save({ useObjectStreams: true })
+
+  return {
+    fileName: `signed-${new Date().toISOString().replace(/[:.]/g, "-")}.pdf`,
+    pdfBase64: Buffer.from(bytes).toString("base64"),
+    totalPages,
+    placement,
   }
 }
 

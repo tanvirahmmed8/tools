@@ -15,6 +15,7 @@ const ROUTES = [
   "/pdf-split",
   "/delete-pdf-pages",
   "/edit-pdf",
+  "/sign-pdf",
   "/protect-pdf-password",
   "/rearrange-pdf-pages",
   "/rotate-pdf-pages",

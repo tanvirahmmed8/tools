@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import type { LucideIcon } from "lucide-react"
-import { ArrowRight, ArrowUpDown, FileOutput, FileText, Images, KeyRound, Layers, LockKeyhole, PenSquare, QrCode, RotateCw, Ruler, ScanBarcode, Shield, Sparkles, SwatchBook, Trash2, Zap } from "lucide-react"
+import { ArrowRight, ArrowUpDown, FileOutput, FileText, Images, KeyRound, Layers, LockKeyhole, PenSquare, QrCode, RotateCw, Ruler, ScanBarcode, Shield, Signature, Sparkles, SwatchBook, Trash2, Zap } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { GlowCard } from "@/components/ui/glow-card"
@@ -113,6 +113,15 @@ const featureCards: FeatureCardConfig[] = [
     icon: PenSquare,
     category: "PDF Suite",
     tone: "magenta",
+  },
+  {
+    title: "Sign PDF",
+    description: "Draw or upload a signature, drop it on the right page, and export a ready-to-share PDF.",
+    href: "/sign-pdf",
+    badge: "Signature pad",
+    icon: Signature,
+    category: "PDF Suite",
+    tone: "emerald",
   },
   {
     title: "PDF to PNG",

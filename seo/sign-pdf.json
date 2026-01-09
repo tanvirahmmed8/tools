@@ -1,0 +1,63 @@
+{
+  "title": "Sign PDF Online | Draw or Upload a Signature",
+  "description": "Add legally friendly signatures to PDFs without desktop software. Draw with a trackpad or upload a PNG, place it, and export instantly.",
+  "keywords": [
+    "sign pdf online",
+    "add signature to pdf",
+    "pdf signer",
+    "browser pdf signature",
+    "handwritten signature pdf",
+    "digital signing tool"
+  ],
+  "canonical": "/sign-pdf",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Sign PDFs in Seconds",
+    "description": "Draw or import your signature, place it on any page, and download a ready-to-share PDF.",
+    "url": "/sign-pdf",
+    "type": "article",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-sign-pdf.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Screenshot of an online PDF signature tool"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Sign PDF Online",
+    "description": "Add signatures with a trackpad or uploaded PNG directly in your browser.",
+    "image": "/og-sign-pdf.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Sign a PDF online",
+    "description": "Workflow for drawing or uploading a signature and placing it on a PDF page.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Upload the PDF",
+        "text": "Rename the document and drop it into the tool. Files up to 20 MB stay on-device."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Create or import a signature",
+        "text": "Use the canvas to draw or upload a PNG/JPG version of your signature."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Choose page and placement",
+        "text": "Select the page plus vertical and horizontal anchors, then adjust the width slider."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Export the signed PDF",
+        "text": "Click Apply signature and download the updated file for sharing."
+      }
+    ]
+  }
+}
