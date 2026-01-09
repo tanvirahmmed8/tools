@@ -12,8 +12,8 @@ import { SiteFooter } from "@/components/site-footer"
 import { SiteNavigation } from "@/components/site-navigation"
 
 // Configure PDF.js worker from CDN to avoid bundler worker config issues
-// Pin to the same version in package.json
-;(pdfjsLib as any).GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.js"
+// Use the ESM worker (.mjs) from unpkg (cdnjs path for this file returns 404)
+;(pdfjsLib as any).GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs"
 
 type Tool = "select" | "text" | "rect"
 

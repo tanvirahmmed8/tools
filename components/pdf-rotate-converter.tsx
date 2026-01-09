@@ -15,7 +15,7 @@ import { SiteNavigation } from "@/components/site-navigation"
 
 const PDF_MIME = "application/pdf"
 const ROTATION_OPTIONS = [0, 90, 180, 270] as const
-;(pdfjsLib as any).GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.js"
+;(pdfjsLib as any).GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs"
 
 type PdfRotateConverterProps = {
   children?: ReactNode
