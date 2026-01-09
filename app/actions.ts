@@ -23,73 +23,23 @@ export async function compressPdf(pdfBase64: string) {
   }
 }
 
-import type { CanvasRenderingContext2D as NodeCanvasRenderingContext2D } from "canvas"
-import { createCanvas } from "canvas"
 import { generateText } from "ai"
 import { createOpenAI } from "@ai-sdk/openai"
 import pdfParse from "pdf-parse/lib/pdf-parse.js"
-import { Document, ImageRun, Packer, Paragraph } from "docx"
 
 const { OPENAI_API_KEY } = process.env
 
-if (!OPENAI_API_KEY) {
-  throw new Error("OPENAI_API_KEY is not set. Add it to your environment before running server actions.")
-}
+const openai = OPENAI_API_KEY
+  ? createOpenAI({
+      apiKey: OPENAI_API_KEY,
+    })
+  : null
 
-const openai = createOpenAI({
-  apiKey: OPENAI_API_KEY,
-})
-
-const PDF_RENDER_SCALE = 2
-const DOCX_IMAGE_MAX_WIDTH = 720
-
-type PdfjsLib = typeof import("pdfjs-dist/legacy/build/pdf.mjs")
-
-interface CanvasAndContext {
-  canvas: ReturnType<typeof createCanvas>
-  context: NodeCanvasRenderingContext2D
-}
-
-interface RenderedPageImage {
-  buffer: Buffer
-  width: number
-  height: number
-}
-
-class NodeCanvasFactory {
-  create(width: number, height: number): CanvasAndContext {
-    if (width <= 0 || height <= 0) {
-      throw new Error("Invalid canvas size.")
-    }
-
-    const canvas = createCanvas(Math.ceil(width), Math.ceil(height))
-    const context = canvas.getContext("2d")
-
-    if (!context) {
-      throw new Error("Unable to create a 2D canvas context.")
-    }
-
-    return { canvas, context }
+const getOpenAI = () => {
+  if (!openai) {
+    throw new Error("OPENAI_API_KEY is not set. Add it to your environment before running image extraction.")
   }
-
-  reset(canvasAndContext: CanvasAndContext, width: number, height: number) {
-    canvasAndContext.canvas.width = Math.ceil(width)
-    canvasAndContext.canvas.height = Math.ceil(height)
-  }
-
-  destroy(canvasAndContext: CanvasAndContext) {
-    canvasAndContext.canvas.width = 0
-    canvasAndContext.canvas.height = 0
-  }
-}
-
-let pdfjsLibPromise: Promise<PdfjsLib> | null = null
-
-const loadPdfjs = () => {
-  if (!pdfjsLibPromise) {
-    pdfjsLibPromise = import("pdfjs-dist/legacy/build/pdf.mjs")
-  }
-  return pdfjsLibPromise
+  return openai
 }
 
 const toPdfBuffer = (pdfInput: string | Buffer): Buffer => {
@@ -100,47 +50,9 @@ const toPdfBuffer = (pdfInput: string | Buffer): Buffer => {
   return Buffer.from(base64Data, "base64")
 }
 
-const getImageDimensions = (originalWidth: number, originalHeight: number) => {
-  if (!originalWidth || !originalHeight) {
-    return { width: DOCX_IMAGE_MAX_WIDTH, height: DOCX_IMAGE_MAX_WIDTH }
-  }
-
-  const scale = originalWidth > DOCX_IMAGE_MAX_WIDTH ? DOCX_IMAGE_MAX_WIDTH / originalWidth : 1
-  return {
-    width: Math.round(originalWidth * scale),
-    height: Math.round(originalHeight * scale),
-  }
-}
-
-const renderPdfPagesToImages = async (pdfBuffer: Buffer): Promise<RenderedPageImage[]> => {
-  const pdfjs = await loadPdfjs()
-  const loadingTask = pdfjs.getDocument({ data: pdfBuffer })
-  const pdfDocument = await loadingTask.promise
-  const canvasFactory = new NodeCanvasFactory()
-  const renderedPages: RenderedPageImage[] = []
-
-  for (let pageNumber = 1; pageNumber <= pdfDocument.numPages; pageNumber += 1) {
-    const page = await pdfDocument.getPage(pageNumber)
-    const viewport = page.getViewport({ scale: PDF_RENDER_SCALE })
-    const { canvas, context } = canvasFactory.create(viewport.width, viewport.height)
-    const renderContext = {
-      canvasContext: context as unknown as CanvasRenderingContext2D,
-      viewport,
-      canvasFactory,
-    }
-    await page.render(renderContext as unknown as Parameters<typeof page.render>[0]).promise
-    renderedPages.push({ buffer: canvas.toBuffer("image/png"), width: viewport.width, height: viewport.height })
-    canvasFactory.destroy({ canvas, context })
-    page.cleanup()
-  }
-
-  await loadingTask.destroy()
-  return renderedPages
-}
-
 export async function extractTextFromImage(imageBase64: string): Promise<string> {
   const { text } = await generateText({
-    model: openai("gpt-4o"),
+    model: getOpenAI()("gpt-4o"),
     messages: [
       {
         role: "user",
@@ -170,51 +82,54 @@ export async function extractTextFromPdf(pdfInput: string | Buffer): Promise<str
   return trimmed.length ? trimmed : "No text found in PDF."
 }
 
+const PDF_TO_WORD_API_ENDPOINT = "https://pdftowordconv.azurewebsites.net/api/convert" as const
+
 export async function convertPdfToWord(pdfBase64: string) {
   const pdfBuffer = toPdfBuffer(pdfBase64)
-  const [text, renderedPages] = await Promise.all([extractTextFromPdf(pdfBuffer), renderPdfPagesToImages(pdfBuffer)])
+  const [extractedText, pageCount] = await Promise.all([
+    extractTextFromPdf(pdfBuffer),
+    (async () => {
+      const pdfDoc = await PDFDocument.load(pdfBuffer)
+      return pdfDoc.getPageCount()
+    })(),
+  ])
 
-  if (!renderedPages.length) {
-    throw new Error("No renderable pages found in PDF.")
-  }
+  const formData = new FormData()
+  const uploadName = `upload-${new Date().toISOString().replace(/[:.]/g, "-")}.pdf`
+  const fileBytes = new Uint8Array(pdfBuffer)
+  formData.append("file", new Blob([fileBytes], { type: "application/pdf" }), uploadName)
 
-  const safeText = text && text.trim().length ? text.trim() : "No text found in PDF."
-
-  const layoutParagraphs = renderedPages.map(
-    (pageImage, index) =>
-      new Paragraph({
-        children: [
-          new ImageRun({
-            type: "png",
-            data: pageImage.buffer,
-            transformation: getImageDimensions(pageImage.width, pageImage.height),
-          }),
-        ],
-        pageBreakBefore: index === 0 ? undefined : true,
-        spacing: { after: 0, before: 0 },
-      }),
-  )
-
-  const doc = new Document({
-    sections: [
-      {
-        properties: {
-          page: {
-            margin: { top: 720, bottom: 720, left: 720, right: 720 },
-          },
-        },
-        children: layoutParagraphs,
-      },
-    ],
+  const apiResponse = await fetch(PDF_TO_WORD_API_ENDPOINT, {
+    method: "POST",
+    body: formData,
+    cache: "no-store",
   })
 
-  const buffer = await Packer.toBuffer(doc)
+  if (!apiResponse.ok) {
+    throw new Error("PDF to Word service unavailable. Please try again later.")
+  }
+
+  const payload: { downloadUrl?: string; fileName?: string; expiresOn?: string } = await apiResponse.json()
+
+  if (!payload.downloadUrl) {
+    throw new Error("Invalid response from PDF to Word service.")
+  }
+
+  const docxResponse = await fetch(payload.downloadUrl, { cache: "no-store" })
+  if (!docxResponse.ok) {
+    throw new Error("Unable to download converted Word document.")
+  }
+
+  const docxBuffer = Buffer.from(await docxResponse.arrayBuffer())
+  const safeText = extractedText && extractedText.trim().length ? extractedText.trim() : "No text found in PDF."
 
   return {
-    fileName: `textextract-${new Date().toISOString().replace(/[:.]/g, "-")}.docx`,
-    docxBase64: buffer.toString("base64"),
+    fileName: payload.fileName ?? `textextract-${new Date().toISOString().replace(/[:.]/g, "-")}.docx`,
+    docxBase64: docxBuffer.toString("base64"),
     text: safeText,
-    pageCount: renderedPages.length,
+    pageCount,
+    downloadUrl: payload.downloadUrl,
+    expiresOn: payload.expiresOn,
   }
 }
 
