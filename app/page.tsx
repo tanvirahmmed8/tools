@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import type { LucideIcon } from "lucide-react"
-import { ArrowRight, ArrowUpDown, FileOutput, FileText, ImageDown, Images, KeyRound, Layers, LockKeyhole, PenSquare, QrCode, RotateCw, Ruler, ScanBarcode, Shield, Signature, Sparkles, SwatchBook, Trash2, Zap } from "lucide-react"
+import { ArrowRight, ArrowUpDown, ExternalLink, FileOutput, FileText, Hash as HashIcon, ImageDown, Images, KeyRound, Layers, LockKeyhole, PenSquare, QrCode, RotateCw, Ruler, ScanBarcode, Shield, Signature, Sparkles, SwatchBook, Trash2, Zap } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { GlowCard } from "@/components/ui/glow-card"
@@ -160,6 +160,33 @@ const featureCards: FeatureCardConfig[] = [
     tone: "amber",
   },
   {
+    title: "Add PDF Watermark",
+    description: "Overlay text or PNG logos across one or all pages and export a branded PDF.",
+    href: "/pdf-watermark",
+    badge: "Text/Logo",
+    icon: Shield,
+    category: "PDF Suite",
+    tone: "teal",
+  },
+  {
+    title: "Add Page Numbers",
+    description: "Insert header or footer numbers with templates like ‘Page {n} of {total}’.",
+    href: "/pdf-page-numbers",
+    badge: "Header/Footer",
+    icon: HashIcon,
+    category: "PDF Suite",
+    tone: "violet",
+  },
+  {
+    title: "Webpage to PDF",
+    description: "Convert any public URL into a printer‑ready PDF with JS hydration and brand styles.",
+    href: "/webpage-to-pdf",
+    badge: "From URL",
+    icon: ExternalLink,
+    category: "PDF Suite",
+    tone: "cobalt",
+  },
+  {
     title: "Image to Text",
     description: "Paste or drop screenshots, handwritten notes, and slides to grab clean, editable text instantly.",
     href: "/image-to-text",
@@ -222,6 +249,88 @@ const featureCards: FeatureCardConfig[] = [
     category: "Scanner Ops",
     tone: "slate",
   },
+  // Dev tools
+  {
+    title: "Word Counter",
+    description: "Count words, characters, sentences, paragraphs, and reading time in real‑time.",
+    href: "/word-counter",
+    badge: "Copy length",
+    icon: FileText,
+    category: "Dev Tools",
+    tone: "sunset",
+  },
+  {
+    title: "Character Counter",
+    description: "Measure characters with/without spaces, lines, and UTF‑8 bytes for platform limits.",
+    href: "/character-counter",
+    badge: "Char limits",
+    icon: Ruler,
+    category: "Dev Tools",
+    tone: "lime",
+  },
+  {
+    title: "Case Converter",
+    description: "Convert text to UPPERCASE, lowercase, or Title Case for headlines and UI labels.",
+    href: "/case-converter",
+    badge: "Casing",
+    icon: PenSquare,
+    category: "Dev Tools",
+    tone: "magenta",
+  },
+  {
+    title: "JSON Formatter",
+    description: "Pretty‑print, validate, and minify JSON with copy/download actions.",
+    href: "/json-formatter",
+    badge: "Pretty‑print",
+    icon: FileText,
+    category: "Dev Tools",
+    tone: "emerald",
+  },
+  {
+    title: "Base64 Encode/Decode",
+    description: "Encode UTF‑8 text to Base64 or decode Base64 back to readable strings.",
+    href: "/base64",
+    badge: "Base64",
+    icon: SwatchBook,
+    category: "Dev Tools",
+    tone: "amber",
+  },
+  {
+    title: "URL Encode/Decode",
+    description: "Percent‑encode URI components or full URLs and fix +/space handling.",
+    href: "/url-encode-decode",
+    badge: "Encoding",
+    icon: ExternalLink,
+    category: "Dev Tools",
+    tone: "rose",
+  },
+  {
+    title: "UUID Generator",
+    description: "Generate batches of secure RFC 4122 UUIDv4 identifiers in uppercase or compact form.",
+    href: "/uuid-generator",
+    badge: "Identifiers",
+    icon: HashIcon,
+    category: "Dev Tools",
+    tone: "teal",
+  },
+  {
+    title: "Hash Generator",
+    description: "Create MD5 or SHA‑256 hashes and copy/download in hex or Base64.",
+    href: "/hash-generator",
+    badge: "Checksums",
+    icon: Shield,
+    category: "Dev Tools",
+    tone: "slate",
+  },
+  {
+    title: "Markdown to HTML",
+    description: "Convert Markdown into sanitized HTML with headings, lists, links, and code blocks.",
+    href: "/markdown-to-html",
+    badge: "Markdown",
+    icon: FileText,
+    category: "Dev Tools",
+    tone: "violet",
+  },
 ]
 
 const highlights: Array<{ title: string; description: string; icon: LucideIcon; tone: ToneKey }> = [
@@ -282,7 +391,7 @@ export default function Home() {
               The fastest way to turn unstructured files into usable text and imagery
             </h1>
             <p className="text-lg text-muted-foreground md:text-xl">
-              TextExtract AI bundles eight production-ready utilities so your team can switch between OCR, PDF parsing,
+              TextExtract AI bundles over twenty production-ready utilities so your team can switch between OCR, PDF parsing,
               barcode workflows, media conversions, and exporting without relearning interfaces.
             </p>
             <div className="flex flex-wrap gap-3">
