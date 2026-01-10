@@ -36,6 +36,10 @@ export function BarcodeTools({ children, initialFormat }: BarcodeToolsProps) {
   const pathname = usePathname()
   const initialSlug = (initialFormat && SUPPORTED_FORMATS.some(f => f.slug === initialFormat)) ? initialFormat : "code128"
   const [formatSlug, setFormatSlug] = useState<string>(initialSlug)
+  // Keep component state in sync with URL param when navigating between format routes
+  useEffect(() => {
+    setFormatSlug(initialSlug)
+  }, [initialSlug])
   const format = SUPPORTED_FORMATS.find(f => f.slug === formatSlug) ?? SUPPORTED_FORMATS[0]
     // Helper to convert dataURL to File (must be inside the component for client-only use)
     function dataUrlToFile(dataUrl: string, filename: string, mimeType: string) {
