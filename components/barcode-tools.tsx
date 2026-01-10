@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react"
 import { useState, useCallback, useEffect, useRef } from "react"
+import { useRouter, usePathname } from "next/navigation"
 import JsBarcode from "jsbarcode"
 import JSZip from "jszip"
 import { BrowserMultiFormatReader, BarcodeFormat, DecodeHintType, NotFoundException } from "@zxing/library"
@@ -17,9 +18,25 @@ import { SiteFooter } from "@/components/site-footer"
 
 type BarcodeToolsProps = {
   children?: ReactNode
+  initialFormat?: string
 }
 
-export function BarcodeTools({ children }: BarcodeToolsProps) {
+const SUPPORTED_FORMATS = [
+  { slug: "code128", label: "CODE128", js: "CODE128" as const },
+  { slug: "ean-13", label: "EAN-13", js: "EAN13" as const },
+  { slug: "ean-8", label: "EAN-8", js: "EAN8" as const },
+  { slug: "upc-a", label: "UPC-A", js: "UPC" as const },
+  { slug: "upc-e", label: "UPC-E", js: "UPCE" as const },
+  { slug: "itf", label: "ITF", js: "ITF14" as const },
+  { slug: "code39", label: "CODE39", js: "CODE39" as const },
+]
+
+export function BarcodeTools({ children, initialFormat }: BarcodeToolsProps) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const initialSlug = (initialFormat && SUPPORTED_FORMATS.some(f => f.slug === initialFormat)) ? initialFormat : "code128"
+  const [formatSlug, setFormatSlug] = useState<string>(initialSlug)
+  const format = SUPPORTED_FORMATS.find(f => f.slug === formatSlug) ?? SUPPORTED_FORMATS[0]
     // Helper to convert dataURL to File (must be inside the component for client-only use)
     function dataUrlToFile(dataUrl: string, filename: string, mimeType: string) {
       const arr = dataUrl.split(',')
@@ -158,8 +175,9 @@ export function BarcodeTools({ children }: BarcodeToolsProps) {
 
     try {
       const canvas = document.createElement("canvas")
+      // @ts-ignore JsBarcode formats are provided from mapping above
       JsBarcode(canvas, barcodeInput.trim(), {
-        format: "CODE128",
+        format: format.js,
         displayValue: true,
         fontSize: 16,
         background: "#ffffff",
@@ -179,9 +197,9 @@ export function BarcodeTools({ children }: BarcodeToolsProps) {
     if (!barcodeImage) return
     const link = document.createElement("a")
     link.href = barcodeImage
-    link.download = "textextract-barcode.png"
+    link.download = `barcode-${format.slug}.png`
     link.click()
-  }, [barcodeImage])
+  }, [barcodeImage, format.slug])
 
   // --- CSV Bulk helpers ---
   const parseCSV = (text: string): Array<{ value: string; name?: string }> => {
@@ -266,8 +284,9 @@ export function BarcodeTools({ children }: BarcodeToolsProps) {
       for (let i = 0; i < csvRows.length; i += 1) {
         const row = csvRows[i]
         const canvas = document.createElement("canvas")
+        // @ts-ignore see above mapping
         JsBarcode(canvas, row.value, {
-          format: "CODE128",
+          format: format.js,
           displayValue: true,
           fontSize: 16,
           background: "#ffffff",
@@ -283,7 +302,7 @@ export function BarcodeTools({ children }: BarcodeToolsProps) {
       const url = URL.createObjectURL(blob)
       const a = document.createElement("a")
       a.href = url
-      a.download = (csvName ? csvName.replace(/\.csv$/i, "") : "barcodes") + "-barcodes.zip"
+      a.download = (csvName ? csvName.replace(/\.csv$/i, "") : "barcodes") + `-${format.slug}-barcodes.zip`
       a.click()
       URL.revokeObjectURL(url)
     } catch (err) {
@@ -292,7 +311,7 @@ export function BarcodeTools({ children }: BarcodeToolsProps) {
     } finally {
       setIsBulkGenerating(false)
     }
-  }, [csvRows, csvName])
+  }, [csvRows, csvName, format.js, format.slug])
 
   return (
     <div className="min-h-screen">
@@ -319,138 +338,140 @@ export function BarcodeTools({ children }: BarcodeToolsProps) {
       <section className="pb-16">
         <PageContainer>
           <GlowCard tone="sunset" className="p-6 md:p-8">
-          <div className="grid gap-8 md:grid-cols-2">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs uppercase tracking-wide text-muted-foreground">Decode barcode</p>
-                  <h2 className="text-xl font-semibold flex items-center gap-2">
-                    <ScanText className="size-5" />
-                    Barcode to Text
-                  </h2>
-                </div>
-                {barcodePreview && (
-                  <Button variant="ghost" size="sm" onClick={resetDecode} className="text-muted-foreground hover:text-foreground">
-                    <RefreshCcw className="size-4" />
-                    Reset
-                  </Button>
-                )}
-              </div>
-
-              {barcodePreview ? (
-                <div className="relative rounded-lg border border-border bg-muted/50">
-                  <img src={barcodePreview} alt="Uploaded barcode" className="w-full rounded-lg object-contain" />
-                  {isDecoding && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80">
-                      <Loader2 className="size-6 animate-spin" />
-                      <p className="mt-2 text-sm text-muted-foreground">Reading barcode...</p>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <>
-                  <CameraScanner
-                    label="Scan Barcode with Camera"
-                    onCapture={(dataUrl) => {
-                      const arr = dataUrl.split(',');
-                      const bstr = atob(arr[1]);
-                      let n = bstr.length;
-                      const u8arr = new Uint8Array(n);
-                      while (n--) {
-                        u8arr[n] = bstr.charCodeAt(n);
-                      }
-                      const file = new File([u8arr], 'barcode-capture.png', { type: 'image/png' });
-                      handleDecodeUpload(file);
-                    }}
-                  />
-                  <div className="my-2 text-center text-xs text-muted-foreground">or upload an image</div>
-                  <DropZone onFileUpload={handleDecodeUpload} />
-                </>
-              )}
-
-              <div className="space-y-2">
+            <div className="grid gap-8 md:grid-cols-2">
+              {/* Left: Decode */}
+              <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-medium flex items-center gap-2">
-                    <Barcode className="size-4" />
-                    Detected text
-                  </h3>
-                  {decodedText && (
-                    <Button variant="ghost" size="sm" onClick={handleCopy} className="text-muted-foreground hover:text-foreground">
-                      {copied ? (
-                        <>
-                          <Check className="size-4" />
-                          Copied
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="size-4" />
-                          Copy
-                        </>
-                      )}
+                  <div>
+                    <p className="text-xs uppercase tracking-wide text-muted-foreground">Decode barcode</p>
+                    <h2 className="text-xl font-semibold flex items-center gap-2">
+                      <ScanText className="size-5" />
+                      Barcode to Text
+                    </h2>
+                  </div>
+                  {barcodePreview && (
+                    <Button variant="ghost" size="sm" onClick={resetDecode} className="text-muted-foreground hover:text-foreground">
+                      <RefreshCcw className="size-4" />
+                      Reset
                     </Button>
                   )}
                 </div>
 
-                <div className="min-h-[180px] rounded-lg border border-border bg-background/70 p-4 text-sm">
-                  {decodeError ? (
-                    <p className="text-destructive">{decodeError}</p>
-                  ) : decodedText ? (
-                    <p className="whitespace-pre-wrap font-mono leading-relaxed">{decodedText}</p>
+                {barcodePreview ? (
+                  <div className="relative rounded-lg border border-border bg-muted/50">
+                    <img src={barcodePreview} alt="Uploaded barcode" className="w-full rounded-lg object-contain" />
+                    {isDecoding && (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80">
+                        <Loader2 className="size-6 animate-spin" />
+                        <p className="mt-2 text-sm text-muted-foreground">Reading barcode...</p>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <>
+                    <CameraScanner
+                      label="Scan Barcode with Camera"
+                      onCapture={(dataUrl) => {
+                        const arr = dataUrl.split(',');
+                        const bstr = atob(arr[1]);
+                        let n = bstr.length;
+                        const u8arr = new Uint8Array(n);
+                        while (n--) { u8arr[n] = bstr.charCodeAt(n) }
+                        const file = new File([u8arr], 'barcode-capture.png', { type: 'image/png' });
+                        handleDecodeUpload(file);
+                      }}
+                    />
+                    <div className="my-2 text-center text-xs text-muted-foreground">or upload an image</div>
+                    <DropZone onFileUpload={handleDecodeUpload} />
+                  </>
+                )}
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-medium flex items-center gap-2">
+                      <Barcode className="size-4" />
+                      Detected text
+                    </h3>
+                    {decodedText && (
+                      <Button variant="ghost" size="sm" onClick={handleCopy} className="text-muted-foreground hover:text-foreground">
+                        {copied ? (<><Check className="size-4" />Copied</>) : (<><Copy className="size-4" />Copy</>)}
+                      </Button>
+                    )}
+                  </div>
+
+                  <div className="min-h-[180px] rounded-lg border border-border bg-background/70 p-4 text-sm">
+                    {decodeError ? (
+                      <p className="text-destructive">{decodeError}</p>
+                    ) : decodedText ? (
+                      <p className="whitespace-pre-wrap font-mono leading-relaxed">{decodedText}</p>
+                    ) : (
+                      <p className="text-muted-foreground">Upload a barcode image to reveal its contents.</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: Generate */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs uppercase tracking-wide text-muted-foreground">Generate barcode</p>
+                    <h2 className="text-xl font-semibold flex items-center gap-2">
+                      <ScanBarcode className="size-5" />
+                      Text to Barcode
+                    </h2>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="barcode-input" className="text-sm font-medium">Message, SKU, or tracking number</label>
+                  <textarea
+                    id="barcode-input"
+                    className="min-h-[150px] w-full rounded-lg border border-border bg-background/80 p-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    placeholder="Paste a product code, shipment ID, or any short text."
+                    value={barcodeInput}
+                    onChange={(event) => setBarcodeInput(event.target.value)}
+                  />
+                  {generateError && <p className="text-sm text-destructive">{generateError}</p>}
+                  <div className="flex items-center gap-2">
+                    <label className="text-sm">Format</label>
+                    <select
+                      className="rounded-md border border-border bg-background px-2 py-1 text-sm"
+                      value={formatSlug}
+                      onChange={(e) => {
+                        const slug = e.target.value
+                        setFormatSlug(slug)
+                        if (pathname?.startsWith('/barcode-tools')) {
+                          router.push(`/barcode-tools/${slug}`)
+                        }
+                      }}
+                    >
+                      {SUPPORTED_FORMATS.map((f) => (
+                        <option key={f.slug} value={f.slug}>{f.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <Button onClick={generateBarcode} disabled={isGenerating} className="w-full justify-center">
+                    {isGenerating ? <Loader2 className="size-4 animate-spin" /> : <ScanBarcode className="size-4" />}
+                    {isGenerating ? 'Building barcode' : `Generate ${format.label}`}
+                  </Button>
+                </div>
+
+                <div className="rounded-lg border border-border bg-muted/40 p-4 text-center">
+                  {barcodeImage ? (
+                    <div className="space-y-4">
+                      <img src={barcodeImage} alt="Generated barcode" className="mx-auto max-h-56 rounded bg-white p-2 shadow-sm" />
+                      <div className="flex flex-wrap items-center justify-center gap-3">
+                        <Button onClick={downloadBarcode}><Download className="size-4" />Download PNG</Button>
+                        <Button variant="outline" onClick={() => setBarcodeImage(null)}><RefreshCcw className="size-4" />New barcode</Button>
+                      </div>
+                    </div>
                   ) : (
-                    <p className="text-muted-foreground">Upload a barcode image to reveal its contents.</p>
+                    <p className="text-sm text-muted-foreground">Your {format.label} preview will appear here once generated.</p>
                   )}
                 </div>
               </div>
             </div>
-
-            <div className="space-y-4">
-              <div>
-                <p className="text-xs uppercase tracking-wide text-muted-foreground">Generate barcode</p>
-                <h2 className="text-xl font-semibold flex items-center gap-2">
-                  <Barcode className="size-5" />
-                  Text to Barcode
-                </h2>
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="barcode-input" className="text-sm font-medium">
-                  Message, SKU, or tracking number
-                </label>
-                <textarea
-                  id="barcode-input"
-                  className="min-h-[150px] w-full rounded-lg border border-border bg-background/80 p-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  placeholder="Paste a product code, shipment ID, or any short text."
-                  value={barcodeInput}
-                  onChange={(event) => setBarcodeInput(event.target.value)}
-                />
-                {generateError && <p className="text-sm text-destructive">{generateError}</p>}
-                <Button onClick={generateBarcode} disabled={isGenerating} className="w-full justify-center">
-                  {isGenerating ? <Loader2 className="size-4 animate-spin" /> : <Barcode className="size-4" />}
-                  {isGenerating ? "Building barcode" : "Generate barcode"}
-                </Button>
-              </div>
-
-              <div className="rounded-lg border border-border bg-muted/40 p-4 text-center">
-                {barcodeImage ? (
-                  <div className="space-y-4">
-                    <img src={barcodeImage} alt="Generated barcode" className="mx-auto h-32 rounded bg-white p-2 shadow-sm" />
-                    <div className="flex flex-wrap items-center justify-center gap-3">
-                      <Button onClick={downloadBarcode}>
-                        <Download className="size-4" />
-                        Download PNG
-                      </Button>
-                      <Button variant="outline" onClick={() => setBarcodeImage(null)}>
-                        <RefreshCcw className="size-4" />
-                        New barcode
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <p className="text-sm text-muted-foreground">Generated barcodes will appear here.</p>
-                )}
-              </div>
-            </div>
-          </div>
           </GlowCard>
           {/* Bulk barcode generation */}
           <GlowCard tone="slate" className="mt-8 p-6 md:p-8">

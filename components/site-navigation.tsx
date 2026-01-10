@@ -81,7 +81,20 @@ const navItems: Array<NavLink | NavDropdown> = [
       { label: "QR Code Generator", href: "/qr-tools" },
     ],
   },
-  { label: "Barcode Toolkit", href: "/barcode-tools" },
+  {
+    label: "Barcode Toolkit",
+    dropdown: true,
+    items: [
+      { label: "Toolkit Home", href: "/barcode-tools" },
+      { label: "CODE128", href: "/barcode-tools/code128" },
+      { label: "EAN-13", href: "/barcode-tools/ean-13" },
+      { label: "EAN-8", href: "/barcode-tools/ean-8" },
+      { label: "UPC-A", href: "/barcode-tools/upc-a" },
+      { label: "UPC-E", href: "/barcode-tools/upc-e" },
+      { label: "ITF", href: "/barcode-tools/itf" },
+      { label: "CODE39", href: "/barcode-tools/code39" },
+    ],
+  },
 ]
 
 interface SiteNavigationProps {
