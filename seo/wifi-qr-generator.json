@@ -1,0 +1,43 @@
+{
+  "title": "Wi‑Fi QR Code Generator | Create Wi‑Fi Network QR",
+  "description": "Generate scannable Wi‑Fi QR codes for WPA, WEP, or open networks. Guests join without typing passwords.",
+  "keywords": [
+    "wifi qr",
+    "wifi qr code generator",
+    "wifi qr code",
+    "wifi password qr",
+    "wpa qr"
+  ],
+  "canonical": "/wifi-qr-generator",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "Wi‑Fi QR Code Generator",
+    "description": "Create Wi‑Fi QR codes for fast guest access.",
+    "url": "/wifi-qr-generator",
+    "type": "website",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-wifi-qr.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Wi‑Fi QR generator interface"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Wi‑Fi QR Generator",
+    "description": "Generate Wi‑Fi QR codes for WPA/WEP/open networks.",
+    "image": "/og-wifi-qr.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Wi‑Fi QR Code Generator",
+    "url": "/wifi-qr-generator",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "description": "Online tool to create Wi‑Fi QR codes for WPA, WEP, or open networks."
+  }
+}

@@ -37,6 +37,8 @@ const ROUTES = [
   "/url-encode-decode",
   "/uuid-generator",
   "/hash-generator",
+    "/wifi-qr-generator",
+    "/whatsapp-qr-generator",
   "/markdown-to-html",
   "/about-us",
   "/disclaimer",

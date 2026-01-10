@@ -1,0 +1,43 @@
+{
+  "title": "WhatsApp QR Code Generator | Create WhatsApp Chat QR",
+  "description": "Generate a WhatsApp QR code that opens a chat to a phone number with an optional pre‑filled message.",
+  "keywords": [
+    "whatsapp qr",
+    "whatsapp qr generator",
+    "whatsapp chat qr",
+    "wa.me qr",
+    "whatsapp link generator"
+  ],
+  "canonical": "/whatsapp-qr-generator",
+  "robots": "index,follow",
+  "openGraph": {
+    "title": "WhatsApp QR Code Generator",
+    "description": "Create WhatsApp QR links with a pre‑filled message.",
+    "url": "/whatsapp-qr-generator",
+    "type": "website",
+    "siteName": "AI Document Studio",
+    "images": [
+      {
+        "url": "/og-whatsapp-qr.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "WhatsApp QR generator interface"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "WhatsApp QR Generator",
+    "description": "Generate WhatsApp QR codes with phone + message.",
+    "image": "/og-whatsapp-qr.png"
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "WhatsApp QR Code Generator",
+    "url": "/whatsapp-qr-generator",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "description": "Online tool to create WhatsApp QR codes that open chats with optional pre‑filled text."
+  }
+}

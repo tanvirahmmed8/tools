@@ -72,7 +72,15 @@ const navItems: Array<NavLink | NavDropdown> = [
       { label: "Markdown to HTML", href: "/markdown-to-html" },
     ],
   },
-  { label: "QR Toolkit", href: "/qr-tools" },
+  {
+    label: "QR Toolkit",
+    dropdown: true,
+    items: [
+      { label: "Wi‑Fi QR", href: "/wifi-qr-generator" },
+      { label: "WhatsApp QR", href: "/whatsapp-qr-generator" },
+      { label: "QR Code Generator", href: "/qr-tools" },
+    ],
+  },
   { label: "Barcode Toolkit", href: "/barcode-tools" },
 ]
 
